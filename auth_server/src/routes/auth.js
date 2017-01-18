@@ -1,18 +1,19 @@
 import express from 'express';
 const router = express.Router();
 import User from '../models/user';
+import Application from '../models/application';
 const jwt = require('jsonwebtoken');
 import authMiddleware from '../middlewares/auth';
 
 /* =========================================
-		POST /auth/register (Register)
-		{
-			username,
-			password
-		}
+ POST /auth/register (Register User)
+ {
+ username,
+ password
+ }
  ============================================*/
 router.post('/register', (req, res) => {
-	const { username, password } = req.body;
+	const {username, password} = req.body;
 	let newUser = null;
 
 	const create = (user) => {
@@ -59,14 +60,14 @@ router.post('/register', (req, res) => {
 });
 
 /* =========================================
- 		POST /auth/login (Login)
-		 {
-			 username,
-			 password
-		 }
+ POST /auth/login (Login)
+ {
+ username,
+ password
+ }
  ============================================*/
 router.post('/login', (req, res) => {
-	const { username, password } = req.body;
+	const {username, password} = req.body;
 	const secret = req.app.get('config').SECRET;
 
 	const check = (user) => {
@@ -84,7 +85,7 @@ router.post('/login', (req, res) => {
 						},
 						secret,
 						{
-							expiresIn: '1d',
+							expiresIn: '7d',
 							issuer: 'ahribori.com',
 							subject: 'userInfo'
 						}, (err, token) => {
@@ -120,10 +121,10 @@ router.post('/login', (req, res) => {
 
 });
 
-router.use('/check', authMiddleware);
 /* =========================================
-		 GET /auth/check (Login)
+ GET /auth/check (Login)
  ============================================*/
+router.use('/check', authMiddleware);
 router.get('/check', (req, res) => {
 	res.json({
 		success: true,
@@ -131,4 +132,62 @@ router.get('/check', (req, res) => {
 	});
 });
 
+/* =========================================
+ POST /auth/registerApplication (Register Application)
+ {
+ app
+ }
+ ============================================*/
+router.use('/registerApplication', authMiddleware);
+router.post('/registerApplication', (req, res) => {
+	const {app} = req.body;
+	const secret = req.app.get('config').SECRET;
+	const user = req.decoded;
+
+	const createToken = (application) => {
+		if (application) {
+			throw new Error('application name exists');
+		} else {
+			return new Promise((resolve, reject) => {
+				jwt.sign(
+					{
+						user: user._id,
+						app
+					},
+					secret,
+					{
+						issuer: 'ahribori.com',
+						subject: 'applicationInfo'
+					}, (err, token) => {
+						if (err) reject(err);
+						resolve(token);
+					}
+				);
+			});
+		}
+	};
+
+	const respond = (token) => {
+		res.json({
+			message: 'application registered successfully',
+			token
+		});
+	};
+
+	const saveToDB = (token) => {
+		return Application.create(app, user._id, token);
+	};
+
+	const onError = (error) => {
+		res.status(403).json({
+			message: error.message
+		});
+	};
+
+	Application.findOneByApplicationName(app)
+		.then(createToken)
+		.then(saveToDB)
+		.then(respond)
+		.catch(onError);
+});
 export default router;

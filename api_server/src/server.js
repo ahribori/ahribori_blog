@@ -6,6 +6,7 @@ import morgan from 'morgan';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import path from 'path';
+import authMiddleware from './middlewares/auth';
 /* =========================================
 			 Load Config.js
  ============================================*/
@@ -27,9 +28,10 @@ app.use(morgan('dev'));
 // set the config
 app.set('config', config);
 
-// index page, just for testing
-// import routes from './routes';
-// app.use('/', routes);
+// set api router
+import routes from './routes';
+app.use('/api', authMiddleware);
+app.use('/api', routes);
 
 // open the server
 app.listen(port, () => {

@@ -6,7 +6,8 @@ import config from '../config';
 const User = new Schema({
 	username: String,
 	password: String,
-	admin: {type: Boolean, default: false}
+	admin: {type: Boolean, default: false},
+	reg_date: {type: Date, default: Date.now}
 });
 
 // create new User document
