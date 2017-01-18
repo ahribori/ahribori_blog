@@ -1,9 +1,4 @@
 import React, {Component, PropTypes} from 'react';
-
-const propTypes = {};
-
-const defaultProps = {};
-
 class App extends React.Component {
 
 	constructor(props) {
@@ -13,13 +8,11 @@ class App extends React.Component {
 
 	render() {
 		return (
-			<div>Hello React!</div>
+			<div>
+				Hello, world!
+			</div>
 		);
 	}
 }
-
-App.propTypes = propTypes;
-
-App.defaultProps = defaultProps;
 
 export default App;
