@@ -38,10 +38,17 @@ app.listen(port, () => {
 	console.log(`Express is running on port => ${port}`)
 });
 
-app.use('/', express.static(path.resolve('../', 'client/public')));
+// set public path
+const publicPath = path.resolve('../', 'client/public/');
+app.use('/', express.static(publicPath));
 
-app.get('*', function (req, res) {
-	res.sendFile(path.resolve('../', 'client/public/index.html'));
+
+// react SPA routing
+app.get('*', function (req, res, next) {
+	const urlFilter = /(favicon)/;
+	const rootUrl = req.path.split('/')[1];
+	if (urlFilter.test(rootUrl)) return next();
+	res.sendFile(path.join(publicPath, 'index.html'));
 });
 
 /* handle error */
