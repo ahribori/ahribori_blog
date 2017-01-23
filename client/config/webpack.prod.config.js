@@ -24,12 +24,13 @@ module.exports = {
 				test: /\.js$/,
 				loaders: ['react-hot', 'babel?' + JSON.stringify({
 					cacheDirectory: true,
+					plugins: ["transform-class-properties"],
 					presets: ['latest', 'react']
 				})],
 				exclude: /node_modules/
 			},
 			{
-				test: /\.scss$/,
+				test: /\.(css|scss)$/,
 				loaders: ['style-loader', 'css-loader', 'sass-loader']
 			}
 		]
