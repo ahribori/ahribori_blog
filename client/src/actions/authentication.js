@@ -11,6 +11,7 @@ import {
 } from './ActionTypes';
 
 import axios from 'axios';
+import config from '../config'
 
 /*============================================================================
  authentication
@@ -24,9 +25,9 @@ export function loginRequest(username, password) {
 	*/
 	return (dispatch) => {
 		dispatch(login());
-		return axios.post('/api/account/signin', { username, password})
+		return axios.post(config.AUTH_SERVER + '/auth/login', { username, password})
 			.then((response) => {
-				dispatch(loginSuccess(username));
+				dispatch(loginSuccess(response.data));
 			})
 			.catch((error) => {
 				dispatch(loginFailure())
@@ -40,10 +41,10 @@ export function login() {
 	};
 }
 
-export function loginSuccess(username) {
+export function loginSuccess(data) {
 	return {
 		type: AUTH_LOGIN_SUCCESS,
-		username
+		data
 	};
 }
 
@@ -57,12 +58,12 @@ export function loginFailure() {
 export function registerRequest(username, password) {
 	return (dispatch) => {
 		dispatch(register());
-		return axios.post('/api/account/signup', { username, password})
+		return axios.post(config.AUTH_SERVER + '/auth/register', { username, password})
 			.then((response) => {
 				dispatch(registerSuccess());
 			})
 			.catch((error) => {
-				dispatch(registerFailure(error.response.data.code));
+				dispatch(registerFailure(error.response));
 			})
 	};
 }

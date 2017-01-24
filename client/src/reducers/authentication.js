@@ -12,7 +12,7 @@ const initialState = {
 	status: {
 		valid: false,
 		isLoggedIn: false,
-		currentUser: ''
+		token: ''
 	}
 };
 
@@ -31,7 +31,7 @@ export default function authentication(state= initialState, action) {
 				},
 				status: {
 					isLoggedIn: { $set: true },
-					currentUser: { $set: action.username }
+					token: { $set: action.data.token }
 				}
 			});
 		case types.AUTH_LOGIN_FAILURE:

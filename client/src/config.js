@@ -1,3 +1,4 @@
 export default {
-	TOKEN: ''
+	TOKEN: '',
+	AUTH_SERVER: 'http://192.168.0.100:30000'
 }

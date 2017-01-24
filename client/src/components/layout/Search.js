@@ -9,12 +9,19 @@ class Search extends React.Component {
 			searchString: ''
 		};
 		this.handleChange = this.handleChange.bind(this);
+		this.handleKeyPress = this.handleKeyPress.bind(this);
 	}
 	
 	handleChange(e) {
 		this.setState({
 			searchString: e.target.value
 		})
+	}
+
+	handleKeyPress(e) {
+		if (e.charCode === 13 && e.target.value !== '') {
+			console.log(`${e.target.value} 검색!`);
+		}
 	}
 
 	render() {
@@ -24,6 +31,7 @@ class Search extends React.Component {
 				onBlur={this.props.onBlur}
 				value={this.state.searchString}
 				onChange={this.handleChange}
+				onKeyPress={this.handleKeyPress}
 				className="search"
 				label="Search"
 				expandable
