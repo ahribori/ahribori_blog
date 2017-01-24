@@ -5,7 +5,7 @@ const propTypes = {};
 
 const defaultProps = {};
 
-class Login extends React.Component {
+class Register extends React.Component {
 
 	constructor(props) {
 		super(props);
@@ -15,14 +15,14 @@ class Login extends React.Component {
 	render() {
 		return (
 			<div>
-				<Authentication mode={'LOGIN'}/>
+				<Authentication mode={'REGISTER'}/>
 			</div>
 		);
 	}
 }
 
-Login.propTypes = propTypes;
+Register.propTypes = propTypes;
 
-Login.defaultProps = defaultProps;
+Register.defaultProps = defaultProps;
 
-export default Login;
+export default Register;

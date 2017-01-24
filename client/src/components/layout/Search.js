@@ -20,6 +20,8 @@ class Search extends React.Component {
 	render() {
 		return (
 			<Textfield
+				onFocus={this.props.onFocus}
+				onBlur={this.props.onBlur}
 				value={this.state.searchString}
 				onChange={this.handleChange}
 				className="search"

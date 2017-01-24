@@ -19,7 +19,7 @@ class App extends React.Component {
 					<Navigation />
 					<Sidebar />
 					<Content>
-						<div style={{width: '80%', margin: 'auto'}}>
+						<div style={{margin: 'auto'}}>
 							{this.props.children}
 						</div>
 					</Content>
