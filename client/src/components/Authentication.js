@@ -126,8 +126,8 @@ class Authentication extends React.Component {
 								name="username"
 								value={this.state.username}
 								onChange={this.handleChange}
-								// pattern="([\w\.\-_]+)?\w+@[\w-_]+(\.\w+){1,}"
-								// error="Input is not a email!"
+								pattern="[a-z0-9]+[_a-z0-9\.-]*[a-z0-9]+@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})"
+								error="Username should be an email"
 								label="Email..."
 								floatingLabel
 								style={{ width: '100%' }}
@@ -139,8 +139,8 @@ class Authentication extends React.Component {
 								type="password"
 								onChange={this.handleChange}
 								onKeyPress={this.handleKeypress}
-								// pattern="-?[0-9]*(\.[0-9]+)?"
-								// error="Password required!"
+								pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$"
+								error="Password should be more stronger"
 								label="Password..."
 								floatingLabel
 								style={{ width: '100%' }}

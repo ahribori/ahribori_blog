@@ -15,6 +15,26 @@ import authMiddleware from '../middlewares/auth';
 router.post('/register', (req, res) => {
 	const {username, password} = req.body;
 	let newUser = null;
+	const validate = () => {
+		return new Promise((resolve, reject) => {
+			if (!/[a-z0-9]+[_a-z0-9\.-]*[a-z0-9]+@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})/.test(username)) {
+				res.status(400).json({
+					field: 'username',
+					message: 'username should be an email'
+				});
+				return;
+			}
+
+			if(!/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/.test(password)) {
+				res.status(400).json({
+					field: 'password',
+					message: 'password should be more stronger'
+				});
+				return;
+			}
+			resolve();
+		});
+	};
 
 	const create = (user) => {
 		if (user) {
@@ -50,7 +70,7 @@ router.post('/register', (req, res) => {
 		})
 	};
 
-	User.findOneByUsername(username)
+	validate(User.findOneByUsername(username))
 		.then(create)
 		.then(count)
 		.then(assign)

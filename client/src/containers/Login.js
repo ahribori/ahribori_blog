@@ -3,13 +3,20 @@ import { Authentication } from 'components';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 import { loginRequest } from 'actions/authentication';
+import { Snackbar } from 'react-mdl';
 
 class Login extends React.Component {
 
 	constructor(props) {
 		super(props);
+		this.state = {
+			snackbarMessage: '',
+			isSnackbarActive: false
+		};
 
 		this.handleLogin = this.handleLogin.bind(this);
+		this.handleShowSnackbar = this.handleShowSnackbar.bind(this);
+		this.handleTimeoutSnackbar = this.handleTimeoutSnackbar.bind(this);
 	}
 
 	handleLogin(id, pw) {
@@ -20,13 +27,28 @@ class Login extends React.Component {
 						const localStorage = window.localStorage;
 						localStorage.setItem('ahribori_token', this.props.token);
 					}
-					localStorage.setItem('snackbar', '인증되었습니다')
+					localStorage.setItem('snackbar', '인증되었습니다');
 					browserHistory.push('/');
 					return true;
 				} else {
+					this.handleShowSnackbar('아이디 또는 패스워드가 잘못되었습니다');
 					return false;
 				}
 			});
+	}
+
+	handleShowSnackbar(message) {
+		this.setState({
+			snackbarMessage: message,
+			isSnackbarActive: true
+		});
+	}
+
+	handleTimeoutSnackbar() {
+		this.setState({
+			snackbarMessage: '',
+			isSnackbarActive: false
+		});
 	}
 
 	componentDidMount() {
@@ -42,6 +64,11 @@ class Login extends React.Component {
 					mode={'LOGIN'}
 					onLogin={this.handleLogin}
 				/>
+				<Snackbar
+					active={this.state.isSnackbarActive}
+					onTimeout={this.handleTimeoutSnackbar}
+					// action="Undo"
+				>{this.state.snackbarMessage}</Snackbar>
 			</div>
 		);
 	}

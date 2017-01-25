@@ -28,6 +28,9 @@ class Register extends React.Component {
 				} else {
 					if (this.props.error) {
 						switch (this.props.error.status) {
+							case 400:
+								this.handleShowSnackbar('등록이 거부되었습니다');
+								break;
 							case 409:
 								this.handleShowSnackbar('이미 등록된 계정입니다');
 								break;
