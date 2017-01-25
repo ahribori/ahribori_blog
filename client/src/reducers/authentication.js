@@ -12,7 +12,8 @@ const initialState = {
 	status: {
 		valid: false,
 		isLoggedIn: false,
-		token: ''
+		token: '',
+		error: -1
 	}
 };
 
@@ -60,6 +61,15 @@ export default function authentication(state= initialState, action) {
 					error: { $set: action.error }
 				}
 			});
+		case types.AUTH_LOGOUT:
+			return update(state, {
+				status: {
+					valid: { $set: false },
+					isLoggedIn: { $set: false },
+					token: { $set: ''},
+					error: { $set: -1 }
+				}
+			});
 		case types.AUTH_GET_STATUS:
 			return update(state, {
 				status: {
@@ -70,14 +80,15 @@ export default function authentication(state= initialState, action) {
 			return update(state, {
 				status: {
 					valid: { $set: true },
-					currentUser: { $set: action.username }
+					currentUser: { $set: action.user }
 				}
 			});
 		case types.AUTH_GET_STATUS_FAILURE:
 			return update(state, {
 				status: {
 					valid: { $set: false },
-					isLoggedIn: { $set: false }
+					isLoggedIn: { $set: false },
+					error: { $set: action.error }
 				}
 			});
 		default:

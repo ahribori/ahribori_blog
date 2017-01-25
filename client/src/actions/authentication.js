@@ -2,6 +2,7 @@ import {
 	AUTH_LOGIN,
 	AUTH_LOGIN_SUCCESS,
 	AUTH_LOGIN_FAILURE,
+	AUTH_LOGOUT,
 	AUTH_REGISTER,
 	AUTH_REGISTER_SUCCESS,
 	AUTH_REGISTER_FAILURE,
@@ -54,6 +55,12 @@ export function loginFailure() {
 	};
 }
 
+export function logout() {
+	return {
+		type: AUTH_LOGOUT
+	}
+}
+
 /* REGISTER */
 export function registerRequest(username, password) {
 	return (dispatch) => {
@@ -88,15 +95,18 @@ export function registerFailure(error) {
 }
 
 /* GET STATUS */
-export function getStatusRequest() {
+export function getStatusRequest(token) {
 	return (dispatch) => {
 		dispatch(getStatus());
-		return axios.get('/api/account/getInfo')
-			.then((response) => {
-				dispatch(getStatusSuccess(response.data.info.username));
+		return axios.get(config.AUTH_SERVER + '/auth/check', {
+			headers: {
+				'authorization': token
+			}
+		}).then((response) => {
+				dispatch(getStatusSuccess(response.data.info));
 			})
 			.catch((error) => {
-				dispatch(getStatusFailure());
+				dispatch(getStatusFailure(error.response));
 			});
 	};
 }
@@ -107,15 +117,16 @@ export function getStatus() {
 	};
 }
 
-export function getStatusSuccess(username) {
+export function getStatusSuccess(user) {
 	return {
 		type: AUTH_GET_STATUS_SUCCESS,
-		username
+		user
 	};
 }
 
-export function getStatusFailure() {
+export function getStatusFailure(error) {
 	return {
-		type: AUTH_GET_STATUS_FAILURE
+		type: AUTH_GET_STATUS_FAILURE,
+		error
 	};
 }

@@ -15,26 +15,29 @@ class NavigationMenu extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {};
+		this.handleLogin = this.handleLogin.bind(this);
+		this.handleLogout = this.handleLogout.bind(this);
 	}
 
-	handleClick() {
+	handleLogin() {
 		browserHistory.push('/login');
+	}
+
+	handleLogout() {
+		this.props.onLogout();
 	}
 
 	render() {
 
 		const loginComponent = (
-			<IconButton name="vpn_key" onClick={this.handleClick} />
+			<IconButton name="vpn_key" onClick={this.handleLogin} />
 		);
 
 		const menuComponent = (
 			<div>
 				<IconButton name="more_vert" id="demo-menu-lower-right"/>
 				<Menu target="demo-menu-lower-right" align="right">
-					<MenuItem>Some Action</MenuItem>
-					<MenuItem>Another Action</MenuItem>
-					<MenuItem disabled>Disabled Action</MenuItem>
-					<MenuItem>Yet Another Action</MenuItem>
+					<MenuItem onClick={this.handleLogout}>로그아웃</MenuItem>
 				</Menu>
 			</div>
 		);

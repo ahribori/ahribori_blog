@@ -8,7 +8,7 @@ class Login extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.state = {};
+
 		this.handleLogin = this.handleLogin.bind(this);
 	}
 
@@ -16,13 +16,23 @@ class Login extends React.Component {
 		return this.props.loginRequest(id, pw)
 			.then(() => {
 				if (this.props.status === 'SUCCESS') {
-					document.cookie = `ahriori_token=${this.props.token}; httpOnly;`;
+					if (window.localStorage) {
+						const localStorage = window.localStorage;
+						localStorage.setItem('ahribori_token', this.props.token);
+					}
+					localStorage.setItem('snackbar', '인증되었습니다')
 					browserHistory.push('/');
 					return true;
 				} else {
 					return false;
 				}
 			});
+	}
+
+	componentDidMount() {
+		if (this.props.isLoggedIn) {
+			browserHistory.push('/');
+		}
 	}
 
 	render() {
@@ -41,7 +51,8 @@ const mapStateToProps = (state) => {
 	return {
 		status: state.authentication.login.status,
 		errorCode: state.authentication.login.error,
-		token: state.authentication.status.token
+		token: state.authentication.status.token,
+		isLoggedIn: state.authentication.status.isLoggedIn
 	}
 };
 

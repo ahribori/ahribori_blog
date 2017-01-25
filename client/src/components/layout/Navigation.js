@@ -4,6 +4,16 @@ import {Header} from 'react-mdl';
 import Search from './Search';
 import NavigationMenu from './NavigationMenu';
 
+const propTypes = {
+	isLoggedIn: React.PropTypes.bool,
+	onLogout: React.PropTypes.func
+};
+
+const defaultProps = {
+	isLoggedIn: false,
+	onLogout: () => { console.error('logout function not defined') }
+};
+
 class Navigation extends React.Component {
 
 	constructor(props) {
@@ -46,10 +56,14 @@ class Navigation extends React.Component {
 		return (
 			<Header className="navigation" title={headerTitle()}>
 				<Search onFocus={this.handleFocus} onBlur={this.handleBlur}/>
-				<NavigationMenu />
+				<NavigationMenu isLoggedIn={this.props.isLoggedIn} onLogout={this.props.onLogout} />
 			</Header>
 		);
 	}
 }
+
+Navigation.propTypes = propTypes;
+
+Navigation.defaultProps = defaultProps;
 
 export default Navigation;
