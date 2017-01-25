@@ -1,6 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import { connect } from 'react-redux';
-import {Grid, Cell, Card, CardTitle, CardText, CardActions, Button} from 'react-mdl';
+import { Card, CardTitle, CardText, CardActions, Button } from 'react-mdl';
+import 'masonry-layout';
 
 const propTypes = {};
 
@@ -16,9 +17,10 @@ class Home extends React.Component {
 	render() {
 		return (
 			<div>
-				<Grid className="demo-grid-3">
-					<Cell col={4} phone={6}>
-						<Card shadow={0} style={{width: '100%', height: '320px', margin: 'auto'}}>
+				<div className="grid" style={{ padding: '8px'}} data-masonry='{ "columnWidth": 0, "itemSelector": ".grid-item" }'>
+
+					<div className="grid-item" style={{ margin: '8px' }}>
+						<Card shadow={0} style={{width: '320px', height: '320px'}}>
 							<CardTitle expand style={{color: '#fff', background: 'url(http://www.getmdl.io/assets/demos/dog.png) bottom right 15% no-repeat #46B6AC'}}>Update</CardTitle>
 							<CardText>
 								Lorem ipsum dolor sit amet, consectetur adipiscing elit.
@@ -28,9 +30,9 @@ class Home extends React.Component {
 								<Button colored>View Updates</Button>
 							</CardActions>
 						</Card>
-					</Cell>
-					<Cell col={4} phone={6}>
-						<Card shadow={0} style={{width: '100%', height: '320px', margin: 'auto'}}>
+					</div>
+					<div className="grid-item" style={{ margin: '8px' }}>
+						<Card shadow={0} style={{width: '320px', height: '420px'}}>
 							<CardTitle expand style={{color: '#fff', background: 'url(http://www.getmdl.io/assets/demos/dog.png) bottom right 15% no-repeat #46B6AC'}}>Update</CardTitle>
 							<CardText>
 								Lorem ipsum dolor sit amet, consectetur adipiscing elit.
@@ -40,9 +42,9 @@ class Home extends React.Component {
 								<Button colored>View Updates</Button>
 							</CardActions>
 						</Card>
-					</Cell>
-					<Cell col={4} phone={6}>
-						<Card shadow={0} style={{width: '100%', height: '320px', margin: 'auto'}}>
+					</div>
+					<div className="grid-item" style={{ margin: '8px' }}>
+						<Card shadow={0} style={{width: '320px', height: '320px'}}>
 							<CardTitle expand style={{color: '#fff', background: 'url(http://www.getmdl.io/assets/demos/dog.png) bottom right 15% no-repeat #46B6AC'}}>Update</CardTitle>
 							<CardText>
 								Lorem ipsum dolor sit amet, consectetur adipiscing elit.
@@ -52,9 +54,9 @@ class Home extends React.Component {
 								<Button colored>View Updates</Button>
 							</CardActions>
 						</Card>
-					</Cell>
-					<Cell col={4} phone={6}>
-						<Card shadow={0} style={{width: '100%', height: '320px', margin: 'auto'}}>
+					</div>
+					<div className="grid-item" style={{ margin: '8px' }}>
+						<Card shadow={0} style={{width: '320px', height: '320px'}}>
 							<CardTitle expand style={{color: '#fff', background: 'url(http://www.getmdl.io/assets/demos/dog.png) bottom right 15% no-repeat #46B6AC'}}>Update</CardTitle>
 							<CardText>
 								Lorem ipsum dolor sit amet, consectetur adipiscing elit.
@@ -64,9 +66,9 @@ class Home extends React.Component {
 								<Button colored>View Updates</Button>
 							</CardActions>
 						</Card>
-					</Cell>
-					<Cell col={4} phone={6}>
-						<Card shadow={0} style={{width: '100%', height: '320px', margin: 'auto'}}>
+					</div>
+					<div className="grid-item" style={{ margin: '8px' }}>
+						<Card shadow={0} style={{width: '320px', height: '320px'}}>
 							<CardTitle expand style={{color: '#fff', background: 'url(http://www.getmdl.io/assets/demos/dog.png) bottom right 15% no-repeat #46B6AC'}}>Update</CardTitle>
 							<CardText>
 								Lorem ipsum dolor sit amet, consectetur adipiscing elit.
@@ -76,9 +78,9 @@ class Home extends React.Component {
 								<Button colored>View Updates</Button>
 							</CardActions>
 						</Card>
-					</Cell>
-					<Cell col={4} phone={6}>
-						<Card shadow={0} style={{width: '100%', height: '320px', margin: 'auto'}}>
+					</div>
+					<div className="grid-item" style={{ margin: '8px' }}>
+						<Card shadow={0} style={{width: '320px', height: '720px'}}>
 							<CardTitle expand style={{color: '#fff', background: 'url(http://www.getmdl.io/assets/demos/dog.png) bottom right 15% no-repeat #46B6AC'}}>Update</CardTitle>
 							<CardText>
 								Lorem ipsum dolor sit amet, consectetur adipiscing elit.
@@ -88,9 +90,9 @@ class Home extends React.Component {
 								<Button colored>View Updates</Button>
 							</CardActions>
 						</Card>
-					</Cell>
-					<Cell col={4} phone={6}>
-						<Card shadow={0} style={{width: '100%', height: '320px', margin: 'auto'}}>
+					</div>
+					<div className="grid-item" style={{ margin: '8px' }}>
+						<Card shadow={0} style={{width: '320px', height: '420px'}}>
 							<CardTitle expand style={{color: '#fff', background: 'url(http://www.getmdl.io/assets/demos/dog.png) bottom right 15% no-repeat #46B6AC'}}>Update</CardTitle>
 							<CardText>
 								Lorem ipsum dolor sit amet, consectetur adipiscing elit.
@@ -100,9 +102,9 @@ class Home extends React.Component {
 								<Button colored>View Updates</Button>
 							</CardActions>
 						</Card>
-					</Cell>
-					<Cell col={4} phone={6}>
-						<Card shadow={0} style={{width: '100%', height: '320px', margin: 'auto'}}>
+					</div>
+					<div className="grid-item" style={{ margin: '8px' }}>
+						<Card shadow={0} style={{width: '320px', height: '520px'}}>
 							<CardTitle expand style={{color: '#fff', background: 'url(http://www.getmdl.io/assets/demos/dog.png) bottom right 15% no-repeat #46B6AC'}}>Update</CardTitle>
 							<CardText>
 								Lorem ipsum dolor sit amet, consectetur adipiscing elit.
@@ -112,8 +114,9 @@ class Home extends React.Component {
 								<Button colored>View Updates</Button>
 							</CardActions>
 						</Card>
-					</Cell>
-				</Grid>
+					</div>
+
+				</div>
 			</div>
 		);
 	}
