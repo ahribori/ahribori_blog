@@ -65,6 +65,66 @@ class Posts extends React.Component {
 							</CardActions>
 						</Card>
 					</Cell>
+					<Cell col={4} phone={6}>
+						<Card shadow={0} style={{width: '100%', height: '320px', margin: 'auto'}}>
+							<CardTitle expand style={{color: '#fff', background: 'url(http://www.getmdl.io/assets/demos/dog.png) bottom right 15% no-repeat #46B6AC'}}>Update</CardTitle>
+							<CardText>
+								Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+								Aenan convallis.
+							</CardText>
+							<CardActions border>
+								<Button colored>View Updates</Button>
+							</CardActions>
+						</Card>
+					</Cell>
+					<Cell col={4} phone={6}>
+						<Card shadow={0} style={{width: '100%', height: '320px', margin: 'auto'}}>
+							<CardTitle expand style={{color: '#fff', background: 'url(http://www.getmdl.io/assets/demos/dog.png) bottom right 15% no-repeat #46B6AC'}}>Update</CardTitle>
+							<CardText>
+								Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+								Aenan convallis.
+							</CardText>
+							<CardActions border>
+								<Button colored>View Updates</Button>
+							</CardActions>
+						</Card>
+					</Cell>
+					<Cell col={4} phone={6}>
+						<Card shadow={0} style={{width: '100%', height: '320px', margin: 'auto'}}>
+							<CardTitle expand style={{color: '#fff', background: 'url(http://www.getmdl.io/assets/demos/dog.png) bottom right 15% no-repeat #46B6AC'}}>Update</CardTitle>
+							<CardText>
+								Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+								Aenan convallis.
+							</CardText>
+							<CardActions border>
+								<Button colored>View Updates</Button>
+							</CardActions>
+						</Card>
+					</Cell>
+					<Cell col={4} phone={6}>
+						<Card shadow={0} style={{width: '100%', height: '320px', margin: 'auto'}}>
+							<CardTitle expand style={{color: '#fff', background: 'url(http://www.getmdl.io/assets/demos/dog.png) bottom right 15% no-repeat #46B6AC'}}>Update</CardTitle>
+							<CardText>
+								Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+								Aenan convallis.
+							</CardText>
+							<CardActions border>
+								<Button colored>View Updates</Button>
+							</CardActions>
+						</Card>
+					</Cell>
+					<Cell col={4} phone={6}>
+						<Card shadow={0} style={{width: '100%', height: '320px', margin: 'auto'}}>
+							<CardTitle expand style={{color: '#fff', background: 'url(http://www.getmdl.io/assets/demos/dog.png) bottom right 15% no-repeat #46B6AC'}}>Update</CardTitle>
+							<CardText>
+								Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+								Aenan convallis.
+							</CardText>
+							<CardActions border>
+								<Button colored>View Updates</Button>
+							</CardActions>
+						</Card>
+					</Cell>
 				</Grid>
 			</div>
 		);
