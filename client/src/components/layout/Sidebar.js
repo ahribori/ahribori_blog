@@ -26,8 +26,6 @@ class Sidebar extends React.Component {
 			>
 				<Navigation>
 					<Link to="/" onClick={this.handleToggle}>Home</Link>
-					<Link to="/login" onClick={this.handleToggle}>Login</Link>
-					<Link to="/register" onClick={this.handleToggle}>Register</Link>
 				</Navigation>
 			</Drawer>
 		);
