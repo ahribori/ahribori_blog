@@ -1,6 +1,6 @@
 import App from './App';
-import Home from './Home';
+import Posts from './Posts';
 import Login from './Login';
 import Register from './Register';
 
-export { App, Login, Home, Register };
+export { App, Login, Posts, Register };

@@ -1,7 +1,8 @@
 @import 'styles/reset';
 @import 'styles/colors';
-@import 'styles/navigation';
+@import 'styles/components/navigation';
+@import 'styles/components/posts';
 
 body {
-    background-color: $grey100
+    background-color: $grey200
 }
