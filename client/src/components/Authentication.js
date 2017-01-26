@@ -21,7 +21,9 @@ class Authentication extends React.Component {
 		super(props);
 		this.state = {
 			username: '',
-			password: ''
+			password: '',
+			password_confirm: '',
+			nickname: ''
 		};
 
 		this.handleChange = this.handleChange.bind(this);
@@ -49,12 +51,14 @@ class Authentication extends React.Component {
 	}
 
 	handleRegister() {
-		this.props.onRegister(this.state.username, this.state.password)
+		this.props.onRegister(this.state.username, this.state.password, this.state.nickname)
 			.then((result) => {
 				if (!result) {
 					this.setState({
 						username: '',
-						password: ''
+						password: '',
+						password_confirm: '',
+						nickname: ''
 					});
 					document.getElementsByName('username')[0].focus();
 				}
@@ -114,6 +118,34 @@ class Authentication extends React.Component {
 			</div>
 		);
 
+		const nicknameField = (
+			<Textfield
+				name="nickname"
+				value={this.state.nickname}
+				onChange={this.handleChange}
+				pattern="[a-zA-Z가-힣]{2,16}"
+				error="닉네임은 2~16자의 한글,영문자 입니다"
+				label="닉네임"
+				floatingLabel
+				style={{ width: '100%' }}
+			/>
+		);
+
+		const passwordConfirmField = (
+			<Textfield
+				name="password_confirm"
+				value={this.state.password_confirm}
+				type="password"
+				onChange={this.handleChange}
+				onKeyPress={this.handleKeypress}
+				pattern={this.state.password_confirm === '' ? '.*' : this.state.password}
+				error="비밀번호와 동일한 값을 입력하세요"
+				label="비밀번호 확인"
+				floatingLabel
+				style={{ width: '100%' }}
+			/>
+		);
+
 		return (
 			<Grid className="authentication">
 				<Cell
@@ -133,25 +165,28 @@ class Authentication extends React.Component {
 								name="username"
 								value={this.state.username}
 								onChange={this.handleChange}
-								pattern="[a-z0-9]+[_a-z0-9\.-]*[a-z0-9]+@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})"
-								error="Username should be an email"
-								label="Email..."
+								pattern={this.props.mode === "LOGIN" ?
+								'.*' : "[a-z0-9]+[_a-z0-9\.-]*[a-z0-9]+@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})" }
+								error="이메일 형식으로 입력하세요"
+								label="아이디(이메일)"
 								floatingLabel
 								style={{ width: '100%' }}
 							/>
 							<Textfield
 								name="password"
-								ref="password"
 								value={this.state.password}
 								type="password"
 								onChange={this.handleChange}
 								onKeyPress={this.handleKeypress}
-								pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$"
-								error="Password should be more stronger"
-								label="Password..."
+								pattern={this.props.mode === "LOGIN" ?
+								'.*' : "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$"}
+								error="8자 이상의 특수문자,숫자,대소문자 조합입니다"
+								label="비밀번호"
 								floatingLabel
 								style={{ width: '100%' }}
 							/>
+							{ this.props.mode !== 'LOGIN' ? passwordConfirmField : ''}
+							{ this.props.mode !== 'LOGIN' ? nicknameField : ''}
 						</CardText>
 						<CardActions border>
 							{ this.props.mode === 'LOGIN' ? loginButtonset : registerButtonSet}

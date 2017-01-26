@@ -38,6 +38,10 @@ $containerMargin: 8px; //
     margin: $containerMargin $containerMargin $containerMargin ($containerMargin + $sidebarWidth) !important;
 }
 
+.sidebar_username {
+    padding-left: 40px;
+}
+
 // When sidebar is visible
 @media screen and (min-width: 1025px) {
     .mdl-layout__drawer {
@@ -57,6 +61,7 @@ $containerMargin: 8px; //
         height: 56px !important;
         padding-left: $sidebarWidth - 200 !important;
     }
+
 }
 
 // When sidebar is invisible
@@ -68,5 +73,17 @@ $containerMargin: 8px; //
 
     .mdl-layout__content {
         margin: $containerMargin $containerMargin $containerMargin $containerMargin !important;
+    }
+
+    .mdl-layout__drawer .mdl-layout-title {
+        padding-left: 30px !important;
+    }
+
+    .mdl-navigation__link {
+        padding-left: 30px !important;
+    }
+
+    .sidebar_username {
+        padding-left: 30px;
     }
 }

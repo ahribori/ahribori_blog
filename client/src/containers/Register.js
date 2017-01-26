@@ -19,8 +19,8 @@ class Register extends React.Component {
 		this.handleTimeoutSnackbar = this.handleTimeoutSnackbar.bind(this);
 	}
 
-	handleRegister(id, pw) {
-		return this.props.registerRequest(id, pw)
+	handleRegister(id, pw, nick) {
+		return this.props.registerRequest(id, pw, nick)
 			.then(() => {
 				if (this.props.status === 'SUCCESS') {
 					browserHistory.push('/login');
@@ -91,8 +91,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		registerRequest: (id, pw) => {
-			return dispatch(registerRequest(id, pw));
+		registerRequest: (id, pw, nick) => {
+			return dispatch(registerRequest(id, pw, nick));
 		}
 	}
 };

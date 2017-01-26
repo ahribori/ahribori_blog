@@ -62,10 +62,10 @@ export function logout() {
 }
 
 /* REGISTER */
-export function registerRequest(username, password) {
+export function registerRequest(username, password, nickname) {
 	return (dispatch) => {
 		dispatch(register());
-		return axios.post(config.AUTH_SERVER + '/auth/register', { username, password})
+		return axios.post(config.AUTH_SERVER + '/auth/register', { username, password, nickname })
 			.then((response) => {
 				dispatch(registerSuccess());
 			})
@@ -83,7 +83,7 @@ export function register() {
 
 export function registerSuccess() {
 	return {
-		type: AUTH_REGISTER_SUCCESS,
+		type: AUTH_REGISTER_SUCCESS
 	};
 }
 

@@ -6,17 +6,19 @@ import config from '../config';
 const User = new Schema({
 	username: String,
 	password: String,
+	nickname: String,
 	admin: {type: Boolean, default: false},
 	reg_date: {type: Date, default: Date.now}
 });
 
 // create new User document
-User.statics.create = function (username, password) {
+User.statics.create = function (username, password, nickname) {
 	if (typeof password === 'number') password = password.toString();
 	const encrypted = crypto.createHmac('sha1', config.SECRET).update(password).digest('base64');
 	const user = new this({
 		username,
-		password: encrypted
+		password: encrypted,
+		nickname
 	});
 
 	// return the Promise

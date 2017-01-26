@@ -13,7 +13,7 @@ import authMiddleware from '../middlewares/auth';
  }
  ============================================*/
 router.post('/register', (req, res) => {
-	const {username, password} = req.body;
+	const {username, password, nickname} = req.body;
 	let newUser = null;
 	const validate = () => {
 		return new Promise((resolve, reject) => {
@@ -32,6 +32,15 @@ router.post('/register', (req, res) => {
 				});
 				return;
 			}
+
+			if (!/[a-zA-Z가-힣]{2,16}/.test(nickname)) {
+				res.status(400).json({
+					field: 'nickname',
+					message: 'nickname should be 2-16 character'
+				});
+				return;
+			}
+
 			resolve();
 		});
 	};
@@ -40,7 +49,7 @@ router.post('/register', (req, res) => {
 		if (user) {
 			throw new Error('username exists');
 		} else {
-			return User.create(username, password);
+			return User.create(username, password, nickname);
 		}
 	};
 
@@ -70,12 +79,14 @@ router.post('/register', (req, res) => {
 		})
 	};
 
-	validate(User.findOneByUsername(username))
-		.then(create)
-		.then(count)
-		.then(assign)
-		.then(respond)
-		.catch(onError);
+	validate().then(() => {
+		User.findOneByUsername(username)
+			.then(create)
+			.then(count)
+			.then(assign)
+			.then(respond)
+			.catch(onError);
+	});
 
 });
 
@@ -101,6 +112,7 @@ router.post('/login', (req, res) => {
 						{
 							_id: user._id,
 							username: user.username,
+							nickname: user.nickname,
 							admin: user.admin
 						},
 						secret,
