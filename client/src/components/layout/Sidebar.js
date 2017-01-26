@@ -1,7 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import {Link} from 'react-router';
 import {Drawer, Navigation} from 'react-mdl';
-import classNames from 'classnames';
 
 class Sidebar extends React.Component {
 

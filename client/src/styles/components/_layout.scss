@@ -1,0 +1,72 @@
+/*==============================================
+    Define Variables
+================================================*/
+$navigationColor: $pink500; // 네비게이션 바 색깔
+$sidebarWidth: 340px; // 사이드바 넓이
+$containerMargin: 8px; //
+
+/*==============================================
+    Navigation
+================================================*/
+.navigation {
+    background-color: $navigationColor;
+}
+
+.title {
+    cursor: pointer;
+}
+
+/*==============================================
+    Search field
+================================================*/
+.search {
+    margin-right: 20px;
+}
+
+.mdl-textfield__label:after {
+    background-color: $white;
+}
+
+/*==============================================
+    Sidebar
+================================================*/
+.mdl-layout__drawer {
+    width: $sidebarWidth
+}
+
+.mdl-layout__content {
+    margin: $containerMargin $containerMargin $containerMargin ($containerMargin + $sidebarWidth) !important;
+}
+
+// When sidebar is visible
+@media screen and (min-width: 1025px) {
+    .mdl-layout__drawer {
+        // 사이드바
+    }
+
+    .mdl-layout__drawer-button {
+        display: none;
+    }
+
+    .mdl-layout__header {
+        height: 56px !important;
+        min-height: 56px !important;
+    }
+
+    .mdl-layout__header-row {
+        height: 56px !important;
+        padding-left: $sidebarWidth - 200 !important;
+    }
+}
+
+// When sidebar is invisible
+@media screen and (max-width: 1024px) {
+    .mdl-layout__drawer {
+        -webkit-transform: translateX(-250px);
+        transform: translateX(-($sidebarWidth + 10));
+    }
+
+    .mdl-layout__content {
+        margin: $containerMargin $containerMargin $containerMargin $containerMargin !important;
+    }
+}

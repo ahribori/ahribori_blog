@@ -15,7 +15,7 @@ class Posts extends React.Component {
 	}
 
 	componentDidMount() {
-		const masonry = new Masonry( '.grid', {
+		const masonry = new Masonry( '.mdl-layout__content', {
 			columnWidth: '.grid-sizer',
 			itemSelector: '.grid-item',
 			percentPosition: true,
