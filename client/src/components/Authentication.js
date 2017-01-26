@@ -71,6 +71,7 @@ class Authentication extends React.Component {
 				} else {
 					return this.props.getStatusRequest(this.props.token)
 						.then(() => {
+							localStorage.setItem('snackbar', `${this.props.user.username}계정 인증되었습니다.`);
 							browserHistory.push('/');
 						});
 				}

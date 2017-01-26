@@ -20,12 +20,9 @@ class Sidebar extends React.Component {
 	}
 
 	render() {
-
-		const user = this.props.currentUser;
-
 		return (
 			<Drawer
-				title={user ? user.username : ''}
+				title={this.props.user ? this.props.user.username : ''}
 			>
 				<Navigation>
 					<Link to="/" onClick={this.handleToggle}>Home</Link>

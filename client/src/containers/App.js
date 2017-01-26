@@ -70,7 +70,7 @@ class App extends React.Component {
 			<div>
 				<Layout fixedHeader fixedDrawer>
 					<Navigation isLoggedIn={this.props.status.isLoggedIn} onLogout={this.handleLogout}/>
-					<Sidebar currentUser={this.props.user}/>
+					<Sidebar user={this.props.user}/>
 					<Content>
 						<div style={{margin: 'auto'}}>
 							{this.props.children}

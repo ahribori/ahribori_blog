@@ -31,7 +31,6 @@ class Login extends React.Component {
 						const localStorage = window.localStorage;
 						localStorage.setItem('ahribori_token', this.props.token);
 					}
-					localStorage.setItem('snackbar', '인증되었습니다');
 					return true;
 				} else {
 					this.handleShowSnackbar('아이디 또는 패스워드가 잘못되었습니다');
@@ -65,6 +64,7 @@ class Login extends React.Component {
 			<div>
 				<Authentication
 					mode={'LOGIN'}
+					user={this.props.user}
 					onLogin={this.handleLogin}
 					getStatusRequest={this.props.getStatusRequest}
 					token={this.state.token}
@@ -81,6 +81,7 @@ class Login extends React.Component {
 
 const mapStateToProps = (state) => {
 	return {
+		user: state.authentication.user,
 		status: state.authentication.login.status,
 		errorCode: state.authentication.login.error,
 		token: state.authentication.status.token,
