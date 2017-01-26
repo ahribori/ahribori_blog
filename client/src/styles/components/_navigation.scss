@@ -10,3 +10,7 @@
 .search {
     margin-right: 20px;
 }
+
+.mdl-textfield__label:after {
+    background-color: $white;
+}
