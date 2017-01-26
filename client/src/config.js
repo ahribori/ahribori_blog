@@ -1,4 +1,4 @@
 export default {
 	TOKEN: '',
-	AUTH_SERVER: 'http://auth.ahribori.com'
+	AUTH_SERVER: 'http://localhost:30000'
 }

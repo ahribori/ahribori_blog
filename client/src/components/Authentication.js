@@ -1,5 +1,5 @@
 import React, {Component, PropTypes} from 'react';
-import { Grid, Cell, Card, CardTitle, CartText, CardActions, Button, CardMenu, CardText, IconButton, Textfield } from 'react-mdl';
+import { Grid, Cell, Card, CardTitle, CardActions, Button, CardMenu, CardText, IconButton, Textfield } from 'react-mdl';
 import { browserHistory } from 'react-router';
 import update from 'react-addons-update';
 

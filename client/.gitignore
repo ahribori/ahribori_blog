@@ -1,5 +1,8 @@
 public/bundle.js
 
+# Configuration file
+src/config.js
+
 ### Node template
 # Logs
 logs
