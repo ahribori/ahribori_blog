@@ -68,7 +68,13 @@ class Authentication extends React.Component {
 					this.setState({
 						password: ''
 					})
+				} else {
+					return this.props.getStatusRequest(this.props.token)
+						.then(() => {
+							browserHistory.push('/');
+						});
 				}
+
 			});
 	}
 

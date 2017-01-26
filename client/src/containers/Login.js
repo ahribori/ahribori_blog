@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import { Authentication } from 'components';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
-import { loginRequest } from 'actions/authentication';
+import { loginRequest, getStatusRequest } from 'actions/authentication';
 import { Snackbar } from 'react-mdl';
 
 class Login extends React.Component {
@@ -11,7 +11,8 @@ class Login extends React.Component {
 		super(props);
 		this.state = {
 			snackbarMessage: '',
-			isSnackbarActive: false
+			isSnackbarActive: false,
+			token: ''
 		};
 
 		this.handleLogin = this.handleLogin.bind(this);
@@ -23,18 +24,20 @@ class Login extends React.Component {
 		return this.props.loginRequest(id, pw)
 			.then(() => {
 				if (this.props.status === 'SUCCESS') {
+					this.setState({
+						token: this.props.token
+					});
 					if (window.localStorage) {
 						const localStorage = window.localStorage;
 						localStorage.setItem('ahribori_token', this.props.token);
 					}
 					localStorage.setItem('snackbar', '인증되었습니다');
-					browserHistory.push('/');
 					return true;
 				} else {
 					this.handleShowSnackbar('아이디 또는 패스워드가 잘못되었습니다');
 					return false;
 				}
-			});
+			})
 	}
 
 	handleShowSnackbar(message) {
@@ -63,6 +66,8 @@ class Login extends React.Component {
 				<Authentication
 					mode={'LOGIN'}
 					onLogin={this.handleLogin}
+					getStatusRequest={this.props.getStatusRequest}
+					token={this.state.token}
 				/>
 				<Snackbar
 					active={this.state.isSnackbarActive}
@@ -87,6 +92,9 @@ const mapDispatchToProps = (dispatch) => {
 	return {
 		loginRequest: (id, pw) => {
 			return dispatch(loginRequest(id, pw));
+		},
+		getStatusRequest: (token) => {
+			return dispatch(getStatusRequest(token));
 		}
 	}
 };

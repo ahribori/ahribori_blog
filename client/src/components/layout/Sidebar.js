@@ -7,6 +7,7 @@ class Sidebar extends React.Component {
 	constructor(props) {
 		super(props);
 		this.handleToggle = this.handleToggle.bind(this);
+		console.log(props)
 	}
 
 	handleToggle() {
@@ -19,9 +20,12 @@ class Sidebar extends React.Component {
 	}
 
 	render() {
+
+		const user = this.props.currentUser;
+
 		return (
 			<Drawer
-				// title="Menu"
+				title={user ? user.username : ''}
 			>
 				<Navigation>
 					<Link to="/" onClick={this.handleToggle}>Home</Link>

@@ -70,7 +70,7 @@ class App extends React.Component {
 			<div>
 				<Layout fixedHeader fixedDrawer>
 					<Navigation isLoggedIn={this.props.status.isLoggedIn} onLogout={this.handleLogout}/>
-					<Sidebar />
+					<Sidebar currentUser={this.props.user}/>
 					<Content>
 						<div style={{margin: 'auto'}}>
 							{this.props.children}
@@ -90,7 +90,8 @@ class App extends React.Component {
 const mapStateToProps = (state) => {
 	return {
 		sidebar: state.application.sidebar,
-		status: state.authentication.status
+		status: state.authentication.status,
+		user: state.authentication.user
 	}
 };
 
