@@ -85,7 +85,8 @@ class Register extends React.Component {
 const mapStateToProps = (state) => {
 	return {
 		status: state.authentication.register.status,
-		error: state.authentication.register.error
+		error: state.authentication.register.error,
+		isLoggedIn: state.authentication.status.isLoggedIn,
 	}
 };
 

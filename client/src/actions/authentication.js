@@ -2,13 +2,19 @@ import {
 	AUTH_LOGIN,
 	AUTH_LOGIN_SUCCESS,
 	AUTH_LOGIN_FAILURE,
+	AUTH_KAKAO_LOGIN,
+	AUTH_KAKAO_SET_AUTH,
+	AUTH_KAKAO_LOGOUT,
+	AUTH_KAKAO_GET_STATUS,
+	AUTH_KAKAO_GET_STATUS_SUCCESS,
+	AUTH_KAKAO_GET_STATUS_FAILURE,
 	AUTH_LOGOUT,
 	AUTH_REGISTER,
 	AUTH_REGISTER_SUCCESS,
 	AUTH_REGISTER_FAILURE,
 	AUTH_GET_STATUS,
 	AUTH_GET_STATUS_SUCCESS,
-	AUTH_GET_STATUS_FAILURE
+	AUTH_GET_STATUS_FAILURE,
 } from './ActionTypes';
 
 import axios from 'axios';
@@ -53,6 +59,67 @@ export function loginFailure() {
 	return {
 		type: AUTH_LOGIN_FAILURE
 	};
+}
+
+export function kakaoLogin(response) {
+	return {
+		type: AUTH_KAKAO_LOGIN,
+		response
+	}
+}
+
+export function setKakaoAuth(auth) {
+	return {
+		type: AUTH_KAKAO_SET_AUTH,
+		auth
+	}
+}
+
+export function kakaoLogout() {
+	return {
+		type: AUTH_KAKAO_LOGOUT
+	}
+}
+
+export function getKakaoStatusRequest() {
+	return (dispatch) => {
+		dispatch(getKakaoStatus());
+		return new Promise((resolve, reject) => {
+			Kakao.API.request({
+				url: '/v1/user/me',
+				success: function (response) {
+					resolve(response);
+				},
+				fail: function (error) {
+					reject(error);
+				}
+			});
+		}).then((response) => {
+			dispatch(getKakaoStatusSuccess(response));
+		}).catch((error) => {
+			dispatch(getKakaoStatusFailure(error))
+		});
+	};
+}
+
+export function getKakaoStatus() {
+	return {
+		type: AUTH_KAKAO_GET_STATUS
+	}
+}
+
+export function getKakaoStatusSuccess(response) {
+	return {
+		type: AUTH_KAKAO_GET_STATUS_SUCCESS,
+		response
+	}
+}
+
+export function getKakaoStatusFailure(error) {
+	return {
+		type: AUTH_KAKAO_GET_STATUS_FAILURE,
+		error
+	}
 }
 
 export function logout() {

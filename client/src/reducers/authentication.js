@@ -10,9 +10,10 @@ const initialState = {
 		error: -1
 	},
 	status: {
-		valid: false,
 		isLoggedIn: false,
-		token: '',
+		loginType: '',
+		accessToken: '',
+		refreshToken: '',
 		error: -1
 	},
 	user: null
@@ -33,7 +34,8 @@ export default function authentication(state= initialState, action) {
 				},
 				status: {
 					isLoggedIn: { $set: true },
-					token: { $set: action.data.token }
+					loginType: { $set: 'AHRIBORI'},
+					accessToken: { $set: action.data.token }
 				}
 			});
 		case types.AUTH_LOGIN_FAILURE:
@@ -42,6 +44,58 @@ export default function authentication(state= initialState, action) {
 					status: { $set: 'FAILURE' },
 					error: { $set: -1 }
 				}
+			});
+		case types.AUTH_KAKAO_LOGIN:
+			return update(state, {
+				status: {
+					isLoggedIn: { $set: true },
+					loginType: { $set: 'KAKAO'},
+					accessToken: { $set: action.response.access_token },
+					refreshToken: { $set: action.response.refresh_token }
+				}
+			});
+		case types.AUTH_KAKAO_SET_AUTH:
+			return update(state, {
+				status: {
+					isLoggedIn: { $set: true },
+					loginType: { $set: 'KAKAO'},
+					accessToken: { $set: action.auth.access_token },
+					refreshToken: { $set: action.auth.refresh_token }
+				}
+			});
+		case types.AUTH_KAKAO_GET_STATUS:
+			return update(state, {
+				status: {
+					isLoggedIn: { $set: true }
+				}
+			});
+		case types.AUTH_KAKAO_GET_STATUS_SUCCESS:
+			return update(state, {
+				user: {
+					$set: {
+						id: action.response.id,
+						nickname: action.response.properties.nickname,
+						profile_image: action.response.properties.profile_image,
+						thumbnail_image: action.response.properties.thumbnail_image
+					}
+				}
+			});
+		case types.AUTH_KAKAO_GET_STATUS_FAILURE:
+			return update(state, {
+				status: {
+					isLoggedIn: { $set: false },
+					error: { $set: action.error }
+				}
+			});
+		case types.AUTH_KAKAO_LOGOUT:
+			return update(state, {
+				status: {
+					isLoggedIn: { $set: false },
+					loginType: { $set: ''},
+					accessToken: { $set: '' },
+					refreshToken: { $set: '' }
+				},
+				user: { $set: null }
 			});
 		case types.AUTH_REGISTER:
 			return update(state, {
@@ -65,12 +119,11 @@ export default function authentication(state= initialState, action) {
 		case types.AUTH_LOGOUT:
 			return update(state, {
 				status: {
-					valid: { $set: false },
 					isLoggedIn: { $set: false },
-					token: { $set: ''},
+					accessToken: { $set: ''},
 					error: { $set: -1 }
 				},
-				user: { $set: null },
+				user: { $set: null }
 			});
 		case types.AUTH_GET_STATUS:
 			return update(state, {
@@ -80,19 +133,16 @@ export default function authentication(state= initialState, action) {
 			});
 		case types.AUTH_GET_STATUS_SUCCESS:
 			return update(state, {
-				status: {
-					valid: { $set: true },
-				},
 				user: { $set: action.user }
 			});
 		case types.AUTH_GET_STATUS_FAILURE:
 			return update(state, {
 				status: {
-					valid: { $set: false },
 					isLoggedIn: { $set: false },
 					error: { $set: action.error }
 				}
 			});
+		
 		default:
 			return state;
 	}
