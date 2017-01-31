@@ -133,6 +133,9 @@ export default function authentication(state= initialState, action) {
 			});
 		case types.AUTH_GET_STATUS_SUCCESS:
 			return update(state, {
+				status: {
+					loginType: { $set:'AHRIBORI' }
+				},
 				user: { $set: action.user }
 			});
 		case types.AUTH_GET_STATUS_FAILURE:

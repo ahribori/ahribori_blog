@@ -53,7 +53,7 @@ class Login extends React.Component {
 		});
 	}
 
-	componentDidMount() {
+	componentDidUpdate() {
 		if (this.props.isLoggedIn) {
 			browserHistory.push('/');
 		}
@@ -64,6 +64,7 @@ class Login extends React.Component {
 			<div>
 				<Authentication
 					mode={'LOGIN'}
+					isLoggedIn={this.props.isLoggedIn}
 					user={this.props.user}
 					onLogin={this.handleLogin}
 					getStatusRequest={this.props.getStatusRequest}

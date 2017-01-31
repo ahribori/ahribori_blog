@@ -59,7 +59,7 @@ class Register extends React.Component {
 		});
 	}
 
-	componentDidMount() {
+	componentDidUpdate() {
 		if (this.props.isLoggedIn) {
 			browserHistory.push('/');
 		}
@@ -69,6 +69,7 @@ class Register extends React.Component {
 		return (
 			<div>
 				<Authentication
+					isLoggedIn={this.props.isLoggedIn}
 					mode={'REGISTER'}
 					onRegister={this.handleRegister}
 				/>
@@ -86,7 +87,7 @@ const mapStateToProps = (state) => {
 	return {
 		status: state.authentication.register.status,
 		error: state.authentication.register.error,
-		isLoggedIn: state.authentication.status.isLoggedIn,
+		isLoggedIn: state.authentication.status.isLoggedIn
 	}
 };
 
