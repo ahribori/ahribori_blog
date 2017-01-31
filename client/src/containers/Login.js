@@ -11,8 +11,7 @@ class Login extends React.Component {
 		super(props);
 		this.state = {
 			snackbarMessage: '',
-			isSnackbarActive: false,
-			token: ''
+			isSnackbarActive: false
 		};
 
 		this.handleLogin = this.handleLogin.bind(this);
@@ -24,9 +23,6 @@ class Login extends React.Component {
 		return this.props.loginRequest(id, pw)
 			.then(() => {
 				if (this.props.status === 'SUCCESS') {
-					this.setState({
-						token: this.props.token
-					});
 					if (window.localStorage) {
 						const localStorage = window.localStorage;
 						localStorage.setItem('ahribori_token', this.props.token);
@@ -53,12 +49,6 @@ class Login extends React.Component {
 		});
 	}
 
-	componentDidUpdate() {
-		if (this.props.isLoggedIn) {
-			browserHistory.push('/');
-		}
-	}
-
 	render() {
 		return (
 			<div>
@@ -68,7 +58,7 @@ class Login extends React.Component {
 					user={this.props.user}
 					onLogin={this.handleLogin}
 					getStatusRequest={this.props.getStatusRequest}
-					token={this.state.token}
+					token={this.props.token}
 				/>
 				<KakaoAuthentication
 					onLogin={this.props.kakaoLogin}

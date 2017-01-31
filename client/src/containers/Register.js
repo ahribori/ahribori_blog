@@ -59,12 +59,6 @@ class Register extends React.Component {
 		});
 	}
 
-	componentDidUpdate() {
-		if (this.props.isLoggedIn) {
-			browserHistory.push('/');
-		}
-	}
-
 	render() {
 		return (
 			<div>

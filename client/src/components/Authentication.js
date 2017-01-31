@@ -84,6 +84,13 @@ class Authentication extends React.Component {
 	}
 
 	componentDidMount() {
+		if (this.props.isLoggedIn) {
+			browserHistory.push('/');
+			return;
+		}
+	}
+
+	componentDidMount() {
 		document.getElementsByName('username')[0].focus();
 	}
 
