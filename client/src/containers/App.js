@@ -29,7 +29,10 @@ class App extends React.Component {
 			if (storedKakaoAuth) {
 				storedKakaoAuth = JSON.parse(atob(storedKakaoAuth));
 				this.props.setKakaoAuth(storedKakaoAuth);
-				this.props.getKakaoStatusRequest();
+				this.props.getKakaoStatusRequest()
+					.catch(() => {
+						Kakao.Auth.logout();
+					})
 			}
 			if (token) {
 				this.props.getStatusRequest(token)

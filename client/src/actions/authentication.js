@@ -32,7 +32,7 @@ export function loginRequest(username, password) {
 	*/
 	return (dispatch) => {
 		dispatch(login());
-		return axios.post(config.AUTH_SERVER + '/auth/login', { username, password})
+		return axios.post(config.AUTH_SERVER + '/auth/login', { username, password })
 			.then((response) => {
 				dispatch(loginSuccess(response.data));
 			})
@@ -85,19 +85,16 @@ export function getKakaoStatusRequest() {
 	return (dispatch) => {
 		dispatch(getKakaoStatus());
 		return new Promise((resolve, reject) => {
-			Kakao.API.request({
-				url: '/v1/user/me',
-				success: function (response) {
-					resolve(response);
-				},
-				fail: function (error) {
-					reject(error);
+			Kakao.Auth.getStatus((response) => {
+				if (response.status === 'connected') {
+					dispatch(getKakaoStatusSuccess(response.user));
+					resolve(response.user);
+				} else {
+					const error = new Error(response.status);
+					dispatch(getKakaoStatusFailure(error.message));
+					reject(error.message);
 				}
 			});
-		}).then((response) => {
-			dispatch(getKakaoStatusSuccess(response));
-		}).catch((error) => {
-			dispatch(getKakaoStatusFailure(error))
 		});
 	};
 }

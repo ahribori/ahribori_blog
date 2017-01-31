@@ -8,7 +8,6 @@ class Sidebar extends React.Component {
 	constructor(props) {
 		super(props);
 		this.handleToggle = this.handleToggle.bind(this);
-		console.log(props)
 	}
 
 	handleToggle() {
