@@ -5,36 +5,175 @@ import Article from '../models/article';
 /* =========================================
  POST /api/article
  {
-
+ category,
+ author,
+ title,
+ content,
+ hidden
  }
  ============================================*/
 router.post('/', (req, res) => {
-	// TODO Article 등록
-});
-Article.create(1331, { name: '정현승'}, '제목', '내용', false);
-/* =========================================
- GET /api/article/{articleNumber}
- ============================================*/
-router.get('/:articleNumber', (req, res) => {
-	console.log(req.params.articleNumber);
-	res.json(req.payload);
+	
+	const { category, author, title, content, hidden } = req.body;
+
+	const validate = (category, author, title, content, hidden) => {
+
+		return new Promise((resolve, reject) => {
+
+			if (!req.payload.admin) throw { message: 'not admin' };
+			//TODO validate form
+
+			resolve();
+		})
+	};
+
+	const create = () => {
+		return Article.create(category, author, title, content, hidden);
+	};
+
+	const respond = () => {
+		res.sendStatus(200);
+	};
+
+	const onError = (error) => {
+		res.status(409).json({
+			message: error.message
+		})
+	};
+
+	validate(category, author, title, content, hidden)
+		.then(create)
+		.then(respond)
+		.catch(onError);
+
 });
 
 /* =========================================
- UPDATE /api/article/{articleNumber}
+ GET /api/article/{id}
+ ============================================*/
+router.get('/:id', (req, res) => {
+	Article.findById(req.params.id, (err, article) => {
+		if (err) throw err;
+		if (!article) {
+			res.status(404).json({
+				message: 'resource not found'
+			});
+			return;
+		}
+		res.json(article);
+	});
+});
+
+/* =========================================
+ PUT /api/article/{id}
  {
- 
+ 	[optional]
  }
  ============================================*/
-router.put('/:articleNumber', (req, res) => {
-	// TODO Article 수정
+router.put('/:id', (req, res) => {
+	Article.findOne({ _id: req.params.id }, (err, article) => {
+
+		const validate = (category, author, title, content, hidden) => {
+
+			return new Promise((resolve, reject) => {
+
+				if (!req.payload.admin) throw { message: 'not admin' };
+				//TODO validate form
+
+				resolve();
+			})
+		};
+		
+		if (err) throw err;
+		if (!article) {
+			res.status(404).json({
+				message: 'resource not found'
+			});
+			return;
+		}
+
+		const update = () => {
+			return new Promise((resolve, reject) => {
+
+				const data = req.body;
+				for (var key in data) {
+					if (data.hasOwnProperty(key)) {
+						if (data[key] && data[key] !== '') {
+							article[key] = data[key];
+						}
+					}
+				}
+
+				article.save((err) => {
+					if (err) reject(err);
+				});
+				resolve(article);
+			});
+		};
+
+		const respond = (article) => {
+			res.status(200).json({
+				success: true,
+				article
+			});
+		};
+
+		const onError = (error) => {
+			res.status(409).json({
+				message: error.message
+			})
+		};
+
+		validate()
+			.then(update)
+			.then(respond)
+			.catch(onError);
+	});
 });
 
 /* =========================================
  DELETE /api/article/{articleNumber}
  ============================================*/
-router.delete('/:articleNumber', (req, res) => {
-	// TODO Article 삭제
+router.delete('/:id', (req, res) => {
+
+	if (!req.payload.admin) throw { message: 'not admin' };
+
+	Article.findOne({ _id: req.params.id }, (err, article) => {
+		if (err) throw err;
+		if (!article) {
+			res.status(404).json({
+				message: 'resource not found'
+			});
+			return;
+		}
+
+		const remove = () => {
+			return new Promise((resolve, reject) => {
+				article.remove((err, result) => {
+					if (err) reject(err);
+					resolve(true);
+				});
+			});
+		};
+
+		const respond = (success) => {
+			res.status(200).json({
+				success: success
+			});
+		};
+
+		const onError = (error) => {
+			res.status(409).json({
+				message: error.message
+			})
+		};
+
+		remove()
+			.then(respond)
+			.catch(onError);
+
+	});
+
 });
 
 export default router;

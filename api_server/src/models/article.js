@@ -7,11 +7,13 @@ const Article = new Schema({
 	author: Object,
 	title: {type: String, default: '(제목없음)'},
 	content: {type: String, default: '(내용없음)'},
-	tags: [{type: Schema.Types.ObjectId, ref: 'Tag'}],
+	tags: [String],
 	reply: [{type: Schema.Types.ObjectId, ref: 'Reply'}],
 	hidden: {type: Boolean, default: false},
 	hit: {type: Number, default: 0},
-	star: {type: Number, default: 0}
+	star: {type: Number, default: 0},
+	reg_date: {type: Date, default: Date.now},
+	mod_date: {type: Date, default: Date.now}
 });
 
 Article.index({

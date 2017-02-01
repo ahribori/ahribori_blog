@@ -65,7 +65,7 @@ module.exports = {
 				test: /\.js$/,
 				loaders: ['react-hot', 'babel?' + JSON.stringify({
 					cacheDirectory: true,
-					plugins: ["transform-class-properties"],
+					plugins: ["transform-class-properties", "transform-object-rest-spread"],
 					presets: ['latest', 'react']
 				})],
 				exclude: /node_modules/
