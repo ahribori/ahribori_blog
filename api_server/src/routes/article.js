@@ -132,7 +132,7 @@ router.put('/:id', (req, res) => {
 });
 
 /* =========================================
- DELETE /api/article/{articleNumber}
+ DELETE /api/article/{id}
  ============================================*/
 router.delete('/:id', (req, res) => {
 

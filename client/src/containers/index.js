@@ -1,6 +1,7 @@
 import App from './App';
-import Posts from './Posts';
+import Articles from './Articles';
+import Article from './Article';
 import Login from './Login';
 import Register from './Register';
 
-export { App, Login, Posts, Register };
+export { App, Login, Articles, Article, Register };

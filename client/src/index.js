@@ -4,7 +4,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router, Route, browserHistory, IndexRoute } from 'react-router';
-import { App, Login, Posts, Register } from 'containers';
+import { App, Login, Articles, Article, Register } from 'containers';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
 
@@ -44,8 +44,9 @@ ReactDOM.render(
 		<Provider store={store}>
 			<Router history={browserHistory}>
 				<Route path="/" component={App}>
-					<IndexRoute component={Posts}/>
-					<Route path="home" component={Posts}/>
+					<IndexRoute component={Articles}/>
+					<Route path="" component={Articles}/>
+					<Route path="article/:id" component={Article}/>
 					<Route path="login" component={Login}/>
 					<Route path="register" component={Register}/>
 					//	여기는 react-codelab 프로젝트를 참조해서 작성해
