@@ -49,6 +49,88 @@ router.post('/', (req, res) => {
 });
 
 /* =========================================
+ GET /api/article?offset={offset}&limit={limit}
+ ============================================*/
+router.get('/', (req, res) => {
+	let { offset = 0, limit = 10 } = req.query;
+	offset = Number(offset);
+	limit = Number(limit);
+
+	const validate = () => {
+		return new Promise((resolve, reject) => {
+			if (isNaN(offset)) {
+				throw {
+					status: 400,
+					message: 'offset is not a number'
+				}
+			}
+
+			if (isNaN(limit)) {
+				throw {
+					status: 400,
+					message: 'limit is not a number'
+				}
+			}
+			resolve();
+		})
+	};
+
+	const query = () => {
+		return new Promise((resolve, reject) => {
+			Article.aggregate([
+				{
+					$sort: {
+						reg_date: -1
+					}
+				},
+				{
+					$skip: offset
+				},
+				{
+					$limit: limit
+				},
+				{
+					$project: {
+						_id: true,
+						category: true,
+						author: true,
+						mod_date: true,
+						reg_date: true,
+						star: true,
+						hit: true,
+						hidden: true,
+						reply: true,
+						tags: true,
+						title: true,
+						content: { $substr: ["$content", 0, 200] }
+					}
+				}
+			], (err, articles) => {
+				if (err) throw err;
+				resolve(articles);
+			});
+		});
+	};
+
+	const respond = (articles) => {
+		res.status(200).json(articles);
+	};
+
+	const onError = (error) => {
+		const status = error.status || 500;
+		const message = error.message || 'somting broke';
+		res.status(status).json({
+			message: message
+		})
+	};
+
+	validate()
+		.then(query)
+		.then(respond)
+		.catch(onError)
+});
+
+/* =========================================
  GET /api/article/{id}
  ============================================*/
 router.get('/:id', (req, res) => {
@@ -103,11 +185,17 @@ router.put('/:id', (req, res) => {
 						}
 					}
 				}
-
-				article.save((err) => {
+				Article.update({ _id: req.params.id }, article, (err, result) => {
 					if (err) reject(err);
+					if (result.ok === 1) {
+						resolve(article);
+					} else {
+						reject({
+							status: 500,
+							message: 'update failure'
+						})
+					}
 				});
-				resolve(article);
 			});
 		};
 
@@ -119,8 +207,10 @@ router.put('/:id', (req, res) => {
 		};
 
 		const onError = (error) => {
-			res.status(409).json({
-				message: error.message
+			const status = error.status || 500;
+			const message = error.message || 'somting broke';
+			res.status(status).json({
+				message: message
 			})
 		};
 
