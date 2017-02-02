@@ -7,6 +7,7 @@ import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import path from 'path';
 import authMiddleware from './middlewares/auth';
+import CORS from './middlewares/CORS';
 /* =========================================
 			 Load Config.js
  ============================================*/
@@ -30,6 +31,7 @@ app.set('config', config);
 
 // set api router
 import routes from './routes';
+app.use('*', CORS);
 app.use('/api', authMiddleware);
 app.use('/api', routes);
 

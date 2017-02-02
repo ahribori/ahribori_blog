@@ -2,7 +2,6 @@ import React, {Component, PropTypes} from 'react';
 import { Navigation, Sidebar } from 'components';
 import { Layout, Content } from 'react-mdl';
 import { connect } from 'react-redux';
-import { initKakao } from 'actions/app';
 import { getStatusRequest, getKakaoStatusRequest, setKakaoAuth, logout, kakaoLogout } from 'actions/authentication';
 import { Snackbar } from 'react-mdl';
 

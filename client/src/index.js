@@ -4,7 +4,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router, Route, browserHistory, IndexRoute } from 'react-router';
-import { App, Login, Articles, Article, Register, NotFound } from 'containers';
+import { App, Login, Home, Article, Register, NotFound } from 'containers';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
 
@@ -44,8 +44,8 @@ ReactDOM.render(
 		<Provider store={store}>
 			<Router history={browserHistory}>
 				<Route path="/" component={App}>
-					<IndexRoute component={Articles}/>
-					<Route path="" component={Articles}/>
+					<IndexRoute component={Home}/>
+					<Route path="" component={Home}/>
 					<Route path="article/:id" component={Article}/>
 					<Route path="login" component={Login}/>
 					<Route path="register" component={Register}/>

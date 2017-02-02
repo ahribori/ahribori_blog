@@ -102,7 +102,8 @@ router.get('/', (req, res) => {
 						reply: true,
 						tags: true,
 						title: true,
-						content: { $substr: ["$content", 0, 200] }
+						content: { $substrCP: ["$content", 0, 200] },
+						// content: true
 					}
 				}
 			], (err, articles) => {
