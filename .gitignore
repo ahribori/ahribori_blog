@@ -7,7 +7,6 @@ client/src/config.js
 # Logs
 logs
 *.log
-npm-debug.log*
 build/*
 */build/*
 public/bundle.js
@@ -22,9 +21,6 @@ lib-cov
 # Coverage directory used by tools like istanbul
 coverage
 
-# nyc test coverage
-.nyc_output
-
 # Grunt intermediate storage (http://gruntjs.com/creating-plugins#storing-task-files)
 .grunt
 
@@ -36,7 +32,6 @@ build/Release
 
 # Dependency directories
 node_modules
-*/node_modules
 jspm_packages
 
 # Optional npm cache directory
