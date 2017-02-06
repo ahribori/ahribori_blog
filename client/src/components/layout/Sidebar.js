@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import {Link} from 'react-router';
-import {Drawer, Navigation} from 'react-mdl';
+import {Drawer, Navigation, Button} from 'react-mdl';
 import Avatar from 'material-ui/Avatar';
 
 class Sidebar extends React.Component {
@@ -8,6 +8,7 @@ class Sidebar extends React.Component {
 	constructor(props) {
 		super(props);
 		this.handleToggle = this.handleToggle.bind(this);
+		this.handleWriteButtonClick = this.handleWriteButtonClick.bind(this);
 	}
 
 	handleToggle() {
@@ -17,6 +18,14 @@ class Sidebar extends React.Component {
 		if (obfuscatorEnabled) {
 			layout.MaterialLayout.toggleDrawer();
 		}
+	}
+
+	handleWriteButtonClick() {
+		console.log('write')
+	}
+
+	componentWillReceiveProps() {
+		console.log(this.props);
 	}
 
 	render() {
@@ -35,14 +44,14 @@ class Sidebar extends React.Component {
 		};
 
 		return (
-			<Drawer
-				title={this.props.user ? `${this.props.user.nickname}님, 접속중`  : ''}
-			>
+			<Drawer	title={this.props.user ? `${this.props.user.nickname}님, 접속중`  : ''}>
 				{thumbnailImage()}
 				<div className="sidebar_username">{this.props.user ? this.props.user.username : ''}</div>
+				<Button onClick={this.handleWriteButtonClick} className="sidebar_button" raised colored ripple>글 쓰기</Button>
 				<Navigation>
 					<Link to="/" onClick={this.handleToggle}>Home</Link>
 				</Navigation>
+				<div></div>
 			</Drawer>
 		);
 	}
