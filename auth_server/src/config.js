@@ -6,7 +6,7 @@ const config = (function (){
 		 ----------------------------------------*/
 		return {
 			PORT: 30000,
-			MONGO_URI: 'mongodb://192.168.0.200:27017/api',
+			MONGO_URI: 'mongodb://192.168.0.200:27017/auth',
 			SECRET: 'AhRiBoRiSeCrEtKey'
 		}
 	} else if (env === 'production') {
@@ -15,7 +15,7 @@ const config = (function (){
 		 ----------------------------------------*/
 		return {
 			PORT: 30000,
-			MONGO_URI: 'mongodb://localhost:27017/api',
+			MONGO_URI: 'mongodb://localhost:27017/auth',
 			SECRET: 'AhRiBoRiSeCrEtKey'
 		}
 	}
