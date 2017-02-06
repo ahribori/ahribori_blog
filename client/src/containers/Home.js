@@ -89,7 +89,7 @@ class Home extends React.Component {
 					return (
 						<Cell key={index} className="grid-item" col={bigItem.cell.col} phone={bigItem.cell.phone} tablet={bigItem.cell.tablet} style={bigItem.cell.style}>
 							<Card shadow={0} className="big-item-card">
-								<CardTitle expand style={{background: 'url(http://www.getmdl.io/assets/demos/dog.png) bottom right 15% no-repeat #46B6AC'}}>{article.title}</CardTitle>
+								<CardTitle expand style={{background: 'url(https://www.getmdl.io/assets/demos/dog.png) bottom right 15% no-repeat #46B6AC'}}>{article.title}</CardTitle>
 								{cardContent}
 							</Card>
 						</Cell>
@@ -98,7 +98,7 @@ class Home extends React.Component {
 					return (
 						<Cell key={index} className="grid-sizer grid-item" col={item.cell.col} phone={item.cell.phone} tablet={item.cell.tablet} style={item.cell.style}>
 							<Card shadow={0} className="item-card">
-								<CardTitle expand style={{minHeight:'100px', background: 'url(http://www.getmdl.io/assets/demos/dog.png) bottom right 15% no-repeat #46B6AC'}}>{article.title}</CardTitle>
+								<CardTitle expand style={{minHeight:'100px', background: 'url(https://www.getmdl.io/assets/demos/dog.png) bottom right 15% no-repeat #46B6AC'}}>{article.title}</CardTitle>
 								{cardContent}
 							</Card>
 						</Cell>
