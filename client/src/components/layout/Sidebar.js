@@ -1,5 +1,5 @@
 import React, {Component, PropTypes} from 'react';
-import {Link} from 'react-router';
+import {Link, browserHistory} from 'react-router';
 import {Drawer, Navigation, Button} from 'react-mdl';
 import Avatar from 'material-ui/Avatar';
 
@@ -21,11 +21,8 @@ class Sidebar extends React.Component {
 	}
 
 	handleWriteButtonClick() {
-		console.log('write')
-	}
-
-	componentWillReceiveProps() {
-		console.log(this.props);
+		this.handleToggle();
+		browserHistory.push('/write');
 	}
 
 	render() {
@@ -47,7 +44,8 @@ class Sidebar extends React.Component {
 			<Drawer	title={this.props.user ? `${this.props.user.nickname}님, 접속중`  : ''}>
 				{thumbnailImage()}
 				<div className="sidebar_username">{this.props.user ? this.props.user.username : ''}</div>
-				<Button onClick={this.handleWriteButtonClick} className="sidebar_button" raised colored ripple>글 쓰기</Button>
+				{this.props.user && this.props.user.admin ?
+					<Button onClick={this.handleWriteButtonClick} className="sidebar_button" raised colored ripple>글 쓰기</Button> : ''}
 				<Navigation>
 					<Link to="/" onClick={this.handleToggle}>Home</Link>
 				</Navigation>
