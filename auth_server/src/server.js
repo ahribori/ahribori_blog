@@ -5,6 +5,7 @@ import express from 'express';
 import morgan from 'morgan';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
+import path from 'path';
 /* =========================================
 			 Load Config.js
  ============================================*/
@@ -34,6 +35,9 @@ app.use('/', routes);
 app.listen(port, () => {
 	console.log(`Express is running on port => ${port}`)
 });
+
+// set public path
+app.use('/', express.static(path.join(__dirname, './../public')));
 
 /* =========================================
  			Mongoose Configuration
