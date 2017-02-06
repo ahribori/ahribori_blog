@@ -6,7 +6,6 @@ import morgan from 'morgan';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import path from 'path';
-import authMiddleware from './middlewares/auth';
 import CORS from './middlewares/CORS';
 /* =========================================
 			 Load Config.js
@@ -32,8 +31,7 @@ app.set('config', config);
 // set api router
 import routes from './routes';
 app.use('*', CORS);
-app.use('/api', authMiddleware);
-app.use('/api', routes);
+app.use('/', routes);
 
 // open the server
 app.listen(port, () => {
@@ -41,17 +39,7 @@ app.listen(port, () => {
 });
 
 // set public path
-const publicPath = path.resolve('../', 'client/public/');
-app.use('/', express.static(publicPath));
-
-
-// react SPA routing
-app.get('*', function (req, res, next) {
-	const urlFilter = /(favicon)/;
-	const rootUrl = req.path.split('/')[1];
-	if (urlFilter.test(rootUrl)) return next();
-	res.sendFile(path.join(publicPath, 'index.html'));
-});
+app.use('/', express.static(path.join(__dirname, './../public')));
 
 /* handle error */
 app.use(function (err, req, res, next) {
