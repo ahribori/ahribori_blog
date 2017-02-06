@@ -15,8 +15,8 @@ const config = (function (){
 		 ----------------------------------------*/
 		return {
 			TOKEN: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiNTg3ZWNmYjA2MWRiMTAyODcwZjY1YWJhIiwiYXBwIjoiYWhyaWJvcmkiLCJpYXQiOjE0ODQ3MTIwMjAsImlzcyI6ImFocmlib3JpLmNvbSIsInN1YiI6ImFwcGxpY2F0aW9uSW5mbyJ9.vSRtwJjDZxeQkWIiwTrF0GHhPw4j7DGJ9sNSA3Key8A',
-			AUTH_SERVER: 'http://auth.ahribori.com',
-			API_SERVER: 'http://api.ahribori.com'
+			AUTH_SERVER: 'https://auth.ahribori.com',
+			API_SERVER: 'https://api.ahribori.com'
 		}
 	}
 }());

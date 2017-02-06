@@ -16,7 +16,7 @@ const config = (function (){
 		return {
 			PORT: 3000,
 			MONGO_URI: 'mongodb://localhost:27017/api',
-			AUTH_SERVER: 'http://auth.ahribori.com'
+			AUTH_SERVER: 'https://auth.ahribori.com'
 		}
 	}
 }());
