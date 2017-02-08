@@ -1,6 +1,7 @@
 import express from 'express';
 const router = express.Router();
 import article from './article';
+import image from './image';
 import authMiddleware from '../middlewares/auth';
 
 router.get('/', (req, res) => {
@@ -13,5 +14,7 @@ router.get('/', (req, res) => {
 router.use('/api', authMiddleware);
 router.use('/api/article', article);
 
+// router.use('/image', authMiddleware);
+router.use('/image', image);
 
 export default router;

@@ -40,7 +40,10 @@ CKEDITOR.editorConfig = function( config ) {
 	config.filebrowserBrowseUrl = '';
 
 	// 파일 업로드 주소
-	config.filebrowserImageUploadUrl = '/path_to/ckeditor/plugins/imgupload.php';
+	config.filebrowserUploadUrl = '';
+
+	// 드래그앤드롭 이미지 업로드 주소
+	config.uploadUrl = 'http://localhost:3000/image/ckeditor_dragndrop';
 
 	// 에디터 높이
 	config.height = '320px'
