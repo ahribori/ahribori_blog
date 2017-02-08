@@ -1,8 +1,10 @@
 import express from 'express';
 const router = express.Router();
 import multipart from 'connect-multiparty';
-const mulipartMiddleware = multipart();
-
+import path from 'path';
+const mulipartMiddleware = multipart({
+	uploadDir: path.resolve(__dirname, '../../public/image')
+});
 /* =========================================
  POST /image
  {
@@ -13,7 +15,7 @@ router.post('/ckeditor_dragndrop', mulipartMiddleware, (req, res) => {
 	res.json({
 		uploaded: 1,
 		fileName: 'test.jpg',
-		url: 'http://uploaded.image.url'
+		url: 'http://localhost:3000/image'
 	});
 });
 
