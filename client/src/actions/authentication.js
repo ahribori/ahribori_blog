@@ -167,6 +167,7 @@ export function getStatusRequest(token) {
 				'authorization': token
 			}
 		}).then((response) => {
+				response.data.info.token = token;
 				dispatch(getStatusSuccess(response.data.info));
 			})
 			.catch((error) => {

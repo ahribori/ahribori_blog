@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import {Grid, Cell, Card, CardActions, Button, Textfield, Icon} from 'react-mdl';
+import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { CKEditor } from 'components';
 import SelectField from 'material-ui/SelectField';
@@ -39,6 +40,7 @@ class Write extends React.Component {
 
 	handleSubmit() {
 		console.log(this.state)
+		console.log(this.props)
 	}
 
 	render() {
@@ -119,4 +121,15 @@ class Write extends React.Component {
 	}
 }
 
-export default withRouter(Write);
+const mapStateToProps = (state) => {
+	return {
+		user: state.authentication.user
+	}
+};
+
+const mapDispatchToProps = (dispatch) => {
+	return {
+	}
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Write));
