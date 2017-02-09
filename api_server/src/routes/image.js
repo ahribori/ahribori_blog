@@ -2,20 +2,36 @@ import express from 'express';
 const router = express.Router();
 import multipart from 'connect-multiparty';
 import path from 'path';
+import fs from 'fs';
+
+const publicPath = path.resolve(__dirname, '../../public');
+const imagePath = path.resolve(__dirname, '../../public/image');
+
+if(!fs.existsSync(publicPath)) {
+	fs.mkdirSync(publicPath);
+}
+
+if (!fs.existsSync(imagePath)) {
+	fs.mkdirSync(imagePath);
+}
+
 const mulipartMiddleware = multipart({
-	uploadDir: path.resolve(__dirname, '../../public/image')
+	uploadDir: imagePath,
+
 });
+
 /* =========================================
  POST /image
  {
  }
  ============================================*/
 router.post('/ckeditor_dragndrop', mulipartMiddleware, (req, res) => {
-	console.log(req.files);
+	const uploadedFile = req.files.upload;
+	req.files = null;
 	res.json({
 		uploaded: 1,
-		fileName: 'test.jpg',
-		url: 'http://localhost:3000/image'
+		fileName: path.basename(uploadedFile.path),
+		url: 'http://localhost:3000/image/' + path.basename(uploadedFile.path)
 	});
 });
 
