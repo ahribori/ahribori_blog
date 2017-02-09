@@ -6,7 +6,8 @@ const config = (function (){
 		 ----------------------------------------*/
 		return {
 			PORT: 3000,
-			MONGO_URI: 'mongodb://192.168.0.200:27017/api',
+			MONGO_URI: 'mongodb://localhost:27017/api',
+			API_SERVER: 'http://localhost:3000',
 			AUTH_SERVER: 'http://localhost:30000'
 		}
 	} else if (env === 'production') {
@@ -16,6 +17,7 @@ const config = (function (){
 		return {
 			PORT: 3000,
 			MONGO_URI: 'mongodb://localhost:27017/api',
+			API_SERVER: 'http://api.ahribori.com',
 			AUTH_SERVER: 'https://auth.ahribori.com'
 		}
 	}
