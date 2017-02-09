@@ -76,8 +76,24 @@ router.get('/', (req, res) => {
 	};
 
 	const query = () => {
+		const find = req.payload.app ?
+			{
+				hidden: false
+			}
+			:
+			{
+				$or: [
+					{ hidden: false },
+					{ $and: [ { author: req.payload._id }, { hidden: true } ] }
+				]
+
+			};
+
 		return new Promise((resolve, reject) => {
 			Article.aggregate([
+				{
+					$match: find
+				},
 				{
 					$sort: {
 						reg_date: -1

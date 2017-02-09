@@ -22,8 +22,8 @@ class Home extends React.Component {
 	}
 
 	componentDidMount() {
-
-		this.props.getArticleRequest(0, 25)
+		const token = localStorage.getItem('ahribori_token');
+		this.props.getArticleRequest(0, 25, token)
 			.then(() => {
 				if (!this.props.articleList.error) {
 
@@ -131,8 +131,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		getArticleRequest: (offset, limit) => {
-			return dispatch(getArticleListRequest(offset, limit));
+		getArticleRequest: (offset, limit, token) => {
+			return dispatch(getArticleListRequest(offset, limit, token));
 		}
 	}
 };

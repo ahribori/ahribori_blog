@@ -90,10 +90,6 @@ class Authentication extends React.Component {
 		}
 	}
 
-	componentDidMount() {
-		document.getElementsByName('username')[0].focus();
-	}
-
 	render() {
 		const loginButtonset = (
 			<div>

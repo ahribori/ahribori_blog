@@ -1,8 +1,12 @@
 import React, { Component, PropTypes } from 'react';
 import {Grid, Cell, Card, CardActions, Button, Textfield, Icon} from 'react-mdl';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router';
+import { withRouter, browserHistory } from 'react-router';
 import { CKEditor } from 'components';
+import { registerArticleRequest } from 'actions/article';
+import Checkbox from 'material-ui/Checkbox';
+import Visibility from 'material-ui/svg-icons/action/visibility';
+import VisibilityOff from 'material-ui/svg-icons/action/visibility-off';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 
@@ -12,10 +16,12 @@ class Write extends React.Component {
 		this.state = {
 			category: 0,
 			title: '',
-			content: ''
+			content: '',
+			hidden: false
 		};
 		this.handleChangeCategory = this.handleChangeCategory.bind(this);
 		this.handleChangeTitle = this.handleChangeTitle.bind(this);
+		this.handleCheck = this.handleCheck.bind(this);
 		this.handleChangeCKEditor = this.handleChangeCKEditor.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
 	}
@@ -32,6 +38,12 @@ class Write extends React.Component {
 		})
 	}
 
+	handleCheck() {
+		this.setState({
+			hidden: !this.state.hidden
+		});
+	}
+
 	handleChangeCKEditor(content) {
 		this.setState({
 			content
@@ -39,8 +51,19 @@ class Write extends React.Component {
 	}
 
 	handleSubmit() {
-		console.log(this.state)
-		console.log(this.props)
+		const article = {
+			category: this.state.category,
+			author: this.props.user._id,
+			title: this.state.title,
+			content: this.state.content,
+			hidden: this.state.hidden
+		};
+
+		this.props.registerArticleRequest(this.props.user.token, article)
+			.then(() => {
+				localStorage.removeItem('write_state');
+				browserHistory.push('/');
+			});
 	}
 
 	render() {
@@ -75,6 +98,13 @@ class Write extends React.Component {
 									width: '100%'
 								}}
 							/>
+							<Checkbox
+								checked={!this.state.hidden}
+								checkedIcon={<Visibility />}
+								uncheckedIcon={<VisibilityOff />}
+								onCheck={this.handleCheck}
+								label={this.state.hidden ? '이 게시물을 나만 볼 수 있습니다' : '이 게시물을 모두가 볼 수 있습니다'}
+							/>
 						</div>
 						<CKEditor id="editor" value={this.state.content} onChange={this.handleChangeCKEditor} />
 						<CardActions border>
@@ -108,7 +138,9 @@ class Write extends React.Component {
 		}, 5000);
 
 		this.props.router.setRouteLeaveHook(this.props.route, () => {
-			return '이 페이지를 나가면 현재 작성 중인 글은 저장되지 않을 수 있습니다.';
+			if (this.props.register.status !== 'SUCCESS') {
+				return '이 페이지를 나가면 현재 작성 중인 글은 저장되지 않을 수 있습니다.';
+			}
 		});
 	}
 
@@ -123,12 +155,16 @@ class Write extends React.Component {
 
 const mapStateToProps = (state) => {
 	return {
-		user: state.authentication.user
+		user: state.authentication.user,
+		register: state.article.register
 	}
 };
 
 const mapDispatchToProps = (dispatch) => {
 	return {
+		registerArticleRequest: (token, article) => {
+			return dispatch(registerArticleRequest(token, article));
+		}
 	}
 };
 

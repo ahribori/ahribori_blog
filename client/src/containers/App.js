@@ -1,5 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import { Navigation, Sidebar } from 'components';
+import { browserHistory } from 'react-router';
 import { Layout, Content } from 'react-mdl';
 import { connect } from 'react-redux';
 import { getStatusRequest, getKakaoStatusRequest, setKakaoAuth, logout, kakaoLogout } from 'actions/authentication';
@@ -53,6 +54,7 @@ class App extends React.Component {
 			this.props.logout();
 		}
 		this.handleShowSnackbar('로그아웃 되었습니다.');
+		browserHistory.push('/login');
 	}
 
 	handleShowSnackbar(message) {

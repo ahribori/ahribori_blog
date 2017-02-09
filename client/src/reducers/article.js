@@ -10,6 +10,10 @@ const initialState = {
 	},
 	article: {
 		data: {}
+	},
+	register: {
+		status: 'INIT',
+		error: null
 	}
 };
 
@@ -31,7 +35,27 @@ export default function application(state= initialState, action) {
 				articleList: {
 					error: { $set: action.error }
 				}
-			})
+			});
+		case types.REGISTER_ARTICLE:
+			return update(state, {
+				register: {
+					status: { $set: 'WAITING'},
+					error: { $set: action.null }
+				}
+			});
+		case types.REGISTER_ARTICLE_SUCCESS:
+			return update(state, {
+				register: {
+					status: { $set: 'SUCCESS'},
+				}
+			});
+		case types.REGISTER_ARTICLE_FAILURE:
+			return update(state, {
+				register: {
+					status: { $set: 'FAILURE'},
+					error: { $set: action.error }
+				}
+			});
 	}
 	return state;
 }
