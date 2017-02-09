@@ -1,0 +1,23 @@
+@media (max-width: 1200px) and (min-width: 840px) {
+    .article_grid .mdl-cell {
+        margin-left: 5%;
+        width: 90%;
+    }
+}
+
+@media (max-width: 1440px) and (min-width: 1201px) {
+    .article_grid .mdl-cell {
+        margin-left: 10%;
+        width: 80%;
+    }
+}
+
+.article_grid {
+    word-break: break-all;
+}
+
+.article_grid,h1,h2,h3,h4,h5,h6 {
+    -webkit-font-smoothing: antialiased;
+    font-family: 'D2 coding';
+
+}

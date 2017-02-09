@@ -36,6 +36,21 @@ export default function application(state= initialState, action) {
 					error: { $set: action.error }
 				}
 			});
+		case types.GET_ARTICLE:
+			return state;
+		case types.GET_ARTICLE_SUCCESS:
+			return update(state, {
+				article: {
+					data: { $set: action.article },
+					error: { $set: null }
+				}
+			});
+		case types.GET_ARTICLE_FAILURE:
+			return update(state, {
+				articleList: {
+					error: { $set: action.error }
+				}
+			});
 		case types.REGISTER_ARTICLE:
 			return update(state, {
 				register: {

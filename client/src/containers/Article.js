@@ -1,34 +1,44 @@
 import React, { Component, PropTypes } from 'react';
-
-const propTypes = {
-
-};
-
-const defaultProps = {
-
-};
+import { connect } from 'react-redux';
+import {Grid, Cell, Card, CardText, CardActions, Button, Textfield, Icon} from 'react-mdl';
+import { getArticleRequest } from 'actions/article';
 
 class Article extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.state = {
-
-		};
 	}
 
 	render() {
 		return (
-			<div>Article id: {this.props.params.id}</div>
+			<Grid className="article_grid">
+				<Cell offsetDesktop={2} col={8} phone={12} tablet={12} style={{ minWidth: '300px' }}>
+					<Card shadow={0} style={{
+						width: '100%',
+					}}>
+						<div style={{
+							padding: '30px'
+						}}>
+							<h2>{this.props.article.title}</h2>
+							<hr/>
+							<div dangerouslySetInnerHTML={{ __html: this.props.article.content }}></div>
+						</div>
+					</Card>
+				</Cell>
+			</Grid>
 		);
 	}
 
 	componentDidMount() {
-
+		const id = this.props.params.id;
+		this.props.getArticleRequest(id)
+			.then(() => {
+				Prism.highlightAll();
+			})
 	}
 
 	componentWillReceiveProps() {
-
+		console.log(this.state)
 	}
 
 	shouldComponentUpdate() {
@@ -49,8 +59,19 @@ class Article extends React.Component {
 
 }
 
-Article.propTypes = propTypes;
+const mapStateToProps = (state) => {
+	return {
+		article: state.article.article.data,
+		user: state.authentication.user,
+	}
+};
 
-Article.defaultProps = defaultProps;
+const mapDispatchToProps = (dispatch) => {
+	return {
+		getArticleRequest: (id, token) => {
+			return dispatch(getArticleRequest(id, token));
+		}
+	}
+};
 
-export default Article;
+export default connect(mapStateToProps, mapDispatchToProps)(Article);

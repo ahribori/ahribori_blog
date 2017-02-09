@@ -56,6 +56,41 @@ export function getArticleListFailure(error) {
 	}
 }
 
+export function getArticleRequest(id, token) {
+	return (dispatch) => {
+		dispatch(getArticle());
+		return axios.get(`${config.API_SERVER}/api/article/${id}`, {
+			headers: {
+				'authorization': token || config.TOKEN
+			}
+		}).then((response) => {
+			dispatch(getArticleSuccess(response.data))
+		}).catch((error) => {
+			dispatch(getArticleFailure(error.response))
+		})
+	}
+}
+
+export function getArticle() {
+	return {
+		type: GET_ARTICLE
+	}
+}
+
+export function getArticleSuccess(article) {
+	return {
+		type: GET_ARTICLE_SUCCESS,
+		article
+	}
+}
+
+export function getArticleFailure(error) {
+	return {
+		type: GET_ARTICLE_FAILURE,
+		error
+	}
+}
+
 export function registerArticleRequest(token, article) {
 	return (dispatch) => {
 		dispatch(registerArticle());

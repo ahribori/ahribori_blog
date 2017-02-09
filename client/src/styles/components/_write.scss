@@ -4,3 +4,10 @@
         width: 90%;
     }
 }
+
+@media (max-width: 1440px) and (min-width: 1201px) {
+    .write_grid .mdl-cell {
+        margin-left: 10%;
+        width: 80%;
+    }
+}
