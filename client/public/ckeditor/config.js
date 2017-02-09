@@ -43,5 +43,7 @@ CKEDITOR.editorConfig = function( config ) {
 	config.uploadUrl = 'http://localhost:3000/image/ckeditor_dragndrop';
 
 	// 에디터 높이
-	config.height = '320px'
+	config.height = '320px';
+
+	config.tabSpaces = 4;
 };
