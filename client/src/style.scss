@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/earlyaccess/nanumgothic.css');
 @import 'styles/reset';
 @import 'styles/colors';
 @import 'styles/components/layout';
@@ -6,7 +7,9 @@
 @import 'styles/components/home';
 
 body {
-    background-color: $grey200
+    background-color: $grey200;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 a {

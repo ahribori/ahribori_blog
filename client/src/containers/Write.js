@@ -51,11 +51,13 @@ class Write extends React.Component {
 	}
 
 	handleSubmit() {
+		const content = CKEDITOR.instances['ck_editor'].getData();
+
 		const article = {
 			category: this.state.category,
 			author: this.props.user._id,
 			title: this.state.title,
-			content: this.state.content,
+			content,
 			hidden: this.state.hidden
 		};
 

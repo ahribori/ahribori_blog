@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import {Grid, Cell, Card, CardText, CardActions, Button, Textfield, Icon} from 'react-mdl';
+import {Grid, Cell, Card, CardTitle, CardText, CardActions, Button, Textfield, Icon} from 'react-mdl';
 import { getArticleRequest } from 'actions/article';
 
 class Article extends React.Component {
@@ -14,14 +14,15 @@ class Article extends React.Component {
 			<Grid className="article_grid">
 				<Cell offsetDesktop={2} col={8} phone={12} tablet={12} style={{ minWidth: '300px' }}>
 					<Card shadow={0} style={{
-						width: '100%',
+						width: '100%'
 					}}>
 						<div style={{
 							padding: '30px'
 						}}>
-							<h2>{this.props.article.title}</h2>
+							<CardTitle className="article_title" expand>{this.props.article.title}</CardTitle>
+							<div className="article_info">{this.props.article.author} | { Date(this.props.article.reg_date).toLocaleString() } | {this.props.article.hit} | {this.props.article.star}</div>
 							<hr/>
-							<div dangerouslySetInnerHTML={{ __html: this.props.article.content }}></div>
+							<div className="article_content" dangerouslySetInnerHTML={{ __html: this.props.article.content }}></div>
 						</div>
 					</Card>
 				</Cell>
@@ -38,7 +39,6 @@ class Article extends React.Component {
 	}
 
 	componentWillReceiveProps() {
-		console.log(this.state)
 	}
 
 	shouldComponentUpdate() {

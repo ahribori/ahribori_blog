@@ -5,6 +5,7 @@
 }
 
 @mixin item-card-title ($fontSize) {
+    font-family: 'Nanum Gothic';
     font-size: $fontSize;
     text-shadow: 2px 2px 2px #131313;
     color: #fff;
@@ -30,6 +31,7 @@
     font-family: 'D2 coding';
     color: $blueGrey700
 }
+
 .article_timeago {
     font-family: 'D2 coding';
     color: $amber900

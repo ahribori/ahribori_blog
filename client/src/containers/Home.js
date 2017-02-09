@@ -106,7 +106,7 @@ class Home extends React.Component {
 							<Link to={`/article/${article._id}`}>
 								<Card shadow={0} className="item-card">
 									<CardTitle expand style={{
-										minHeight: '100px',
+										height: '200px',
 										background: 'url(https://www.getmdl.io/assets/demos/dog.png) bottom right 15% no-repeat #46B6AC'
 									}}>{article.title}</CardTitle>
 									{cardContent}

@@ -7,6 +7,13 @@
 
 @media (max-width: 1440px) and (min-width: 1201px) {
     .article_grid .mdl-cell {
+        margin-left: 7.5%;
+        width: 85%;
+    }
+}
+
+@media (max-width: 1920px) and (min-width: 1441px) {
+    .article_grid .mdl-cell {
         margin-left: 10%;
         width: 80%;
     }
@@ -14,10 +21,68 @@
 
 .article_grid {
     word-break: break-all;
+    img {
+        max-width: 100%;
+        height: auto !important;
+    }
 }
 
-.article_grid,h1,h2,h3,h4,h5,h6 {
-    -webkit-font-smoothing: antialiased;
-    font-family: 'D2 coding';
+// 모바일
+@media (max-width: 600px) and (min-width: 200px) {
+    .article_title {
+        h2 {
+            font-size: 28px !important;
+        }
+    }
 
+    .article_content  {
+        h1,h2,h3,h4,h5,h6 {
+            font-family: 'Nanum Gothic';
+        }
+        h1 {
+            font-size: 1.5em !important;
+        }
+        h2 {
+            font-size: 1.3em !important;
+        }
+        h3 {
+            font-size: 1.1em !important;
+        }
+        pre {
+            font-size: 0.7em !important;
+        }
+    }
+}
+
+.article_title {
+    h2 {
+        color: $lightBlue800;
+        font-size: 40px;
+        font-family: 'Nanum Gothic';
+    }
+    margin-bottom: 16px;
+    padding: 0;
+}
+
+.article_info {
+    color: $grey500;
+    font-size: 0.8em;
+    line-height: 1.5;
+}
+.article_content  {
+    h1,h2,h3,h4,h5,h6 {
+        font-family: 'D2 coding';
+    }
+    h1 {
+        font-size: 2em;
+    }
+    h2 {
+        font-size: 1.5em;
+    }
+    h3 {
+        font-size: 1.17em;
+    }
+    pre {
+        font-size: 0.9em;
+    }
 }
