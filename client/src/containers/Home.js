@@ -4,6 +4,7 @@ import {Grid, Cell, Card, CardTitle, CardText, CardActions, Button, Icon} from '
 import Masonry from 'masonry-layout';
 import { getArticleListRequest } from 'actions/article';
 import TimeAgo from 'react-timeago';
+import { Link } from 'react-router';
 import koreanStrings from 'react-timeago/lib/language-strings/ko';
 import buildFormatter from 'react-timeago/lib/formatters/buildFormatter';
 const formatter = buildFormatter(koreanStrings);
@@ -87,20 +88,30 @@ class Home extends React.Component {
 
 				if (index === 0) {
 					return (
-						<Cell key={index} className="grid-item" col={bigItem.cell.col} phone={bigItem.cell.phone} tablet={bigItem.cell.tablet} style={bigItem.cell.style}>
-							<Card shadow={0} className="big-item-card">
-								<CardTitle expand style={{background: 'url(https://www.getmdl.io/assets/demos/dog.png) bottom right 15% no-repeat #46B6AC'}}>{article.title}</CardTitle>
-								{cardContent}
-							</Card>
+						<Cell key={index} className="grid-item" col={bigItem.cell.col} phone={bigItem.cell.phone}
+							  tablet={bigItem.cell.tablet} style={bigItem.cell.style}>
+							<Link to={`/article/${article._id}`}>
+								<Card shadow={0} className="big-item-card">
+									<CardTitle expand
+											   style={{background: 'url(https://www.getmdl.io/assets/demos/dog.png) bottom right 15% no-repeat #46B6AC'}}>{article.title}</CardTitle>
+									{cardContent}
+								</Card>
+							</Link>
 						</Cell>
 					)
 				} else {
 					return (
-						<Cell key={index} className="grid-sizer grid-item" col={item.cell.col} phone={item.cell.phone} tablet={item.cell.tablet} style={item.cell.style}>
-							<Card shadow={0} className="item-card">
-								<CardTitle expand style={{minHeight:'100px', background: 'url(https://www.getmdl.io/assets/demos/dog.png) bottom right 15% no-repeat #46B6AC'}}>{article.title}</CardTitle>
-								{cardContent}
-							</Card>
+						<Cell key={index} className="grid-sizer grid-item" col={item.cell.col} phone={item.cell.phone}
+							  tablet={item.cell.tablet} style={item.cell.style}>
+							<Link to={`/article/${article._id}`}>
+								<Card shadow={0} className="item-card">
+									<CardTitle expand style={{
+										minHeight: '100px',
+										background: 'url(https://www.getmdl.io/assets/demos/dog.png) bottom right 15% no-repeat #46B6AC'
+									}}>{article.title}</CardTitle>
+									{cardContent}
+								</Card>
+							</Link>
 						</Cell>
 					)
 				}
