@@ -18,7 +18,7 @@ class Article extends React.Component {
 					}}>
 						<div className="article_container">
 							<CardTitle className="article_title" expand>{this.props.article.title}</CardTitle>
-							<div className="article_info">{this.props.article.author} | { this.props.article.reg_date } | 조회 {this.props.article.hit} | 추천 {this.props.article.star} | 댓글 0</div>
+							<div className="article_info">{this.props.article.author} | { this.props.article.reg_date } | 조회 {this.props.article.hit} | 추천 {this.props.article.star} | 댓글 {this.props.article.reply_count}</div>
 							<hr/>
 							<div className="article_content" dangerouslySetInnerHTML={{ __html: this.props.article.content }}></div>
 						</div>

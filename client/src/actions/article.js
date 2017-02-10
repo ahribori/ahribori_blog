@@ -80,6 +80,7 @@ export function getArticle() {
 
 export function getArticleSuccess(article) {
 	article.reg_date = moment(new Date(article.reg_date)).format('YYYY.MM.DD hh:mm');
+	article.reply_count = article.reply.length;
 	return {
 		type: GET_ARTICLE_SUCCESS,
 		article
