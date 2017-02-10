@@ -16,9 +16,7 @@ class Article extends React.Component {
 					<Card shadow={0} style={{
 						width: '100%'
 					}}>
-						<div style={{
-							padding: '30px'
-						}}>
+						<div className="article_container">
 							<CardTitle className="article_title" expand>{this.props.article.title}</CardTitle>
 							<div className="article_info">{this.props.article.author} | { Date(this.props.article.reg_date).toLocaleString() } | {this.props.article.hit} | {this.props.article.star}</div>
 							<hr/>

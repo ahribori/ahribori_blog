@@ -27,12 +27,25 @@
     }
 }
 
+.article_container {
+    padding: 30px;
+}
+
 // 모바일
 @media (max-width: 600px) and (min-width: 200px) {
+    .article_grid {
+        padding: 0;
+    }
+
+    .article_container {
+        padding: 8px;
+    }
+
     .article_title {
         h2 {
             font-size: 28px !important;
         }
+        margin-bottom: 8px !important;
     }
 
     .article_content  {
@@ -66,7 +79,7 @@
 
 .article_info {
     color: $grey500;
-    font-size: 0.8em;
+    font-size: 0.7em;
     line-height: 1.5;
 }
 .article_content  {
@@ -83,6 +96,6 @@
         font-size: 1.17em;
     }
     pre {
-        font-size: 0.9em;
+        font-size: 0.8em;
     }
 }

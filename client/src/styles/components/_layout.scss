@@ -67,12 +67,12 @@ $containerMargin: 8px; //
 // When sidebar is invisible
 @media screen and (max-width: 1024px) {
     .mdl-layout__drawer {
-        -webkit-transform: translateX(-250px);
+        -webkit-transform: translateX(-($sidebarWidth + 10));
         transform: translateX(-($sidebarWidth + 10));
     }
 
     .mdl-layout__content {
-        margin: $containerMargin $containerMargin $containerMargin $containerMargin !important;
+        margin: $containerMargin !important;
     }
 
     .mdl-layout__drawer .mdl-layout-title {
@@ -90,4 +90,11 @@ $containerMargin: 8px; //
 
 .sidebar_button {
     margin: 20px 30px 0 30px;
+}
+
+// mobile
+@media screen and (max-width: 600px) {
+    .mdl-layout__content {
+        margin: 0 !important;
+    }
 }

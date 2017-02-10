@@ -1,3 +1,6 @@
+$homeGridMargin: 8px;
+$gridItemPadding: 8px;
+
 @mixin item-card ($width, $height) {
     width: $width;
     height: $height;
@@ -35,4 +38,15 @@
 .article_timeago {
     font-family: 'D2 coding';
     color: $amber900
+}
+
+.grid-item {
+    padding: $gridItemPadding;
+}
+
+// mobile
+@media screen and (max-width: 600px) {
+    .grid-item {
+        padding: 8px;
+    }
 }

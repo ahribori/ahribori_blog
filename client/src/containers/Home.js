@@ -44,16 +44,11 @@ class Home extends React.Component {
 
 	render() {
 
-		const offset = '8px';
-
 		const bigItem = {
 			cell: {
 				col: 6,
 				tablet: 12,
-				phone: 12,
-				style: {
-					padding: offset
-				}
+				phone: 12
 			}
 		};
 
@@ -61,10 +56,7 @@ class Home extends React.Component {
 			cell: {
 				col: 3,
 				tablet: 4,
-				phone: 6,
-				style: {
-					padding: offset
-				}
+				phone: 6
 			}
 		};
 
@@ -89,7 +81,7 @@ class Home extends React.Component {
 				if (index === 0) {
 					return (
 						<Cell key={index} className="grid-item" col={bigItem.cell.col} phone={bigItem.cell.phone}
-							  tablet={bigItem.cell.tablet} style={bigItem.cell.style}>
+							  tablet={bigItem.cell.tablet}>
 							<Link to={`/article/${article._id}`}>
 								<Card shadow={0} className="big-item-card">
 									<CardTitle expand
@@ -102,7 +94,7 @@ class Home extends React.Component {
 				} else {
 					return (
 						<Cell key={index} className="grid-sizer grid-item" col={item.cell.col} phone={item.cell.phone}
-							  tablet={item.cell.tablet} style={item.cell.style}>
+							  tablet={item.cell.tablet}>
 							<Link to={`/article/${article._id}`}>
 								<Card shadow={0} className="item-card">
 									<CardTitle expand style={{
@@ -122,7 +114,7 @@ class Home extends React.Component {
 
 		return (
 			<div>
-				<Grid className="grid" noSpacing={true} style={{ margin: offset }}>
+				<Grid className="home_grid" noSpacing={true}>
 						{generateArticleCards(this.state.articles)}
 				</Grid>
 			</div>
