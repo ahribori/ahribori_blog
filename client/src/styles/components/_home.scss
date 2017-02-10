@@ -16,7 +16,8 @@ $gridItemPadding: 8px;
 }
 
 .big-item-card {
-    @include item-card(100%, 520px);
+    @include item-card(100%, auto);
+    min-height: 550px;
     h2 {
         @include item-card-title(3rem);
     }

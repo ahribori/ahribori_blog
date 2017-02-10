@@ -18,6 +18,7 @@ import {
 
 import axios from 'axios';
 import config from '../config';
+import moment from 'moment';
 
 export function getArticleListRequest(offset, limit, token) {
 	return (dispatch) => {
@@ -78,6 +79,7 @@ export function getArticle() {
 }
 
 export function getArticleSuccess(article) {
+	article.reg_date = moment(new Date(article.reg_date)).format('YYYY.MM.DD hh:mm');
 	return {
 		type: GET_ARTICLE_SUCCESS,
 		article
