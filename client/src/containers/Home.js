@@ -80,7 +80,7 @@ class Home extends React.Component {
 
 				const cardContent = (
 					<div>
-						<CardText className="article_content">
+						<CardText className="article_preview">
 							{article.preview}
 						</CardText>
 						<CardText>
