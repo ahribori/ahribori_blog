@@ -108,6 +108,7 @@ export function registerArticleRequest(token, article) {
 				author: article.author,
 				title: article.title,
 				content: article.content,
+				preview: article.preview,
 				hidden: article.hidden
 			}
 		}).then((response) => {

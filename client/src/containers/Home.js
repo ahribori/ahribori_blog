@@ -7,6 +7,8 @@ import TimeAgo from 'react-timeago';
 import { Link } from 'react-router';
 import koreanStrings from 'react-timeago/lib/language-strings/ko';
 import buildFormatter from 'react-timeago/lib/formatters/buildFormatter';
+import * as colors from 'material-ui/styles/colors';
+
 const formatter = buildFormatter(koreanStrings);
 
 const propTypes = {};
@@ -23,6 +25,15 @@ class Home extends React.Component {
 	}
 
 	componentDidMount() {
+		this.palette = [];
+		for (let key in colors) {
+			if (colors.hasOwnProperty(key)) {
+				if(/[^A]700$/.test(key)) {
+					this.palette.push(colors[key]);
+				}
+			}
+		}
+
 		const token = localStorage.getItem('ahribori_token');
 		this.props.getArticleRequest(0, 25, token)
 			.then(() => {
@@ -43,6 +54,10 @@ class Home extends React.Component {
 	}
 
 	render() {
+
+		const getRandomColor = () => {
+			return this.palette[Math.floor(Math.random() * this.palette.length)];
+		};
 
 		const bigItem = {
 			cell: {
@@ -66,8 +81,7 @@ class Home extends React.Component {
 				const cardContent = (
 					<div>
 						<CardText className="article_content">
-							{article._id}
-							{article.content}...
+							{article.preview}
 						</CardText>
 						<CardText>
 							<TimeAgo className="article_timeago" date={article.reg_date} formatter={formatter}/>
@@ -85,7 +99,8 @@ class Home extends React.Component {
 							<Link to={`/article/${article._id}`}>
 								<Card shadow={0} className="big-item-card">
 									<CardTitle expand
-											   style={{background: 'url(https://www.getmdl.io/assets/demos/dog.png) bottom right 15% no-repeat #46B6AC'}}>{article.title}</CardTitle>
+											   style={{background: 'url(https://www.getmdl.io/assets/demos/dog.png) bottom right 15% no-repeat' +
+											   getRandomColor() }}>{article.title}</CardTitle>
 									{cardContent}
 								</Card>
 							</Link>
@@ -99,8 +114,8 @@ class Home extends React.Component {
 								<Card shadow={0} className="item-card">
 									<CardTitle expand style={{
 										height: '200px',
-										background: 'url(https://www.getmdl.io/assets/demos/dog.png) bottom right 15% no-repeat #46B6AC'
-									}}>{article.title}</CardTitle>
+										background: 'url(https://www.getmdl.io/assets/demos/dog.png) bottom right 15% no-repeat' +
+										getRandomColor() }}>{article.title}</CardTitle>
 									{cardContent}
 								</Card>
 							</Link>

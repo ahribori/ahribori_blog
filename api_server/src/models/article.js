@@ -7,6 +7,7 @@ const Article = new Schema({
 	author: Object,
 	title: {type: String, default: '(제목없음)'},
 	content: {type: String, default: '(내용없음)'},
+	preview:  {type: String, default: '(내용없음)'},
 	tags: [String],
 	reply: [{type: Schema.Types.ObjectId, ref: 'Reply'}],
 	hidden: {type: Boolean, default: false},
@@ -21,12 +22,13 @@ Article.index({
 	content: 'text'
 });
 
-Article.statics.create = function (category, author, title, content, hidden) {
+Article.statics.create = function (category, author, title, content, preview, hidden) {
 	const article = new this({
 		category: category ? mongoose.Types.ObjectId(category) : undefined,
 		author,
 		title,
 		content,
+		preview,
 		hidden
 	});
 	return article.save();

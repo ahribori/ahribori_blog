@@ -14,9 +14,9 @@ import Article from '../models/article';
  ============================================*/
 router.post('/', (req, res) => {
 	
-	const { category, author, title, content, hidden } = req.body;
+	const { category, author, title, content, preview, hidden } = req.body;
 
-	const validate = (category, author, title, content, hidden) => {
+	const validate = (category, author, title, content, preview, hidden) => {
 
 		return new Promise((resolve, reject) => {
 
@@ -28,7 +28,7 @@ router.post('/', (req, res) => {
 	};
 
 	const create = () => {
-		return Article.create(category, author, title, content, hidden);
+		return Article.create(category, author, title, content, preview, hidden);
 	};
 
 	const respond = () => {
@@ -118,8 +118,8 @@ router.get('/', (req, res) => {
 						reply: true,
 						tags: true,
 						title: true,
-						content: { $substrCP: ["$content", 0, 200] },
-						// content: true
+						// content: { $substrCP: ["$content", 0, 200] },
+						preview: true
 					}
 				}
 			], (err, articles) => {
