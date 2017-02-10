@@ -13,7 +13,19 @@ import {
 	MODIFY_ARTICLE_FAILURE,
 	REMOVE_ARTICLE,
 	REMOVE_ARTICLE_SUCCESS,
-	REMOVE_ARTICLE_FAILURE
+	REMOVE_ARTICLE_FAILURE,
+	GET_ARTICLE_TEMP,
+	GET_ARTICLE_TEMP_SUCCESS,
+	GET_ARTICLE_TEMP_FAILURE,
+	REGISTER_ARTICLE_TEMP,
+	REGISTER_ARTICLE_TEMP_SUCCESS,
+	REGISTER_ARTICLE_TEMP_FAILURE,
+	MODIFY_ARTICLE_TEMP,
+	MODIFY_ARTICLE_TEMP_SUCCESS,
+	MODIFY_ARTICLE_TEMP_FAILURE,
+	REMOVE_ARTICLE_TEMP,
+	REMOVE_ARTICLE_TEMP_SUCCESS,
+	REMOVE_ARTICLE_TEMP_FAILURE
 } from './ActionTypes';
 
 import axios from 'axios';
@@ -112,9 +124,9 @@ export function registerArticleRequest(token, article) {
 				hidden: article.hidden
 			}
 		}).then((response) => {
-			dispatch(registerArticleSuccess(response.data))
+			dispatch(registerArticleSuccess(response.data));
 		}).catch((error) => {
-			dispatch(registerArticleFailure(error.response))
+			dispatch(registerArticleFailure(error.response));
 		})
 	}
 }
@@ -127,12 +139,95 @@ export function registerArticle() {
 
 export function registerArticleSuccess(result) {
 	return {
-		type: REGISTER_ARTICLE_SUCCESS
+		type: REGISTER_ARTICLE_SUCCESS,
+		result
 	}
 }
 
 export function registerArticleFailure(error) {
 	return {
-		type: REGISTER_ARTICLE_FAILURE
+		type: REGISTER_ARTICLE_FAILURE,
+		error
+	}
+}
+
+// TODO modify article
+
+export function getArticleTempRequest(token) {
+	return (dispatch) => {
+		dispatch(getArticleTemp());
+		return axios.get(`${config.API_SERVER}/api/article_temp`, {
+			headers: {
+				'authorization': token
+			}
+		}).then((response) => {
+			dispatch(getArticleTempSuccess(response.data))
+		}).catch((error) => {
+			dispatch(getArticleTempFailure(error.response))
+		})
+	}
+}
+
+export function getArticleTemp() {
+	return {
+		type: GET_ARTICLE_TEMP
+	}
+}
+
+export function getArticleTempSuccess(article_temp) {
+	return {
+		type: GET_ARTICLE_TEMP_SUCCESS,
+		article_temp
+	}
+}
+
+export function getArticleTempFailure(error) {
+	return {
+		type: GET_ARTICLE_TEMP_FAILURE,
+		error
+	}
+}
+
+export function registerArticleTempRequest(token, article) {
+	return (dispatch) => {
+		dispatch(registerArticleTemp());
+		return axios({
+			method: 'post',
+			url: `${config.API_SERVER}/api/article_temp`,
+			headers: {
+				'authorization': token
+			},
+			data: {
+				category: article.category,
+				author: article.author,
+				title: article.title,
+				content: article.content,
+				hidden: article.hidden
+			}
+		}).then((response) => {
+			dispatch(registerArticleTempSuccess(response.data))
+		}).catch((error) => {
+			dispatch(registerArticleTempFailure(error.response))
+		})
+	}
+}
+
+export function registerArticleTemp() {
+	return {
+		type: REGISTER_ARTICLE_TEMP
+	}
+}
+
+export function registerArticleTempSuccess(result) {
+	return {
+		type: REGISTER_ARTICLE_TEMP_SUCCESS,
+		result
+	}
+}
+
+export function registerArticleTempFailure(error) {
+	return {
+		type: REGISTER_ARTICLE_TEMP_FAILURE,
+		error
 	}
 }

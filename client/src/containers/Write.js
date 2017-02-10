@@ -3,7 +3,7 @@ import {Grid, Cell, Card, CardActions, Button, Textfield, Icon} from 'react-mdl'
 import { connect } from 'react-redux';
 import { withRouter, browserHistory } from 'react-router';
 import { CKEditor } from 'components';
-import { registerArticleRequest } from 'actions/article';
+import { registerArticleRequest, registerArticleTempRequest, getArticleTempRequest } from 'actions/article';
 import Checkbox from 'material-ui/Checkbox';
 import Visibility from 'material-ui/svg-icons/action/visibility';
 import VisibilityOff from 'material-ui/svg-icons/action/visibility-off';
@@ -121,6 +121,10 @@ class Write extends React.Component {
 	}
 
 	componentDidMount() {
+		this.props.registerArticleTempRequest(localStorage.getItem('ahribori_token'), this.state)
+			.then((result) => {
+				console.log(result);
+			});
 		clearInterval(this.saveState);
 		this.savedState = localStorage.getItem('write_state');
 		if (this.savedState) {
@@ -167,6 +171,12 @@ const mapDispatchToProps = (dispatch) => {
 	return {
 		registerArticleRequest: (token, article) => {
 			return dispatch(registerArticleRequest(token, article));
+		},
+		registerArticleTempRequest: (token, article) => {
+			return dispatch(registerArticleTempRequest(token, article))
+		},
+		getArticleTempRequest: (token) => {
+			return (dispatch(getArticleTempRequest(token)))
 		}
 	}
 };

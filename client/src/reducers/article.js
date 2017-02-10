@@ -11,7 +11,14 @@ const initialState = {
 	article: {
 		data: {}
 	},
+	article_temp: {
+		data: {}
+	},
 	register: {
+		status: 'INIT',
+		error: null
+	},
+	register_temp: {
 		status: 'INIT',
 		error: null
 	}
@@ -55,7 +62,7 @@ export default function application(state= initialState, action) {
 			return update(state, {
 				register: {
 					status: { $set: 'WAITING'},
-					error: { $set: action.null }
+					error: { $set: null }
 				}
 			});
 		case types.REGISTER_ARTICLE_SUCCESS:
@@ -67,6 +74,26 @@ export default function application(state= initialState, action) {
 		case types.REGISTER_ARTICLE_FAILURE:
 			return update(state, {
 				register: {
+					status: { $set: 'FAILURE'},
+					error: { $set: action.error }
+				}
+			});
+		case types.REGISTER_ARTICLE_TEMP:
+			return update(state, {
+				register_temp: {
+					status: { $set: 'WAITING'},
+					error: { $set: null }
+				}
+			});
+		case types.REGISTER_ARTICLE_TEMP_SUCCESS:
+			return update(state, {
+				register_temp: {
+					status: { $set: 'SUCCESS'}
+				}
+			});
+		case types.REGISTER_ARTICLE_TEMP_FAILURE:
+			return update(state, {
+				register_temp: {
 					status: { $set: 'FAILURE'},
 					error: { $set: action.error }
 				}
