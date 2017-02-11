@@ -4,6 +4,7 @@ import config from '../config';
 import path from 'path';
 import fs from 'fs';
 import Image from '../models/image';
+import ArticleTemp from '../models/article_temp';
 
 const publicPath = path.resolve(__dirname, '../../public');
 const imagePath = path.resolve(__dirname, '../../public/image');
@@ -36,29 +37,45 @@ router.post('/ckeditor_dragndrop', (req, res) => {
 				if (error) {
 					reject(error);
 				} else {
+
 					/*
 					 원래 파일은 배열로 올라올 수 있기 때문에, 루프 처리를 해야 하지만
 					 CKEditor Drag & Drop 기능은 파일을 여러개를 한꺼번에 올려도
 					 하나의 Request에 여러 파일이 올라오는 방식이 아니라,
 					 여러번의 Request를 날리는 방식이기 때문에 따로 처리를 하지 않았다.
 					 */
-					resolve(files.upload[0])
+
+					resolve({
+						article_temp_id: fields.article_temp_id[0],
+						file: files.upload[0]
+					})
 				}
 			});
 		});
 	};
 
-	const process = (file) => {
+	const process = (result) => {
 		return new Promise((resolve, reject) => {
-			file.savedFilename = path.basename(file.path);
-			resolve(file);
+			result.file.savedFilename = path.basename(result.file.path);
+			resolve({
+				article_temp_id: result.article_temp_id,
+				file: result.file
+			});
 		});
 	};
 
-	const save = (file) => {
+	const save = (result) => {
 		return new Promise((resolve, reject) => {
-			Image.create(file.originalFilename, file.savedFilename, file.path, file.size)
-				.then(resolve(file.savedFilename))
+			Image.create(result.file.originalFilename, result.file.savedFilename, result.file.path, result.file.size)
+				.then((image) => {
+					ArticleTemp.findById(result.article_temp_id, (err, article_temp) => {
+						article_temp.images.push(image._id);
+						article_temp.save((err) => {
+							if (err) reject(err);
+							else resolve(result.file.savedFilename);
+						})
+					});
+				})
 		})
 	};
 

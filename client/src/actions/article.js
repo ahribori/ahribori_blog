@@ -121,7 +121,8 @@ export function registerArticleRequest(token, article) {
 				title: article.title,
 				content: article.content,
 				preview: article.preview,
-				hidden: article.hidden
+				hidden: article.hidden,
+				article_temp_id: article.article_temp_id
 			}
 		}).then((response) => {
 			dispatch(registerArticleSuccess(response.data));
@@ -151,7 +152,43 @@ export function registerArticleFailure(error) {
 	}
 }
 
-// TODO modify article
+export function modifyArticleRequest(token, article) {
+	return (dispatch) => {
+		dispatch(modifyArticle());
+		return axios({
+			method: 'put',
+			url: `${config.API_SERVER}/api/article`,
+			headers: {
+				'authorization': token
+			},
+			data: article
+		}).then((response) => {
+			dispatch(registerArticleSuccess(response.data));
+		}).catch((error) => {
+			dispatch(registerArticleFailure(error.response));
+		})
+	}
+}
+
+export function modifyArticle() {
+	return {
+		type: MODIFY_ARTICLE
+	}
+}
+
+export function modifyArticleSuccess(result) {
+	return {
+		type: MODIFY_ARTICLE_SUCCESS,
+		result
+	}
+}
+
+export function modifyArticleFailure(error) {
+	return {
+		type: MODIFY_ARTICLE_FAILURE,
+		error
+	}
+}
 
 export function getArticleTempRequest(token) {
 	return (dispatch) => {
@@ -228,6 +265,45 @@ export function registerArticleTempSuccess(result) {
 export function registerArticleTempFailure(error) {
 	return {
 		type: REGISTER_ARTICLE_TEMP_FAILURE,
+		error
+	}
+}
+
+
+export function modifyArticleTempRequest(token, article_temp) {
+	return (dispatch) => {
+		dispatch(modifyArticleTemp());
+		return axios({
+			method: 'put',
+			url: `${config.API_SERVER}/api/article_temp/${article_temp._id}`,
+			headers: {
+				'authorization': token
+			},
+			data: article_temp
+		}).then((response) => {
+			dispatch(modifyArticleTempSuccess(response.data));
+		}).catch((error) => {
+			dispatch(modifyArticleTempFailure(error.response));
+		})
+	}
+}
+
+export function modifyArticleTemp() {
+	return {
+		type: MODIFY_ARTICLE_TEMP
+	}
+}
+
+export function modifyArticleTempSuccess(result) {
+	return {
+		type: MODIFY_ARTICLE_TEMP_SUCCESS,
+		result
+	}
+}
+
+export function modifyArticleTempFailure(error) {
+	return {
+		type: MODIFY_ARTICLE_TEMP_FAILURE,
 		error
 	}
 }

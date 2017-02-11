@@ -12,13 +12,18 @@ const initialState = {
 		data: {}
 	},
 	article_temp: {
-		data: {}
+		data: {},
+		error: null
 	},
 	register: {
 		status: 'INIT',
 		error: null
 	},
 	register_temp: {
+		status: 'INIT',
+		error: null
+	},
+	modify_temp: {
 		status: 'INIT',
 		error: null
 	}
@@ -95,6 +100,41 @@ export default function application(state= initialState, action) {
 			return update(state, {
 				register_temp: {
 					status: { $set: 'FAILURE'},
+					error: { $set: action.error }
+				}
+			});
+		case types.GET_ARTICLE_TEMP:
+			return state;
+		case types.GET_ARTICLE_TEMP_SUCCESS:
+			return update(state, {
+				article_temp: {
+					data: { $set: action.article_temp },
+					error: { $set: null }
+				}
+			});
+		case types.GET_ARTICLE_TEMP_FAILURE:
+			return update(state, {
+				article_temp: {
+					error: { $set: action.error }
+				}
+			});
+		case types.MODIFY_ARTICLE_TEMP:
+			return update(state, {
+				modify_temp: {
+					status: { $set: 'WAITING' }
+				}
+			});
+		case types.MODIFYT_ARTICLE_TEMP_SUCCESS:
+			return update(state, {
+				modify_temp: {
+					status: { $set: 'SUCCESS' },
+					error: { $set: null }
+				}
+			});
+		case types.MODIFY_ARTICLE_TEMP_FAILURE:
+			return update(state, {
+				modify_temp: {
+					status: { $set: 'FAILURE' },
 					error: { $set: action.error }
 				}
 			});

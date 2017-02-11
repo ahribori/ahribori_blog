@@ -17,6 +17,7 @@ Image.statics.create = function (original_name, name, real_path, size) {
 		size
 	});
 	return image.save();
+
 };
 
 export default mongoose.model('Image', Image);

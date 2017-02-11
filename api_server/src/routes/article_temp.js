@@ -150,11 +150,10 @@ router.put('/:id', (req, res) => {
 
 		const update = (article_temp) => {
 			return new Promise((resolve, reject) => {
-
 				const data = req.body;
 				for (var key in data) {
 					if (data.hasOwnProperty(key)) {
-						if (data[key] && data[key] !== '') {
+						if (data[key] !== undefined) {
 							article_temp[key] = data[key];
 						}
 					}

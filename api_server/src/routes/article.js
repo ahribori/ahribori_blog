@@ -1,6 +1,11 @@
 import express from 'express';
+import mongoose from 'mongoose';
 const router = express.Router();
 import Article from '../models/article';
+import ArticleTemp from '../models/article_temp';
+import Image from '../models/image';
+import jsdom from 'jsdom';
+import fs from 'fs';
 
 /* =========================================
  POST /api/article
@@ -14,7 +19,7 @@ import Article from '../models/article';
  ============================================*/
 router.post('/', (req, res) => {
 	
-	const { category, author, title, content, preview, hidden } = req.body;
+	const { category, author, title, content, preview, hidden, article_temp_id } = req.body;
 
 	const validate = (category, author, title, content, preview, hidden) => {
 
@@ -28,7 +33,54 @@ router.post('/', (req, res) => {
 	};
 
 	const create = () => {
-		return Article.create(category, author, title, content, preview, hidden);
+		return new Promise((resolve, reject) => {
+			Article.create(category, author, title, content, preview, hidden)
+				.then((article) => {
+					ArticleTemp.aggregate([
+						{
+							$match: {
+								_id: mongoose.Types.ObjectId(article_temp_id)
+							}
+						},
+						{
+							$lookup: {
+								from: 'images',
+								localField: 'images',
+								foreignField: '_id',
+								as: 'images'
+							}
+						}
+					], (err, article_temp) => {
+						article_temp = article_temp[0];
+
+						// ** content에 있는 image와 실제 업로드된 image를 매칭시켜서
+						// 실제 사용하는 image만 서버에 남겨둠
+						jsdom.env(content, (err, window) => {
+							const tempImages = article_temp.images;
+							const images = window.document.images;
+							for (var x = 0; x < tempImages.length; x++) {
+								let exist = false;
+								for (var i = 0; i < images.length; i++) {
+									if (images[i].src.indexOf(tempImages[x].name) !== -1) {
+										exist = true;
+										break;
+									}
+								}
+								if (exist) {
+									article.images.push(tempImages[x]._id);
+								} else {
+									fs.unlink(tempImages[x].real_path);
+									Image.find({ _id: tempImages[x]._id }).remove().exec();
+								}
+							}
+							ArticleTemp(article_temp).remove()
+								.then(resolve(article.save()));
+						});
+						//-----------------------------------------------------------
+
+					});
+				});
+		});
 	};
 
 	const respond = () => {
