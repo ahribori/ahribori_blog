@@ -42,13 +42,11 @@ class Home extends React.Component {
 					this.setState({
 						articles: this.props.articleList.data
 					});
-
 					const masonry = new Masonry( '.mdl-layout__content', {
 						columnWidth: '.grid-sizer',
 						itemSelector: '.grid-item',
 						percentPosition: true
 					});
-
 				}
 			})
 	}
@@ -99,8 +97,10 @@ class Home extends React.Component {
 							<Link to={`/article/${article._id}`}>
 								<Card shadow={0} className="big-item-card">
 									<CardTitle expand
-											   style={{background: 'url(https://www.getmdl.io/assets/demos/dog.png) bottom right 15% no-repeat' +
-											   getRandomColor() }}>{article.title}</CardTitle>
+											   className="card_title"
+											   style={{
+											   backgroundImage: `url(${ article.thumbnail_image || '' })`,
+											   backgroundColor: getRandomColor() }}>{article.title}</CardTitle>
 									{cardContent}
 								</Card>
 							</Link>
@@ -112,10 +112,12 @@ class Home extends React.Component {
 							  tablet={item.cell.tablet}>
 							<Link to={`/article/${article._id}`}>
 								<Card shadow={0} className="item-card">
-									<CardTitle expand style={{
-										height: '200px',
-										background: 'url(https://www.getmdl.io/assets/demos/dog.png) bottom right 15% no-repeat' +
-										getRandomColor() }}>{article.title}</CardTitle>
+									<CardTitle expand
+											   className="card_title"
+											   style={{
+											height: '200px',
+											backgroundImage: `url(${ article.thumbnail_image || '' })`,
+											backgroundColor: getRandomColor() }}>{article.title}</CardTitle>
 									{cardContent}
 								</Card>
 							</Link>

@@ -10,7 +10,13 @@ $gridItemPadding: 8px;
 @mixin item-card-title ($fontSize) {
     font-family: 'Nanum Gothic';
     font-size: $fontSize;
-    text-shadow: 2px 2px 2px #131313;
+    font-weight: 900;
+    text-shadow:
+            3px 3px 0 #131313,
+            -1px -1px 0 #131313,
+            1px -1px 0 #131313,
+            -1px 1px 0 #131313,
+            1px 1px 0 #131313;
     color: #fff;
     -webkit-font-smoothing: antialiased;
 }
@@ -45,6 +51,12 @@ $gridItemPadding: 8px;
 
 .grid-item {
     padding: $gridItemPadding;
+}
+
+.card_title {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
 // mobile

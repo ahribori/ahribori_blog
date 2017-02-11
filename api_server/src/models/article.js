@@ -11,6 +11,7 @@ const Article = new Schema({
 	tags: [String],
 	reply: [{type: Schema.Types.ObjectId, ref: 'Reply'}],
 	hidden: {type: Boolean, default: false},
+	thumbnail_image: {type: String},
 	images: [{type: Schema.Types.ObjectId}],
 	hit: {type: Number, default: 0},
 	star: {type: Number, default: 0},

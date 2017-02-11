@@ -6,6 +6,7 @@ import ArticleTemp from '../models/article_temp';
 import Image from '../models/image';
 import jsdom from 'jsdom';
 import fs from 'fs';
+import config from '../config';
 
 /* =========================================
  POST /api/article
@@ -58,6 +59,7 @@ router.post('/', (req, res) => {
 						jsdom.env(content, (err, window) => {
 							const tempImages = article_temp.images;
 							const images = window.document.images;
+							let thumbnail_picked = false;
 							for (var x = 0; x < tempImages.length; x++) {
 								let exist = false;
 								for (var i = 0; i < images.length; i++) {
@@ -68,6 +70,10 @@ router.post('/', (req, res) => {
 								}
 								if (exist) {
 									article.images.push(tempImages[x]._id);
+									if (!thumbnail_picked) {
+										article.thumbnail_image = `${config.API_SERVER}/image/${tempImages[x].name}`;
+										thumbnail_picked = true;
+									}
 								} else {
 									fs.unlink(tempImages[x].real_path);
 									Image.find({ _id: tempImages[x]._id }).remove().exec();
@@ -170,6 +176,7 @@ router.get('/', (req, res) => {
 						reply: true,
 						tags: true,
 						title: true,
+						thumbnail_image: true,
 						// content: { $substrCP: ["$content", 0, 200] },
 						preview: true
 					}
