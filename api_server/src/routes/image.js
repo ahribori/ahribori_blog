@@ -8,7 +8,8 @@ import ArticleTemp from '../models/article_temp';
 import Jimp from 'jimp';
 
 const publicPath = path.resolve(__dirname, '../../public');
-const imagePath = config.IMAGE_REPOSITORY;
+const imagePath = (config.IMAGE_REPOSITORY && config.IMAGE_REPOSITORY !== '') ?
+	path.resolve(config.IMAGE_REPOSITORY) : path.join(publicPath, '/image');
 
 if(!fs.existsSync(publicPath)) {
 	fs.mkdirSync(publicPath);
