@@ -5,9 +5,10 @@ import path from 'path';
 import fs from 'fs';
 import Image from '../models/image';
 import ArticleTemp from '../models/article_temp';
+import Jimp from 'jimp';
 
 const publicPath = path.resolve(__dirname, '../../public');
-const imagePath = path.resolve(__dirname, '../../public/image');
+const imagePath = config.IMAGE_REPOSITORY;
 
 if(!fs.existsSync(publicPath)) {
 	fs.mkdirSync(publicPath);
@@ -56,10 +57,25 @@ router.post('/ckeditor_dragndrop', (req, res) => {
 
 	const process = (result) => {
 		return new Promise((resolve, reject) => {
-			result.file.savedFilename = path.basename(result.file.path);
-			resolve({
-				article_temp_id: result.article_temp_id,
-				file: result.file
+			const file_path = result.file.path;
+
+			//********** Jimp Imeage Processing **********
+			Jimp.read(file_path, (err, image) => {
+				if (err) reject(err);
+
+				if (image.bitmap.width > 800) image.resize(800, Jimp.AUTO); // max width
+				image.quality(100);
+				Jimp.loadFont(Jimp.FONT_SANS_16_WHITE).then(function (font) {
+					const fontWidth = image.bitmap.width - 130;
+					const fontHeight = image.bitmap.height - 25;
+					image.print(font, fontWidth, fontHeight, "AHRIBORI.COM");
+					image.write(file_path);
+					result.file.savedFilename = path.basename(file_path);
+					resolve({
+						article_temp_id: result.article_temp_id,
+						file: result.file
+					});
+				});
 			});
 		});
 	};

@@ -40,6 +40,7 @@ app.listen(port, () => {
 
 // set public path
 app.use('/', express.static(path.join(__dirname, './../public')));
+app.use('/image', express.static(config.IMAGE_REPOSITORY));
 
 /* handle error */
 app.use(function (err, req, res, next) {
