@@ -1,7 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import { connect } from 'react-redux';
 import {Grid, Cell, Card, CardTitle, CardText, CardActions, Button, Icon} from 'react-mdl';
-import Masonry from 'masonry-layout';
 import { getArticleListRequest } from 'actions/article';
 import TimeAgo from 'react-timeago';
 import { Link } from 'react-router';
@@ -38,14 +37,8 @@ class Home extends React.Component {
 		this.props.getArticleRequest(0, 25, token)
 			.then(() => {
 				if (!this.props.articleList.error) {
-
 					this.setState({
 						articles: this.props.articleList.data
-					});
-					const masonry = new Masonry( '.mdl-layout__content', {
-						columnWidth: '.grid-sizer',
-						itemSelector: '.grid-item',
-						percentPosition: true
 					});
 				}
 			})
@@ -55,14 +48,6 @@ class Home extends React.Component {
 
 		const getRandomColor = () => {
 			return this.palette[Math.floor(Math.random() * this.palette.length)];
-		};
-
-		const bigItem = {
-			cell: {
-				col: 6,
-				tablet: 12,
-				phone: 12
-			}
 		};
 
 		const item = {
@@ -90,44 +75,24 @@ class Home extends React.Component {
 					</div>
 				);
 
-				if (index === 0) {
-					return (
-						<Cell key={index} className="grid-item" col={bigItem.cell.col} phone={bigItem.cell.phone}
-							  tablet={bigItem.cell.tablet}>
-							<Link to={`/article/${article._id}`}>
-								<Card shadow={0} className="big-item-card">
-									<CardTitle expand
-											   className="card_title"
-											   style={{
-											   backgroundImage: `url(${ article.thumbnail_image || '' })`,
-											   backgroundColor: getRandomColor() }}>{article.title}</CardTitle>
-									{cardContent}
-								</Card>
-							</Link>
-						</Cell>
-					)
-				} else {
-					return (
-						<Cell key={index} className="grid-sizer grid-item" col={item.cell.col} phone={item.cell.phone}
-							  tablet={item.cell.tablet}>
-							<Link to={`/article/${article._id}`}>
-								<Card shadow={0} className="item-card">
-									<CardTitle expand
-											   className="card_title"
-											   style={{
-											height: '200px',
-											backgroundImage: `url(${ article.thumbnail_image || '' })`,
-											backgroundColor: getRandomColor() }}>{article.title}</CardTitle>
-									{cardContent}
-								</Card>
-							</Link>
-						</Cell>
-					)
-				}
-
+				return (
+					<Cell key={index} className="grid-sizer grid-item" col={item.cell.col} phone={item.cell.phone}
+						  tablet={item.cell.tablet}>
+						<Link to={`/article/${article._id}`}>
+							<Card shadow={0} className="item-card">
+								<CardTitle expand
+										   className="card_title"
+										   style={{
+										height: '200px',
+										backgroundImage: `url(${ article.thumbnail_image || '' })`,
+										backgroundColor: getRandomColor() }}>{article.title}</CardTitle>
+								{cardContent}
+							</Card>
+						</Link>
+					</Cell>
+				)
 			})
 		};
-
 
 		return (
 			<div>

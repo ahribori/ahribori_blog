@@ -66,7 +66,7 @@ class Write extends React.Component {
 
 	handleSubmit() {
 		const content = CKEDITOR.instances['ck_editor'].getData();
-		const preview = CKEDITOR.instances['ck_editor'].document.getBody().getText().substr(0, 300) + '...';
+		const preview = CKEDITOR.instances['ck_editor'].document.getBody().getText().substr(0, 150) + '...';
 		const article = {
 			category: this.state.category,
 			author: this.props.user._id,

@@ -36,6 +36,11 @@ import 'react-mdl/extra/material.js';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 /* =========================================
+ Load Custom Style
+ ============================================*/
+import './style.scss';
+
+/* =========================================
  Render
  ============================================*/
 const rootElement = document.getElementById('app');

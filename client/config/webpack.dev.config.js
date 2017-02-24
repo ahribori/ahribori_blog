@@ -10,13 +10,12 @@ module.exports = {
 	entry: [
 		'./src/index.js',
 		'webpack-dev-server/client?http://0.0.0.0:4000', // 개발서버의 포트가 이 부분에 입력되어야 제대로 작동합니다
-		'webpack/hot/only-dev-server',
-		'./src/style.scss'
+		'webpack/hot/only-dev-server'
 	],
 
 	output: {
 		path: '/', // public 이 아니고 /, 이렇게 하면 파일을 메모리에 저장하고 사용합니다
-		filename: 'bundle.js'
+		filename: 'ahribori.js'
 	},
 
 	resolve: {
