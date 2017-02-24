@@ -76,7 +76,7 @@ class Home extends React.Component {
 				);
 
 				return (
-					<Cell key={index} className="grid-sizer grid-item" col={item.cell.col} phone={item.cell.phone}
+					<Cell key={index} className="grid-item item-hover-effect" col={item.cell.col} phone={item.cell.phone}
 						  tablet={item.cell.tablet}>
 						<Link to={`/article/${article._id}`}>
 							<Card shadow={0} className="item-card">
