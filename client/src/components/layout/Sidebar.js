@@ -22,7 +22,7 @@ class Sidebar extends React.Component {
 
 	handleWriteButtonClick() {
 		this.handleToggle();
-		browserHistory.push('/write');
+		browserHistory.push('/editor');
 	}
 
 	render() {
