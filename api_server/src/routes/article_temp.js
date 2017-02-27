@@ -6,7 +6,8 @@ import ArticleTemp from '../models/article_temp';
  POST /api/article_temp
  {
  category,
- author,
+ author_id,
+ author_nickname,
  title,
  content,
  hidden
@@ -14,9 +15,9 @@ import ArticleTemp from '../models/article_temp';
  ============================================*/
 router.post('/', (req, res) => {
 	
-	const { category, author, title, content, hidden } = req.body;
+	const { category, author_id, author_nickname, title, content, hidden } = req.body;
 
-	const validate = (category, author, title, content, hidden) => {
+	const validate = (category, author_id, author_nickname, title, content, hidden) => {
 
 		return new Promise((resolve, reject) => {
 
@@ -29,14 +30,17 @@ router.post('/', (req, res) => {
 
 	const create = () => {
 		return new Promise((resolve, reject) => {
-			ArticleTemp.findOne({ author }, (err, article_temp) => {
+			ArticleTemp.findOne({ author_id }, (err, article_temp) => {
 				if (err) {
 					reject(err);
 				}
 				if (article_temp) {
-					reject({ message: 'article_temp already exist' });
+					reject({
+						status: 409,
+						message: 'article_temp already exist'
+					});
 				} else {
-					resolve(ArticleTemp.create(category, author, title, content, hidden));
+					resolve(ArticleTemp.create(category, author_id, author_nickname, title, content, hidden));
 				}
 			});
 		});
@@ -46,13 +50,15 @@ router.post('/', (req, res) => {
 		res.sendStatus(200);
 	};
 
-	const onError = (error) => {
-		res.status(409).json({
-			message: error.message
-		})
-	};
+    const onError = (error) => {
+        const status = error.status || 500;
+        const message = error.message || 'somting broke';
+        res.status(status).json({
+            message: message
+        })
+    };
 
-	validate(category, author, title, content, hidden)
+	validate(category, author_id, author_nickname, title, content, hidden)
 		.then(create)
 		.then(respond)
 		.catch(onError);
@@ -72,7 +78,7 @@ router.get('/', (req, res) => {
 
 	const query = () => {
 		return new Promise((resolve, reject) => {
-			ArticleTemp.findOne({ author: req.payload._id }, (err, article_temp) => {
+			ArticleTemp.findOne({ author_id: req.payload._id }, (err, article_temp) => {
 				if (err) reject(err);
 				if (!article_temp) {
 					reject({
@@ -108,16 +114,50 @@ router.get('/', (req, res) => {
  GET /api/article_temp/{id}
  ============================================*/
 router.get('/:id', (req, res) => {
-	ArticleTemp.findById(req.params.id, (err, article_temp) => {
-		if (err) throw err;
-		if (!article_temp) {
-			res.status(404).json({
-				message: 'resource not found'
+
+    const validate = () => {
+        return new Promise((resolve, reject) => {
+        	const id = req.param.id;
+        	if (!id) {
+        		reject({
+        			status: 400,
+					message: 'invalid parameter'
+				})
+			} else {
+            	resolve();
+			}
+        })
+    };
+
+	const find = () => {
+		return new Promise((resolve, reject) => {
+			ArticleTemp.findById(id, (err, article_temp) => {
+				if (err) reject(err);
+				if (!article_temp) {
+					reject({
+						status: 404,
+						message: 'resource not found'
+					});
+				}
+				resolve(article_temp);
 			});
-			return;
-		}
-		res.json(article_temp);
-	});
+		});
+	};
+
+    const respond = (article_temp) => {
+        res.status(200).json(article_temp);
+    };
+
+    const onError = (error) => {
+        const status = error.status || 500;
+        const message = error.message || 'somting broke';
+        res.status(status).json({
+            message: message
+        })
+    };
+
+    validate().then(find).then(respond).catch(onError);
+
 });
 
 /* =========================================
@@ -127,71 +167,86 @@ router.get('/:id', (req, res) => {
  }
  ============================================*/
 router.put('/:id', (req, res) => {
-	ArticleTemp.findOne({ _id: req.params.id }, (err, article_temp) => {
 
-		const validate = (category, author, title, content, hidden) => {
-
-			return new Promise((resolve, reject) => {
-
-				if (!req.payload.admin) throw { message: 'not admin' };
-				//TODO validate form
-
-				resolve(article_temp);
-			})
-		};
-		
-		if (err) throw err;
-		if (!article_temp) {
-			res.status(404).json({
-				message: 'resource not found'
+	const find = () => {
+		return new Promise((resolve, reject) => {
+			const id = req.params.id;
+			if (!id) reject({
+				status: 400,
+				message: 'invalid parameter'
 			});
-			return;
-		}
 
-		const update = (article_temp) => {
-			return new Promise((resolve, reject) => {
-				const data = req.body;
-				for (var key in data) {
-					if (data.hasOwnProperty(key)) {
-						if (data[key] !== undefined) {
-							article_temp[key] = data[key];
-						}
+            ArticleTemp.findOne({ _id: req.params.id }, (err, article_temp) => {
+                if (err) reject(err);
+                if (!article_temp) {
+                    reject({
+                        status: 404,
+                        message: 'resource not found'
+                    });
+                }
+                resolve(article_temp);
+            });
+
+		});
+	};
+
+	const validate = (article_temp) => {
+
+		return new Promise((resolve, reject) => {
+
+			if (!req.payload.admin) throw { message: 'not admin' };
+			//TODO validate form
+
+			resolve(article_temp);
+		})
+	};
+
+
+
+	const update = (article_temp) => {
+		return new Promise((resolve, reject) => {
+			const data = req.body;
+			for (var key in data) {
+				if (data.hasOwnProperty(key)) {
+					if (data[key] !== undefined) {
+						article_temp[key] = data[key];
 					}
 				}
-				ArticleTemp.update({ _id: req.params.id }, article_temp, (err, result) => {
-					if (err) reject(err);
-					if (result.ok === 1) {
-						resolve(article_temp);
-					} else {
-						reject({
-							status: 500,
-							message: 'update failure'
-						})
-					}
-				});
+			}
+			ArticleTemp.update({ _id: req.params.id }, article_temp, (err, result) => {
+				if (err) reject(err);
+				if (result.ok === 1) {
+					resolve(article_temp);
+				} else {
+					reject({
+						status: 500,
+						message: 'update failure'
+					})
+				}
 			});
-		};
+		});
+	};
 
-		const respond = (article) => {
-			res.status(200).json({
-				success: true,
-				article
-			});
-		};
+	const respond = (article) => {
+		res.status(200).json({
+			success: true,
+			article
+		});
+	};
 
-		const onError = (error) => {
-			const status = error.status || 500;
-			const message = error.message || 'somting broke';
-			res.status(status).json({
-				message: message
-			})
-		};
+	const onError = (error) => {
+		const status = error.status || 500;
+		const message = error.message || 'somting broke';
+		res.status(status).json({
+			message: message
+		})
+	};
 
-		validate()
-			.then(update)
-			.then(respond)
-			.catch(onError);
-	});
+	find()
+		.then(validate)
+		.then(update)
+		.then(respond)
+		.catch(onError);
 });
 
 /* =========================================

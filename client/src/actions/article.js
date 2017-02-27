@@ -117,7 +117,8 @@ export function registerArticleRequest(token, article) {
 			},
 			data: {
 				category: article.category,
-				author: article.author,
+				author_id: article.author_id,
+				author_nickname: article.author_nickname,
 				title: article.title,
 				content: article.content,
 				preview: article.preview,
@@ -236,7 +237,8 @@ export function registerArticleTempRequest(token, article) {
 			},
 			data: {
 				category: article.category,
-				author: article.author,
+				author_id: article.author_id,
+				author_nickname: article.author_nickname,
 				title: article.title,
 				content: article.content,
 				hidden: article.hidden

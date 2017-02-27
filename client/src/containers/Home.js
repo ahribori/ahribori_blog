@@ -60,7 +60,6 @@ class Home extends React.Component {
 
 		const generateArticleCards = (list) => {
 			return list.map((article, index) => {
-
 				const cardContent = (
 					<div>
 						<CardText className="article_preview">
@@ -69,9 +68,14 @@ class Home extends React.Component {
 						<CardText>
 							<TimeAgo className="article_timeago" date={article.reg_date} formatter={formatter}/>
 						</CardText>
-						<CardActions border>
-							<Button colored>더 보기...</Button>
-						</CardActions>
+						<div className="card-bottom">
+							<span className="item-author">{article.author_nickname}</span>
+							<span className="item-bottom-right">
+								<span className="item-value reply">댓글 {article.reply.length}</span>
+								<span className="item-value">|</span>
+								<span className="item-value hit">조회 {article.hit}</span>
+							</span>
+						</div>
 					</div>
 				);
 
@@ -80,6 +84,10 @@ class Home extends React.Component {
 						  tablet={item.cell.tablet}>
 						<Link to={`/article/${article._id}`}>
 							<Card shadow={0} className="item-card">
+								<div className="card-top">
+									<Icon className="item-star" name="star"/>
+									<span className="item-value">{article.star}</span>
+								</div>
 								<CardTitle expand
 										   className="card_title"
 										   style={{

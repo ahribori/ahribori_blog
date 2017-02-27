@@ -12,7 +12,8 @@ import config from '../config';
  POST /api/article
  {
  category,
- author,
+ author_id,
+ author_nickname,
  title,
  content,
  hidden
@@ -20,9 +21,9 @@ import config from '../config';
  ============================================*/
 router.post('/', (req, res) => {
 	
-	const { category, author, title, content, preview, hidden, article_temp_id } = req.body;
+	const { category, author_id, author_nickname, title, content, preview, hidden, article_temp_id } = req.body;
 
-	const validate = (category, author, title, content, preview, hidden) => {
+	const validate = (category, author_id, author_nickname, title, content, preview, hidden) => {
 
 		return new Promise((resolve, reject) => {
 
@@ -35,7 +36,7 @@ router.post('/', (req, res) => {
 
 	const create = () => {
 		return new Promise((resolve, reject) => {
-			Article.create(category, author, title, content, preview, hidden)
+			Article.create(category, author_id, author_nickname, title, content, preview, hidden)
 				.then((article) => {
 					ArticleTemp.aggregate([
 						{
@@ -99,7 +100,7 @@ router.post('/', (req, res) => {
 		})
 	};
 
-	validate(category, author, title, content, hidden)
+	validate(category, author_id, author_nickname, title, content, hidden)
 		.then(create)
 		.then(respond)
 		.catch(onError);
@@ -142,7 +143,7 @@ router.get('/', (req, res) => {
 			{
 				$or: [
 					{ hidden: false },
-					{ $and: [ { author: req.payload._id }, { hidden: true } ] }
+					{ $and: [ { author_id: req.payload._id }, { hidden: true } ] }
 				]
 
 			};
@@ -167,7 +168,8 @@ router.get('/', (req, res) => {
 					$project: {
 						_id: true,
 						category: true,
-						author: true,
+						author_id: true,
+                        author_nickname: true,
 						mod_date: true,
 						reg_date: true,
 						star: true,
@@ -231,7 +233,7 @@ router.get('/:id', (req, res) => {
 router.put('/:id', (req, res) => {
 	Article.findOne({ _id: req.params.id }, (err, article) => {
 
-		const validate = (category, author, title, content, hidden) => {
+		const validate = (category, author_id, author_nickname, title, content, hidden) => {
 
 			return new Promise((resolve, reject) => {
 

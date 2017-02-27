@@ -55,13 +55,17 @@ class Write extends React.Component {
 
 	handleSaveTemp() {
 		let article_temp = this.state;
-		article_temp._id = this.props.article_temp._id;
-		this.props.modifyArticleTempRequest(this.props.user.token, article_temp)
-			.then(() => {
-				this.setState({
-					savedMessageActive: true
+		if (this.props.article_temp._id) {
+			article_temp._id = this.props.article_temp._id;
+			this.props.modifyArticleTempRequest(this.props.user.token, article_temp)
+				.then(() => {
+					if(this.props.modify_temp.status === 'SUCCESS') {
+						this.setState({
+							savedMessageActive: true
+						})
+					}
 				})
-			})
+		}
 	}
 
 	handleSubmit() {
@@ -69,7 +73,8 @@ class Write extends React.Component {
 		const preview = CKEDITOR.instances['ck_editor'].document.getBody().getText().substr(0, 150) + '...';
 		const article = {
 			category: this.state.category,
-			author: this.props.user._id,
+			author_id: this.props.user._id,
+			author_nickname: this.props.user.nickname,
 			title: this.state.title,
 			content,
 			preview,
@@ -153,31 +158,30 @@ class Write extends React.Component {
 				//---------------- user exist
 				const article_temp = {
 					category: this.state.category,
-					author: this.props.user._id,
+                    author_id: this.props.user._id,
+                    author_nickname: this.props.user.nickname,
 					title: this.state.title,
 					content: this.state.content,
 					hidden: this.state.hidden
 				};
-
-				this.props.registerArticleTempRequest(token, article_temp)
-					.then(() => {
-						console.log('************************************************REGISTER')
-						this.props.getArticleTempRequest(token)
-							.then(() => { //---------------- article_temp exist
-								console.log('*************************************************GET를 가져왔고 id는 ' + this.props.article_temp._id);
-								localStorage.setItem('article_temp_id', this.props.article_temp._id);
-								if(this.props.article_temp.content !== '') {
-									if (confirm('작성중이던 글이 있습니다. 이어서 작성하시겠습니까?')) {
-										this.setState({
-											category: this.props.article_temp.category,
-											title: this.props.article_temp.title,
-											content: this.props.article_temp.content
-										});
-										CKEDITOR.instances['ck_editor'].setData(this.props.article_temp.content);
-									}
-								}
-							})
-					})
+                this.props.registerArticleTempRequest(token, article_temp)
+                    .then(() => {
+                        this.props.getArticleTempRequest(token)
+                            .then(() => { //---------------- article_temp exist
+                                console.log('*************************************************GET를 가져왔고 id는 ' + this.props.article_temp._id);
+                                localStorage.setItem('article_temp_id', this.props.article_temp._id);
+                                if (this.props.article_temp.content !== '') {
+                                    if (confirm('작성중이던 글이 있습니다. 이어서 작성하시겠습니까?')) {
+                                        this.setState({
+                                            category: this.props.article_temp.category,
+                                            title: this.props.article_temp.title,
+                                            content: this.props.article_temp.content
+                                        });
+                                        CKEDITOR.instances['ck_editor'].setData(this.props.article_temp.content);
+                                    }
+                                }
+                            })
+                    })
 
 			});
 
@@ -205,6 +209,7 @@ const mapStateToProps = (state) => {
 		user: state.authentication.user,
 		register: state.article.register,
 		register_temp: state.article.register_temp,
+		modify_temp: state.article.modify_temp,
 		article_temp: state.article.article_temp.data
 	}
 };

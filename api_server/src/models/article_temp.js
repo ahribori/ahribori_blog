@@ -3,7 +3,8 @@ const Schema = mongoose.Schema;
 
 const ArticleTemp = new Schema({
 	category: {type: Schema.Types.ObjectId, ref: 'Category'},
-	author: Schema.Types.ObjectId,
+    author_id: {type: Schema.Types.ObjectId, required: true},
+    author_nickname: String,
 	title: {type: String, default: ''},
 	content: {type: String, default: ''},
 	tags: [String],
@@ -13,10 +14,11 @@ const ArticleTemp = new Schema({
 	mod_date: {type: Date, default: Date.now}
 });
 
-ArticleTemp.statics.create = function (category, author, title, content, hidden) {
+ArticleTemp.statics.create = function (category, author_id, author_nickname, title, content, hidden) {
 	const article = new this({
 		category: category ? mongoose.Types.ObjectId(category) : undefined,
-		author,
+		author_id,
+		author_nickname,
 		title,
 		content,
 		hidden
