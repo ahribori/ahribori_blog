@@ -19,6 +19,10 @@ const initialState = {
 		status: 'INIT',
 		error: null
 	},
+	modify: {
+		status: 'INIT',
+		error: null
+	},
 	register_temp: {
 		status: 'INIT',
 		error: null
@@ -83,6 +87,26 @@ export default function application(state= initialState, action) {
 					error: { $set: action.error }
 				}
 			});
+		case types.MODIFY_ARTICLE:
+            return update(state, {
+                modify: {
+                    status: { $set: 'WAITING'},
+                    error: { $set: null }
+                }
+            });
+		case types.MODIFY_ARTICLE_SUCCESS:
+            return update(state, {
+                modify: {
+                    status: { $set: 'SUCCESS'},
+                }
+            });
+		case types.MODIFY_ARTICLE_FAILURE:
+            return update(state, {
+                modify: {
+                    status: { $set: 'FAILURE'},
+                    error: { $set: action.error }
+                }
+            });
 		case types.REGISTER_ARTICLE_TEMP:
 			return update(state, {
 				register_temp: {

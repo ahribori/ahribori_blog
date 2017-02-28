@@ -22,7 +22,11 @@ class Sidebar extends React.Component {
 
 	handleWriteButtonClick() {
 		this.handleToggle();
-		browserHistory.push('/editor');
+		if (document.location.pathname === '/editor') {
+			location.href = '/editor?mode=register';
+		} else {
+			browserHistory.push('/editor?mode=register');
+		}
 	}
 
 	render() {

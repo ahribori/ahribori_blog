@@ -5,7 +5,7 @@ import { browserHistory } from 'react-router';
 import { registerRequest } from 'actions/authentication';
 import { Snackbar } from 'react-mdl';
 
-class Register extends React.Component {
+class SignUp extends React.Component {
 
 	constructor(props) {
 		super(props);
@@ -93,4 +93,4 @@ const mapDispatchToProps = (dispatch) => {
 	}
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Register);
+export default connect(mapStateToProps, mapDispatchToProps)(SignUp);

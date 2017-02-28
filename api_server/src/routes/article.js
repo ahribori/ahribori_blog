@@ -61,9 +61,9 @@ router.post('/', (req, res) => {
 							const tempImages = article_temp.images;
 							const images = window.document.images;
 							let thumbnail_picked = false;
-							for (var x = 0; x < tempImages.length; x++) {
+							for (let x = 0; x < tempImages.length; x++) {
 								let exist = false;
-								for (var i = 0; i < images.length; i++) {
+								for (let i = 0; i < images.length; i++) {
 									if (images[i].src.indexOf(tempImages[x].name) !== -1) {
 										exist = true;
 										break;
@@ -263,6 +263,9 @@ router.put('/:id', (req, res) => {
 						}
 					}
 				}
+
+				article.mod_date = Date.now();
+
 				Article.update({ _id: req.params.id }, article, (err, result) => {
 					if (err) reject(err);
 					if (result.ok === 1) {
@@ -274,6 +277,66 @@ router.put('/:id', (req, res) => {
 						})
 					}
 				});
+			});
+		};
+
+		const syncImage = (article) => {
+			return new Promise((resolve, reject) => {
+
+                // TODO Article document에 있는 이미지와 실제 DOM에 있는 이미지랑 Sync 해줘야 함.
+                Article.aggregate([
+                    {
+                        $match: {
+                            _id: mongoose.Types.ObjectId(article._id)
+                        }
+                    },
+                    {
+                        $lookup: {
+                            from: 'images',
+                            localField: 'images',
+                            foreignField: '_id',
+                            as: 'images'
+                        }
+                    }
+                ], (err, dbArticle) => {
+                    // ** content에 있는 image와 실제 업로드된 image를 매칭시켜서
+                    // 실제 사용하는 image만 서버에 남겨둠
+					dbArticle = dbArticle[0];
+                    jsdom.env(dbArticle.content, (err, window) => {
+                        const dbImages = dbArticle.images;
+                        const images = window.document.images;
+                        let tempImages = [];
+                        for (let x = 0; x < dbImages.length; x++) {
+                            let exist = false;
+                            for (let i = 0; i < images.length; i++) {
+                                if (images[i].src.indexOf(dbImages[x].name) !== -1) {
+                                    exist = true;
+                                    break;
+                                }
+                            }
+
+                            if (exist) {
+                                tempImages.push(dbImages[x]._id);
+                            } else {
+                                fs.unlink(dbImages[x].real_path);
+                                Image.find({ _id: dbImages[x]._id }).remove().exec();
+                            }
+
+                            dbArticle.images = tempImages;
+                            Article.update({ _id: req.params.id }, dbArticle, (err, result) => {
+                                if (err) reject(err);
+                                if (result.ok === 1) {
+                                    resolve(dbArticle);
+                                } else {
+                                    reject({
+                                        status: 500,
+                                        message: 'update failure'
+                                    })
+                                }
+                            });
+                        }
+                    });
+                });
 			});
 		};
 
@@ -294,6 +357,7 @@ router.put('/:id', (req, res) => {
 
 		validate()
 			.then(update)
+			.then(syncImage)
 			.then(respond)
 			.catch(onError);
 	});

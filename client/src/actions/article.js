@@ -158,15 +158,15 @@ export function modifyArticleRequest(token, article) {
 		dispatch(modifyArticle());
 		return axios({
 			method: 'put',
-			url: `${config.API_SERVER}/api/article`,
+			url: `${config.API_SERVER}/api/article/${article._id}`,
 			headers: {
 				'authorization': token
 			},
 			data: article
 		}).then((response) => {
-			dispatch(registerArticleSuccess(response.data));
+			dispatch(modifyArticleSuccess(response.data));
 		}).catch((error) => {
-			dispatch(registerArticleFailure(error.response));
+			dispatch(modifyArticleFailure(error.response));
 		})
 	}
 }

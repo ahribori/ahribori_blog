@@ -81,7 +81,21 @@
     color: $grey500;
     font-size: 0.7em;
     line-height: 1.5;
+
+    .article_menu {
+        float: right;
+        font-weight: bold;
+        .article_modify_btn {
+            cursor: pointer;
+            color: $amber800;
+        }
+        .article_remove_btn {
+            cursor: pointer;
+            color: $red800;
+        }
+    }
 }
+
 .article_content  {
     h1,h2,h3,h4,h5,h6 {
         font-family: 'D2 coding';
