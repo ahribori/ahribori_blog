@@ -256,9 +256,10 @@ router.put('/:id', (req, res) => {
 			return new Promise((resolve, reject) => {
 
 				const data = req.body;
+
 				for (var key in data) {
 					if (data.hasOwnProperty(key)) {
-						if (data[key] && data[key] !== '') {
+						if ((data[key] !== (undefined || null)) && data[key] !== '') {
 							article[key] = data[key];
 						}
 					}
