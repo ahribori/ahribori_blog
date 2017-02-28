@@ -25,10 +25,10 @@ const authMiddleware = (req, res, next) => {
 			if (verified.success) {
 				resolve(verified.info)
 			} else {
-				throw {
+				reject ({
 					status: 403,
 					message: verified.message
-				}
+				});
 			}
 		});
 	});

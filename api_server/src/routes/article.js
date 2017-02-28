@@ -417,10 +417,21 @@ router.delete('/:id', (req, res) => {
 
 	const remove = (article) => {
 		return new Promise((resolve, reject) => {
+
 			Article(article).remove((err, result) => {
 				if (err) reject(err);
+
+				const images = article.images;
+				for (let i = 0; i < images.length; i++) {
+					fs.unlink(images[i].real_path);
+					Image.find({ _id: images[i]._id }).remove().exec();
+				}
+
 				resolve(true);
 			});
+
+
+
 		});
 	};
 
