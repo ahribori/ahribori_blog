@@ -1,7 +1,9 @@
 import express from 'express';
+import mongoose from 'mongoose';
 const router = express.Router();
 import ArticleTemp from '../models/article_temp';
-
+import Image from '../models/image';
+import fs from 'fs';
 /* =========================================
  POST /api/article_temp
  {
@@ -291,6 +293,73 @@ router.delete('/:id', (req, res) => {
 			.catch(onError);
 
 	});
+
+});
+
+
+/* =========================================
+ DELETE /api/article_temp_clear_images/{id}
+ ============================================*/
+router.delete('/clear_images/:id', (req, res) => {
+
+    if (!req.payload.admin) throw { message: 'not admin' };
+    ArticleTemp.aggregate([
+        {
+            $match: {
+                _id: mongoose.Types.ObjectId(req.params.id)
+            }
+        },
+        {
+            $lookup: {
+                from: 'images',
+                localField: 'images',
+                foreignField: '_id',
+                as: 'images'
+            }
+        }
+	], (err, article_temp) => {
+        if (err) throw err;
+        if (!article_temp) {
+            res.status(404).json({
+                message: 'resource not found'
+            });
+            return;
+        }
+
+        const removeImages = () => {
+            return new Promise((resolve, reject) => {
+            	const images = article_temp.length > 0 ? article_temp[0].images : [];
+            	for (let i = 0; i < images.length; i++) {
+                    fs.unlink(images[i].real_path);
+                    Image.find({ _id: images[i]._id }).remove().exec();
+				}
+
+                ArticleTemp.findOne(mongoose.Types.ObjectId(article_temp[0]._id), (err, result) => {
+                    result.images = [];
+                    result.save();
+                });
+
+				resolve(true);
+            });
+        };
+
+        const respond = (success) => {
+            res.status(200).json({
+                success: success
+            });
+        };
+
+        const onError = (error) => {
+            res.status(409).json({
+                message: error.message
+            })
+        };
+
+        removeImages()
+            .then(respond)
+            .catch(onError);
+
+    });
 
 });
 

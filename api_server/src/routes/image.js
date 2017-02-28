@@ -98,7 +98,6 @@ router.post('/ckeditor_dragndrop', (req, res) => {
 		return new Promise((resolve, reject) => {
 			Image.create(result.file.originalFilename, result.file.savedFilename, result.file.path, result.file.size)
 				.then((image) => {
-					console.log(result);
 					if (result.mode === 'register') {
 						ArticleTemp.findById(result.article_temp_id, (err, article_temp) => {
 							article_temp.images.push(image._id);

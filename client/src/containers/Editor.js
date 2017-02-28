@@ -4,12 +4,22 @@ import { connect } from 'react-redux';
 import { withRouter, browserHistory } from 'react-router';
 import { CKEditor } from 'components';
 import { getStatusRequest } from 'actions/authentication';
-import { registerArticleRequest, modifyArticleRequest, registerArticleTempRequest, getArticleTempRequest, modifyArticleTempRequest, getArticleRequest } from 'actions/article';
+import {
+	registerArticleRequest,
+	modifyArticleRequest,
+	registerArticleTempRequest,
+	getArticleTempRequest,
+	modifyArticleTempRequest,
+	getArticleRequest,
+    removeArticleRequest
+} from 'actions/article';
 import Checkbox from 'material-ui/Checkbox';
 import Visibility from 'material-ui/svg-icons/action/visibility';
 import VisibilityOff from 'material-ui/svg-icons/action/visibility-off';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
+import axios from 'axios';
+import config from '../config';
 
 class Editor extends React.Component {
 	constructor(props) {
@@ -233,7 +243,22 @@ class Editor extends React.Component {
                                                 content: this.props.article_temp.content
                                             });
                                             CKEDITOR.instances['ck_editor'].setData(this.props.article_temp.content);
-                                        }
+                                        } else {
+                                        	axios({
+                                        		method: 'delete',
+												url: `${config.API_SERVER}/api/article_temp/clear_images/${this.props.article_temp._id}`,
+                                                headers: {
+                                                    'authorization': token
+                                                }
+											})
+												.then((response) => {
+                                        			console.log(response, 'temp에 저장되어있던 이미지 모두 삭제 완료.');
+													this.handleSaveTemp();
+												})
+												.catch((error) => {
+													console.error(error);
+												})
+										}
                                     }
                                 })
                         });
@@ -295,7 +320,10 @@ const mapDispatchToProps = (dispatch) => {
 		},
         getArticleRequest: (id, token) => {
             return dispatch(getArticleRequest(id, token));
-        }
+        },
+        removeArticleRequest: (token, id) => {
+            return dispatch(removeArticleRequest(token, id));
+		}
 	}
 };
 

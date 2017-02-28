@@ -191,6 +191,43 @@ export function modifyArticleFailure(error) {
 	}
 }
 
+export function removeArticleRequest(token, article_id) {
+	return (dispatch) => {
+		dispatch(removeArticle());
+		return axios({
+            method: 'delete',
+            url: `${config.API_SERVER}/api/article/${article_id}`,
+            headers: {
+                'authorization': token
+            }
+        }).then((response) => {
+            dispatch(removeArticleSuccess(response.data));
+        }).catch((error) => {
+            dispatch(removeArticleFailure(error.response));
+        })
+	}
+}
+
+export function removeArticle() {
+	return {
+		type: REMOVE_ARTICLE
+	}
+}
+
+export function removeArticleSuccess(response) {
+	return {
+		type: REMOVE_ARTICLE_SUCCESS,
+		response
+	}
+}
+
+export function removeArticleFailure(error) {
+	return {
+		type: REMOVE_ARTICLE_FAILURE,
+		error
+	}
+}
+
 export function getArticleTempRequest(token) {
 	return (dispatch) => {
 		dispatch(getArticleTemp());
@@ -308,4 +345,41 @@ export function modifyArticleTempFailure(error) {
 		type: MODIFY_ARTICLE_TEMP_FAILURE,
 		error
 	}
+}
+
+export function removeArticleTempRequest(token, article_temp_id) {
+    return (dispatch) => {
+        dispatch(removeArticleTemp());
+        return axios({
+            method: 'delete',
+            url: `${config.API_SERVER}/api/article_temp/${article_temp_id}`,
+            headers: {
+                'authorization': token
+            }
+        }).then((response) => {
+            dispatch(removeArticleTempSuccess(response.data));
+        }).catch((error) => {
+            dispatch(removeArticleTempFailure(error.response));
+        })
+    }
+}
+
+export function removeArticleTemp() {
+    return {
+        type: REMOVE_ARTICLE_TEMP
+    }
+}
+
+export function removeArticleTempSuccess(response) {
+    return {
+        type: REMOVE_ARTICLE_TEMP_SUCCESS,
+        response
+    }
+}
+
+export function removeArticleTempFailure(error) {
+    return {
+        type: REMOVE_ARTICLE_TEMP_FAILURE,
+        error
+    }
 }

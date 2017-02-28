@@ -23,6 +23,10 @@ const initialState = {
 		status: 'INIT',
 		error: null
 	},
+	remove: {
+        status: 'INIT',
+        error: null
+	},
 	register_temp: {
 		status: 'INIT',
 		error: null
@@ -30,6 +34,10 @@ const initialState = {
 	modify_temp: {
 		status: 'INIT',
 		error: null
+	},
+	remove_temp: {
+        status: 'INIT',
+        error: null
 	}
 };
 
@@ -107,6 +115,26 @@ export default function application(state= initialState, action) {
                     error: { $set: action.error }
                 }
             });
+        case types.REMOVE_ARTICLE:
+            return update(state, {
+                remove: {
+                    status: { $set: 'WAITING'},
+                    error: { $set: null }
+                }
+            });
+        case types.REMOVE_ARTICLE_SUCCESS:
+            return update(state, {
+                remove: {
+                    status: { $set: 'SUCCESS'},
+                }
+            });
+        case types.REMOVE_ARTICLE_FAILURE:
+            return update(state, {
+                remove: {
+                    status: { $set: 'FAILURE'},
+                    error: { $set: action.error }
+                }
+            });
 		case types.REGISTER_ARTICLE_TEMP:
 			return update(state, {
 				register_temp: {
@@ -162,6 +190,26 @@ export default function application(state= initialState, action) {
 					error: { $set: action.error }
 				}
 			});
+        case types.REMOVE_ARTICLE_TEMP:
+            return update(state, {
+                remove_temp: {
+                    status: { $set: 'WAITING'},
+                    error: { $set: null }
+                }
+            });
+        case types.REMOVE_ARTICLE_TEMP_SUCCESS:
+            return update(state, {
+                remove_temp: {
+                    status: { $set: 'SUCCESS'},
+                }
+            });
+        case types.REMOVE_ARTICLE_TEMP_FAILURE:
+            return update(state, {
+                remove_temp: {
+                    status: { $set: 'FAILURE'},
+                    error: { $set: action.error }
+                }
+            });
 	}
 	return state;
 }
