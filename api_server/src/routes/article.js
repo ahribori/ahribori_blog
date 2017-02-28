@@ -306,6 +306,7 @@ router.put('/:id', (req, res) => {
                         const dbImages = dbArticle.images;
                         const images = window.document.images;
                         let tempImages = [];
+
                         for (let x = 0; x < dbImages.length; x++) {
                             let exist = false;
                             for (let i = 0; i < images.length; i++) {
@@ -322,19 +323,28 @@ router.put('/:id', (req, res) => {
                                 Image.find({ _id: dbImages[x]._id }).remove().exec();
                             }
 
-                            dbArticle.images = tempImages;
-                            Article.update({ _id: req.params.id }, dbArticle, (err, result) => {
-                                if (err) reject(err);
-                                if (result.ok === 1) {
-                                    resolve(dbArticle);
-                                } else {
-                                    reject({
-                                        status: 500,
-                                        message: 'update failure'
-                                    })
-                                }
-                            });
                         }
+
+						dbArticle.images = tempImages;
+                        
+                        // 썸네일 이미지 다시 지정
+						if (dbArticle.images.length === 0) {
+							dbArticle.thumbnail_image = '';
+						} else {
+							dbArticle.thumbnail_image = `${config.API_SERVER}/image/${dbImages[0].name}`;
+						}
+
+						Article.update({ _id: req.params.id }, dbArticle, (err, result) => {
+							if (err) reject(err);
+							if (result.ok === 1) {
+								resolve(dbArticle);
+							} else {
+								reject({
+									status: 500,
+									message: 'update failure'
+								})
+							}
+						});
                     });
                 });
 			});
