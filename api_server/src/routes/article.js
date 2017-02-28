@@ -220,7 +220,11 @@ router.get('/:id', (req, res) => {
 			});
 			return;
 		}
-		res.json(article);
+		article.hit++;
+		article.save()
+			.then(()=> {
+				res.json(article);
+			})
 	});
 });
 
