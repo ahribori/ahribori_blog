@@ -15,6 +15,7 @@ class Editor extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			mode: 'register',
 			category: 0,
 			title: '',
 			content: '',
@@ -141,8 +142,11 @@ class Editor extends React.Component {
 							</div>
 							<CKEditor id="editor" value={this.state.content} onChange={this.handleChangeCKEditor} />
 							<CardActions border>
-								<Button raised colored ripple onClick={this.handleSubmit}><Icon name="done" />등록</Button>
-								<Button ripple onClick={this.handleSaveTemp}><Icon name="save" />저장</Button>
+								{ this.state.mode === 'register' ? 
+									<Button raised colored ripple onClick={this.handleSubmit}><Icon name="done"/> 등록</Button> :
+									<Button raised accent ripple onClick={this.handleSubmit}><Icon name="edit"/> 수정</Button>
+                                }
+								{ this.state.mode === 'register' ? <Button ripple onClick={this.handleSaveTemp}><Icon name="save" />저장</Button> : '' }
 								<Button ripple onClick={browserHistory.goBack}>취소</Button>
 							</CardActions>
 						</Card>
@@ -188,6 +192,7 @@ class Editor extends React.Component {
 
                 if (params.mode === 'modify') {
 					/*	MODIFY */
+					this.setState({ mode: 'modify' });
 					localStorage.setItem('editor_mode', 'modify');
 					const id = params.id;
 
@@ -212,6 +217,7 @@ class Editor extends React.Component {
 
                 } else {
 					/*	REGISTER */
+                    this.setState({ mode: 'register' });
                     localStorage.setItem('editor_mode', 'register');
 
                     this.props.registerArticleTempRequest(token, article_temp)
