@@ -385,41 +385,63 @@ router.delete('/:id', (req, res) => {
 
 	if (!req.payload.admin) throw { message: 'not admin' };
 
-	Article.findOne({ _id: req.params.id }, (err, article) => {
-		if (err) throw err;
-		if (!article) {
-			res.status(404).json({
-				message: 'resource not found'
-			});
-			return;
-		}
+	const aggregate = () => {
+		return new Promise((resolve, reject) => {
+			Article.aggregate([
+				{
+					$match: {
+                        _id: mongoose.Types.ObjectId(req.params.id)
+					}
+				},
+                {
+                    $lookup: {
+                        from: 'images',
+                        localField: 'images',
+                        foreignField: '_id',
+                        as: 'images'
+                    }
+                }
+			], (err, result) => {
+				if (err) reject(err);
+                if (!result || result.length === 0) {
+					reject({
+						status: 404,
+                        message: 'resource not found'
+                    });
+                }
 
-		const remove = () => {
-			return new Promise((resolve, reject) => {
-				article.remove((err, result) => {
-					if (err) reject(err);
-					resolve(true);
-				});
-			});
-		};
-
-		const respond = (success) => {
-			res.status(200).json({
-				success: success
-			});
-		};
-
-		const onError = (error) => {
-			res.status(409).json({
-				message: error.message
+				resolve(result[0]);
 			})
-		};
+		});
+	};
 
-		remove()
-			.then(respond)
-			.catch(onError);
+	const remove = (article) => {
+		return new Promise((resolve, reject) => {
+			Article(article).remove((err, result) => {
+				if (err) reject(err);
+				resolve(true);
+			});
+		});
+	};
 
-	});
+	const respond = (success) => {
+		res.status(200).json({
+			success: success
+		});
+	};
+
+    const onError = (error) => {
+        const status = error.status || 500;
+        const message = error.message || 'somting broke';
+        res.status(status).json({
+            message: message
+        })
+    };
+
+	aggregate()
+		.then(remove)
+		.then(respond)
+		.catch(onError);
 
 });
 

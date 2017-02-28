@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 import {Grid, Cell, Card, CardTitle, CardText, CardActions, Button, Textfield, Icon} from 'react-mdl';
-import { getArticleRequest } from 'actions/article';
+import { getArticleRequest, removeArticleRequest } from 'actions/article';
 import { setEditorModeModify } from 'actions/app';
 
 class Article extends React.Component {
@@ -14,10 +14,20 @@ class Article extends React.Component {
 		};
 
 		this.handleClickModify = this.handleClickModify.bind(this);
+		this.handleClickRemove = this.handleClickRemove.bind(this);
 	}
 
 	handleClickModify() {
 		browserHistory.push('/editor?mode=modify&id=' + this.props.article._id);
+	}
+
+	handleClickRemove() {
+		if (confirm('정말 삭제하시겠습니까?')) {
+			this.props.removeArticleRequest(this.props.user.token, this.props.article._id)
+				.then(() => {
+					browserHistory.push('/');
+				})
+		}
 	}
 
 	render() {
@@ -26,7 +36,7 @@ class Article extends React.Component {
 			<div className="article_menu">
 				<span className="article_modify_btn" onClick={this.handleClickModify}>수정</span>
 				<span> | </span>
-				<span className="article_remove_btn">삭제</span>
+				<span className="article_remove_btn" onClick={this.handleClickRemove}>삭제</span>
 			</div>
 		);
 
@@ -104,6 +114,9 @@ const mapDispatchToProps = (dispatch) => {
 	return {
 		getArticleRequest: (id, token) => {
 			return dispatch(getArticleRequest(id, token));
+		},
+        removeArticleRequest: (token, id) => {
+			return dispatch(removeArticleRequest(token, id));
 		}
 	}
 };
