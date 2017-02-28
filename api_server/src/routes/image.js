@@ -4,6 +4,7 @@ import config from '../config';
 import path from 'path';
 import fs from 'fs';
 import Image from '../models/image';
+import Article from '../models/article';
 import ArticleTemp from '../models/article_temp';
 import Jimp from 'jimp';
 
@@ -47,10 +48,21 @@ router.post('/ckeditor_dragndrop', (req, res) => {
 					 여러번의 Request를 날리는 방식이기 때문에 따로 처리를 하지 않았다.
 					 */
 
-					resolve({
-						article_temp_id: fields.article_temp_id[0],
-						file: files.upload[0]
-					})
+					const mode = fields.mode[0];
+
+					if (mode === 'register') {
+						resolve({
+							mode: fields.mode[0],
+							article_temp_id: fields.article_temp_id[0],
+							file: files.upload[0]
+						})
+					} else if (mode === 'modify') {
+						resolve({
+							mode: fields.mode[0],
+							article_id: fields.article_id[0],
+							file: files.upload[0]
+						})
+					}
 				}
 			});
 		});
@@ -73,6 +85,8 @@ router.post('/ckeditor_dragndrop', (req, res) => {
 					image.write(file_path);
 					result.file.savedFilename = path.basename(file_path);
 					resolve({
+						mode: result.mode,
+						article_id: result.article_id,
 						article_temp_id: result.article_temp_id,
 						file: result.file
 					});
@@ -85,13 +99,23 @@ router.post('/ckeditor_dragndrop', (req, res) => {
 		return new Promise((resolve, reject) => {
 			Image.create(result.file.originalFilename, result.file.savedFilename, result.file.path, result.file.size)
 				.then((image) => {
-					ArticleTemp.findById(result.article_temp_id, (err, article_temp) => {
-						article_temp.images.push(image._id);
-						article_temp.save((err) => {
-							if (err) reject(err);
-							else resolve(result.file.savedFilename);
-						})
-					});
+					if (result.mode === 'register') {
+						ArticleTemp.findById(result.article_temp_id, (err, article_temp) => {
+							article_temp.images.push(image._id);
+							article_temp.save((err) => {
+								if (err) reject(err);
+								else resolve(result.file.savedFilename);
+							})
+						});
+					} else if (result.mode === 'modify') {
+                        Article.findById(result.article_id, (err, article) => {
+                            article.images.push(image._id);
+                            article.save((err) => {
+                                if (err) reject(err);
+                                else resolve(result.file.savedFilename);
+                            })
+                        });
+					}
 				})
 		})
 	};

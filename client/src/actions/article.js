@@ -117,7 +117,8 @@ export function registerArticleRequest(token, article) {
 			},
 			data: {
 				category: article.category,
-				author: article.author,
+				author_id: article.author_id,
+				author_nickname: article.author_nickname,
 				title: article.title,
 				content: article.content,
 				preview: article.preview,
@@ -157,15 +158,15 @@ export function modifyArticleRequest(token, article) {
 		dispatch(modifyArticle());
 		return axios({
 			method: 'put',
-			url: `${config.API_SERVER}/api/article`,
+			url: `${config.API_SERVER}/api/article/${article._id}`,
 			headers: {
 				'authorization': token
 			},
 			data: article
 		}).then((response) => {
-			dispatch(registerArticleSuccess(response.data));
+			dispatch(modifyArticleSuccess(response.data));
 		}).catch((error) => {
-			dispatch(registerArticleFailure(error.response));
+			dispatch(modifyArticleFailure(error.response));
 		})
 	}
 }
@@ -186,6 +187,43 @@ export function modifyArticleSuccess(result) {
 export function modifyArticleFailure(error) {
 	return {
 		type: MODIFY_ARTICLE_FAILURE,
+		error
+	}
+}
+
+export function removeArticleRequest(token, article_id) {
+	return (dispatch) => {
+		dispatch(removeArticle());
+		return axios({
+            method: 'delete',
+            url: `${config.API_SERVER}/api/article/${article_id}`,
+            headers: {
+                'authorization': token
+            }
+        }).then((response) => {
+            dispatch(removeArticleSuccess(response.data));
+        }).catch((error) => {
+            dispatch(removeArticleFailure(error.response));
+        })
+	}
+}
+
+export function removeArticle() {
+	return {
+		type: REMOVE_ARTICLE
+	}
+}
+
+export function removeArticleSuccess(response) {
+	return {
+		type: REMOVE_ARTICLE_SUCCESS,
+		response
+	}
+}
+
+export function removeArticleFailure(error) {
+	return {
+		type: REMOVE_ARTICLE_FAILURE,
 		error
 	}
 }
@@ -236,7 +274,8 @@ export function registerArticleTempRequest(token, article) {
 			},
 			data: {
 				category: article.category,
-				author: article.author,
+				author_id: article.author_id,
+				author_nickname: article.author_nickname,
 				title: article.title,
 				content: article.content,
 				hidden: article.hidden
@@ -306,4 +345,41 @@ export function modifyArticleTempFailure(error) {
 		type: MODIFY_ARTICLE_TEMP_FAILURE,
 		error
 	}
+}
+
+export function removeArticleTempRequest(token, article_temp_id) {
+    return (dispatch) => {
+        dispatch(removeArticleTemp());
+        return axios({
+            method: 'delete',
+            url: `${config.API_SERVER}/api/article_temp/${article_temp_id}`,
+            headers: {
+                'authorization': token
+            }
+        }).then((response) => {
+            dispatch(removeArticleTempSuccess(response.data));
+        }).catch((error) => {
+            dispatch(removeArticleTempFailure(error.response));
+        })
+    }
+}
+
+export function removeArticleTemp() {
+    return {
+        type: REMOVE_ARTICLE_TEMP
+    }
+}
+
+export function removeArticleTempSuccess(response) {
+    return {
+        type: REMOVE_ARTICLE_TEMP_SUCCESS,
+        response
+    }
+}
+
+export function removeArticleTempFailure(error) {
+    return {
+        type: REMOVE_ARTICLE_TEMP_FAILURE,
+        error
+    }
 }

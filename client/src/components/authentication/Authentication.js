@@ -100,7 +100,7 @@ class Authentication extends React.Component {
 					colored>로그인</Button>
 				<Button
 					onClick={() => {
-						browserHistory.push('/register')
+						browserHistory.push('/signup')
 					}}
 					colored>계정 만들기</Button>
 			</div>

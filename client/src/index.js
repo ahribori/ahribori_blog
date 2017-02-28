@@ -4,7 +4,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router, Route, browserHistory, IndexRoute } from 'react-router';
-import { App, Login, Home, Article, Register, Write, NotFound } from 'containers';
+import { App, Login, Home, Article, SignUp, Editor, NotFound } from 'containers';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
 
@@ -36,6 +36,11 @@ import 'react-mdl/extra/material.js';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 /* =========================================
+ Load Custom Style
+ ============================================*/
+import './style.scss';
+
+/* =========================================
  Render
  ============================================*/
 const rootElement = document.getElementById('app');
@@ -50,8 +55,8 @@ ReactDOM.render(
 						<Route path=":id" component={Article} />
 					</Route>
 					<Route path="login" component={Login}/>
-					<Route path="register" component={Register}/>
-					<Route path="write" component={Write}/>
+					<Route path="signup" component={SignUp}/>
+					<Route path="editor" component={Editor}/>
 					<Route path="*" component={NotFound} />
 					//	여기는 react-codelab 프로젝트를 참조해서 작성해
 				</Route>

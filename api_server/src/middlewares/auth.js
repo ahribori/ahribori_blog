@@ -18,21 +18,29 @@ const authMiddleware = (req, res, next) => {
 				authorization: token
 			}
 		}, (error, response, body) => {
+			if (!body) throw {
+				message: 'empty body received'
+			};
 			const verified = JSON.parse(body);
 			if (verified.success) {
 				resolve(verified.info)
 			} else {
-				reject(new Error(verified.message))
+				throw {
+					status: 403,
+					message: verified.message
+				}
 			}
 		});
 	});
 
-	const onError = (error) => {
-		res.status(403).json({
-			success: false,
-			message: error.message
-		});
-	};
+    const onError = (error) => {
+        const status = error.status || 500;
+        const message = error.message || 'somting broke';
+        res.status(status).json({
+        	success: false,
+            message: message
+        })
+    };
 
 	verify.then((payload) => {
 		req.payload = payload;

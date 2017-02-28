@@ -21,17 +21,9 @@ $gridItemPadding: 8px;
     -webkit-font-smoothing: antialiased;
 }
 
-.big-item-card {
-    @include item-card(100%, auto);
-    min-height: 550px;
-    h2 {
-        @include item-card-title(3rem);
-    }
-}
-
 .item-card {
     @include item-card(100%, auto);
-    min-height: 400px;
+    height: 550px;
     h2 {
         @include item-card-title(1.5rem);
     }
@@ -45,6 +37,8 @@ $gridItemPadding: 8px;
 }
 
 .article_timeago {
+    margin-right: 10px;
+    float: right;
     font-family: 'D2 coding';
     color: $amber900
 }
@@ -64,4 +58,69 @@ $gridItemPadding: 8px;
     .grid-item {
         padding: 8px;
     }
+}
+
+.item-hover-effect {
+    display: inline-block;
+    vertical-align: middle;
+    -webkit-transform: perspective(1px) translateZ(0);
+    transform: perspective(1px) translateZ(0);
+    box-shadow: 0 0 1px transparent;
+    -webkit-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+    -webkit-transition-property: transform;
+    transition-property: transform;
+}
+.item-hover-effect:hover, .item-hover-effect:focus, .item-hover-effect:active {
+    -webkit-transform: scale(1.02);
+    transform: scale(1.02);
+}
+
+.card-top {
+    color: $amber500;
+    .material-icons {
+        font-size: 1.4rem !important;
+    }
+    text-shadow:
+            3px 3px 0 #131313,
+            -1px -1px 0 #131313,
+            1px -1px 0 #131313,
+            -1px 1px 0 #131313,
+            1px 1px 0 #131313;
+    .item-value {
+        position: absolute;
+        top: 3px;
+        left: 22px;
+        color: white;
+    }
+    position: absolute;
+    top: 10px;
+    left: 10px;
+
+}
+
+.card-bottom {
+    line-height: 2.5;
+    font-size: 0.9rem;
+    .item-bottom-right {
+        margin-top: 3px;
+        float: right;
+    }
+    .item-author {
+        color: $blueGrey700;
+        font-weight: bold;
+        font-size: 1rem;
+        padding: 0 0 5px 0;
+    }
+    .item-value {
+        padding: 0 5px 5px 2px;
+    }
+    .hit {
+        color: $teal700;
+    }
+    .reply {
+        color: $lightGreen700;
+    }
+    color: $grey700;
+    margin: 0 15px 15px 15px;
 }
