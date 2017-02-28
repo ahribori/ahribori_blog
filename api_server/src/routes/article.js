@@ -143,7 +143,7 @@ router.get('/', (req, res) => {
 			{
 				$or: [
 					{ hidden: false },
-					{ $and: [ { author_id: req.payload._id }, { hidden: true } ] }
+					{ $and: [ { author_id: mongoose.Types.ObjectId(req.payload._id) }, { hidden: true } ] }
 				]
 
 			};
