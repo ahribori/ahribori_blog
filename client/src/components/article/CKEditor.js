@@ -20,5 +20,11 @@ export default class CKEditor extends Component {
 			let data = CKEDITOR.instances[this.elementName].getData();
 			this.props.onChange(data);
 		}.bind(this));
+
+		CKEDITOR.instances[this.elementName].on( 'fileUploadRequest', function( evt ) {
+		});
+
+		CKEDITOR.instances[this.elementName].on( 'fileUploadResponse', function( evt ) {
+		} );
 	}
 }

@@ -76,6 +76,12 @@ hr
 	border-top: 1px solid #ccc;
 }
 
+img
+{
+	max-width: 100%;
+	height: auto;
+}
+
 .image-center
 {
 	text-align: center;
