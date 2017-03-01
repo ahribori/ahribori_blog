@@ -74,7 +74,10 @@ router.post('/ckeditor_dragndrop', (req, res) => {
 
 			//********** Jimp Imeage Processing **********
 			Jimp.read(file_path, (err, image) => {
-				if (err) reject(err);
+				if (err) {
+					fs.unlink(file_path);
+					reject({ message: '이미지 파일이 완전하지 않습니다.' });
+				}
 
 				if (image.bitmap.width > 800) image.resize(800, Jimp.AUTO); // max width
 				image.quality(100);
