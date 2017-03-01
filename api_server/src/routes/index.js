@@ -3,6 +3,7 @@ const router = express.Router();
 import article from './article';
 import article_temp from './article_temp';
 import image from './image';
+import search from './search';
 import authMiddleware from '../middlewares/auth';
 
 router.get('/', (req, res) => {
@@ -15,6 +16,8 @@ router.get('/', (req, res) => {
 router.use('/api', authMiddleware);
 router.use('/api/article', article);
 router.use('/api/article_temp', article_temp);
+router.use('/search', authMiddleware);
+router.use('/search', search);
 
 // router.use('/image', authMiddleware);
 router.use('/image', image);

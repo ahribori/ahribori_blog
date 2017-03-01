@@ -179,7 +179,6 @@ router.get('/', (req, res) => {
 						tags: true,
 						title: true,
 						thumbnail_image: true,
-						// content: { $substrCP: ["$content", 0, 200] },
 						preview: true
 					}
 				}
