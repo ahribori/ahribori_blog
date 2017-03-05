@@ -162,26 +162,114 @@ router.put('/:id', (req, res) => {
 
 	const validate = () => {
 		return new Promise((resolve, reject) => {
-			const { name } = req.body;
-			if (name) {
-				resolve({
-					name
-				})
-			} else {
-				reject({
-					status: 400,
-					message: 'name cannot be undefined'
-				})
+			const { name, prev_order } = req.body;
+
+			if (prev_order) {
+				const prev = Number(prev_order);
+
+				if (isNaN(prev)) {
+					reject({
+						status: 400,
+						message: 'prev_order is not a number'
+					})
+				}
+
+				if (prev < -1) {
+					reject({
+						status: 400,
+						message: 'invalid parameter values'
+					})
+				}
 			}
+
+			resolve({
+				name,
+				prev_order,
+				order: prev_order + 1
+			})
+		});
+	};
+
+	const pushOrder = (category) => {
+		return new Promise((resolve, reject) => {
+			Category.aggregate([
+				{
+					$match: {
+						order: {
+							$gt: category.prev_order
+						}
+					}
+				},
+				{
+					$sort: {
+						order: 1
+					}
+				}
+			], (err, categories) => {
+				if (categories.length > 0) {
+					if (categories[0]._id.toString() === req.params.id.toString()) {
+						reject({
+							status: 400,
+							message: 'prev_order must bigger then self order'
+						})
+					}
+
+					let updateCount = 0;
+
+					for (var i = 0; i < categories.length; i++) {
+						Category(categories[i]).update({
+							order: categories[i].order + 1
+						}, (err, result) => {
+							if (err) reject(err);
+							updateCount++;
+							if (updateCount === categories.length) {
+								resolve(category);
+							}
+						})
+					}
+				} else {
+					resolve(category);
+				}
+			});
+
 		});
 	};
 
 	const update = (category) => {
 		return new Promise((resolve, reject) => {
-			Category.update(req.params.id, category, (err, result) => {
+			console.log(category.order)
+			Category.update({ _id: req.params.id }, {
+				order: category.order
+			}, (err, result) => {
 				if (err) reject(err);
-				resolve(result);
+				resolve(true);
 			})
+		});
+	};
+
+	const reorder = (success) => {
+		return new Promise((resolve, reject) => {
+			Category.aggregate([
+				{
+					$sort: {
+						order: 1
+					}
+				}
+			], (err, categories) => {
+				let updateCount = 0;
+				for (var i = 0; i < categories.length; i++) {
+					categories[i].order = i;
+					Category(categories[i]).update({
+						order: i
+					}, (err, result) => {
+						if (err) reject(err);
+						updateCount++;
+						if (updateCount === categories.length) {
+							resolve(categories);
+						}
+					})
+				}
+			});
 		});
 	};
 
@@ -201,7 +289,9 @@ router.put('/:id', (req, res) => {
 	};
 
 	validate()
+		.then(pushOrder)
 		.then(update)
+		.then(reorder)
 		.then(respond)
 		.catch(onError)
 
@@ -234,11 +324,19 @@ router.delete('/:id', (req, res) => {
 					}
 				}
 			], (err, categories) => {
+				let updateCount = 0;
 				for (var i = 0; i < categories.length; i++) {
 					categories[i].order = i;
-					Category(categories[i]).save();
+					Category(categories[i]).update({
+						order: i
+					}, (err, result) => {
+						if (err) reject(err);
+						updateCount++;
+						if (updateCount === categories.length) {
+							resolve(categories);
+						}
+					})
 				}
-				resolve(categories)
 			});
 		});
 	};
