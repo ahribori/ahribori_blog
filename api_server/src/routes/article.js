@@ -428,9 +428,6 @@ router.delete('/:id', (req, res) => {
 
 				resolve(true);
 			});
-
-
-
 		});
 	};
 
