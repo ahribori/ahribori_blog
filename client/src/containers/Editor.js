@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { withRouter, browserHistory } from 'react-router';
 import { CKEditor } from 'components';
 import { getCategoryRequest } from 'actions/category';
-import { getStatusRequest } from 'actions/authentication';
 import {
 	registerArticleRequest,
 	modifyArticleRequest,
@@ -205,111 +204,106 @@ class Editor extends React.Component {
 		const params = this.props.location.query;
 		const token = localStorage.getItem('ahribori_token');
 
-		this.props.getStatusRequest(token)
+		// 권한 없을 때 redirect
+		if (!this.props.user || !this.props.user.admin) {
+			browserHistory.push('/');
+			return;
+		}
+
+		const article_temp = {
+			category: this.state.category,
+			author_id: this.props.user._id,
+			author_nickname: this.props.user.nickname,
+			title: this.state.title,
+			content: this.state.content,
+			hidden: this.state.hidden
+		};
+
+		const editor =  CKEDITOR.instances['ck_editor'];
+
+		this.props.getCategoryRequest(this.props.user.token)
 			.then(() => {
-
-				// 권한 없을 때 redirect
-				if (!this.props.user || !this.props.user.admin) {
-					browserHistory.push('/');
-					return;
-				}
-
-				const article_temp = {
-					category: this.state.category,
-					author_id: this.props.user._id,
-					author_nickname: this.props.user.nickname,
-					title: this.state.title,
-					content: this.state.content,
-					hidden: this.state.hidden
-				};
-
-				const editor =  CKEDITOR.instances['ck_editor'];
-
-				this.props.getCategoryRequest(this.props.user.token)
-					.then(() => {
-						if (this.props.category.status === 'SUCCESS') {
-							this.setState({
-								categories: this.props.category.response.response
-							});
-						}
-						if (params.mode !== 'modify') {
-							if (this.state.categories.length > 0) {
-								this.setState( {
-									category: this.state.categories[0]._id
-								})
-							}
-						}
+				if (this.props.category.status === 'SUCCESS') {
+					this.setState({
+						categories: this.props.category.response.response
 					});
+				}
+				if (params.mode !== 'modify') {
+					if (this.state.categories.length > 0) {
+						this.setState( {
+							category: this.state.categories[0]._id
+						})
+					}
+				}
+			});
 
-                if (params.mode === 'modify') {
-					/*	MODIFY */
-					this.setState({ mode: 'modify' });
-					localStorage.setItem('editor_mode', 'modify');
-					const id = params.id;
+		if (params.mode === 'modify') {
+			/*	MODIFY */
+			this.setState({ mode: 'modify' });
+			localStorage.setItem('editor_mode', 'modify');
+			const id = params.id;
 
-					if (this.props.article._id) { // props에 article이 있을 때
+			if (this.props.article._id) { // props에 article이 있을 때
+				this.setState(this.props.article);
+				localStorage.setItem('article_id', this.props.article._id);
+				editor.on('instanceReady', () => {
+					editor.setData(this.props.article.content);
+				});
+
+			} else { // 새로고침하거나 url로 직접 접근해서 props에 article이 없을 때
+				this.props.getArticleRequest(id, this.props.user.token)
+					.then(() => {
 						this.setState(this.props.article);
 						localStorage.setItem('article_id', this.props.article._id);
-                        editor.on('instanceReady', () => {
-                        	editor.setData(this.props.article.content);
-                        });
 
-					} else { // 새로고침하거나 url로 직접 접근해서 props에 article이 없을 때
-						this.props.getArticleRequest(id, this.props.user.token)
-							.then(() => {
-                                this.setState(this.props.article);
-								localStorage.setItem('article_id', this.props.article._id);
+						editor.on('instanceReady', () => {
+							editor.setData(this.props.article.content);
+						});
+					})
+			}
 
-                                editor.on('instanceReady', () => {
-                                    editor.setData(this.props.article.content);
-                                });
-							})
-					}
+		} else {
+			/*	REGISTER */
+			this.setState({ mode: 'register' });
+			localStorage.setItem('editor_mode', 'register');
 
-                } else {
-					/*	REGISTER */
-                    this.setState({ mode: 'register' });
-                    localStorage.setItem('editor_mode', 'register');
-
-                    this.props.registerArticleTempRequest(token, article_temp)
-                        .then(() => {
-                            this.props.getArticleTempRequest(token)
-                                .then(() => { //---------------- article_temp exist
-                                    localStorage.setItem('article_temp_id', this.props.article_temp._id);
-                                    if (this.props.article_temp.content !== '') {
-                                        if (confirm('작성중이던 글이 있습니다. 이어서 작성하시겠습니까?')) {
-                                            this.setState({
-                                                category: this.props.article_temp.category,
-                                                title: this.props.article_temp.title,
-                                                content: this.props.article_temp.content
-                                            });
-                                            CKEDITOR.instances['ck_editor'].setData(this.props.article_temp.content);
-                                        } else {
-                                        	axios({
-                                        		method: 'delete',
-												url: `${config.API_SERVER}/api/article_temp/clear_images/${this.props.article_temp._id}`,
-                                                headers: {
-                                                    'authorization': token
-                                                }
-											})
-												.then((response) => {
-                                        			console.log(response, 'temp에 저장되어있던 이미지 모두 삭제 완료.');
-													this.handleSaveTemp();
-												})
-												.catch((error) => {
-													console.error(error);
-												})
+			this.props.registerArticleTempRequest(token, article_temp)
+				.then(() => {
+					this.props.getArticleTempRequest(token)
+						.then(() => { //---------------- article_temp exist
+							localStorage.setItem('article_temp_id', this.props.article_temp._id);
+							if (this.props.article_temp.content !== '') {
+								if (confirm('작성중이던 글이 있습니다. 이어서 작성하시겠습니까?')) {
+									this.setState({
+										category: this.props.article_temp.category,
+										title: this.props.article_temp.title,
+										content: this.props.article_temp.content
+									});
+									CKEDITOR.instances['ck_editor'].setData(this.props.article_temp.content);
+								} else {
+									axios({
+										method: 'delete',
+										url: `${config.API_SERVER}/api/article_temp/clear_images/${this.props.article_temp._id}`,
+										headers: {
+											'authorization': token
 										}
-                                    }
-                                })
-                        });
+									})
+										.then((response) => {
+											console.log(response, 'temp에 저장되어있던 이미지 모두 삭제 완료.');
+											this.handleSaveTemp();
+										})
+										.catch((error) => {
+											console.error(error);
+										})
+								}
+							}
+						})
+				});
 
-					clearInterval(this.saveTemp);
-					this.saveTemp = setInterval(this.handleSaveTemp, 10000);
+			clearInterval(this.saveTemp);
+			this.saveTemp = setInterval(this.handleSaveTemp, 10000);
 
-                } // register or modify
-
-			}); // getStatusRequest
+		} // register or modify
 
 		// this.props.router.setRouteLeaveHook(this.props.route, () => {
 		// 	if (this.props.register.status !== 'SUCCESS') {
@@ -342,9 +336,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		getStatusRequest: (token) => {
-			return dispatch(getStatusRequest(token));
-		},
 		registerArticleRequest: (token, article) => {
 			return dispatch(registerArticleRequest(token, article));
 		},

@@ -14,7 +14,8 @@ class App extends React.Component {
 		super(props);
 		this.state = {
 			snackbarMessage: '',
-			isSnackbarActive: false
+			isSnackbarActive: false,
+			authChecked: false,
 		};
 
 		this.handleLogout = this.handleLogout.bind(this);
@@ -32,13 +33,28 @@ class App extends React.Component {
 				storedKakaoAuth = JSON.parse(atob(storedKakaoAuth));
 				this.props.setKakaoAuth(storedKakaoAuth);
 				this.props.getKakaoStatusRequest()
+					.then(() => {
+						this.setState({
+							authChecked: true
+						})
+					})
 					.catch(() => {
 						Kakao.Auth.logout();
 					})
 			}
 			if (token) {
 				this.props.getStatusRequest(token)
+					.then(() => {
+						this.setState({
+							authChecked: true
+						})
+					})
+			} else {
+				this.setState({
+					authChecked: true
+				})
 			}
+
 		} else {
 			console.log('localStorage를 지원하지 않습니다.')
 		}
@@ -92,7 +108,7 @@ class App extends React.Component {
 							 categories={categories} />
 					<Content>
 						<div style={{margin: 'auto'}}>
-							{this.props.children}
+							{this.state.authChecked ? this.props.children : <div>Loding...</div>}
 						</div>
 					</Content>
 				</Layout>
