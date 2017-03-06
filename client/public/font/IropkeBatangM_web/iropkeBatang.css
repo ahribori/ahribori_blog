@@ -1,0 +1,8 @@
+@font-face {
+  font-family: 'iropkeBatangM';
+  font-style: normal;
+  font-weight: 400;
+  src: url('iropkeBatangM.eot');
+  src: local('※'), local('iropkeBatangM'),
+       url('iropkeBatangM.woff') format('woff')
+}
