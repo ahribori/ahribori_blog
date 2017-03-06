@@ -93,7 +93,7 @@ router.get('/', (req, res) => {
 					}
 				}
 			], (err, categories) => {
-				if (err) reject(err)
+				if (err) reject(err);
 				resolve(categories);
 			})
 		});
@@ -128,7 +128,7 @@ router.get('/:id', (req, res) => {
 	const find = () => {
 		return new Promise((resolve, reject) => {
 			Category.findOne(mongoose.Types.ObjectId(req.params.id) , (err, category) => {
-				if (err) reject(err)
+				if (err) reject(err);
 				resolve(category);
 			})
 		});
@@ -237,7 +237,6 @@ router.put('/:id', (req, res) => {
 
 	const update = (category) => {
 		return new Promise((resolve, reject) => {
-			console.log(category.order)
 			Category.update({ _id: req.params.id }, {
 				order: category.order
 			}, (err, result) => {

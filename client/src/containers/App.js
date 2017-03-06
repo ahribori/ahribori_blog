@@ -14,8 +14,7 @@ class App extends React.Component {
 		super(props);
 		this.state = {
 			snackbarMessage: '',
-			isSnackbarActive: false,
-			categories: []
+			isSnackbarActive: false
 		};
 
 		this.handleLogout = this.handleLogout.bind(this);
@@ -39,19 +38,12 @@ class App extends React.Component {
 			}
 			if (token) {
 				this.props.getStatusRequest(token)
-					.then(() => {
-					});
 			}
 		} else {
 			console.log('localStorage를 지원하지 않습니다.')
 		}
 
 		this.props.getCategoryRequest(config.TOKEN)
-			.then(() => {
-				this.setState({
-					categories: this.props.category.response.response
-				});
-			});
 	}
 
 	handleLogout() {

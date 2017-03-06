@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 import {Grid, Cell, Card, CardTitle, CardText, CardActions, Button, Textfield, Icon} from 'react-mdl';
 import { getArticleRequest, removeArticleRequest } from 'actions/article';
+import { getCategoryRequest } from 'actions/category';
 import { setEditorModeModify } from 'actions/app';
 
 class Article extends React.Component {
@@ -18,6 +19,7 @@ class Article extends React.Component {
 	}
 
 	handleClickModify() {
+        this.props.getCategoryRequest(this.props.user.token);
 		browserHistory.push('/editor?mode=modify&id=' + this.props.article._id);
 	}
 
@@ -25,6 +27,7 @@ class Article extends React.Component {
 		if (confirm('정말 삭제하시겠습니까?')) {
 			this.props.removeArticleRequest(this.props.user.token, this.props.article._id)
 				.then(() => {
+                    this.props.getCategoryRequest(this.props.user.token);
 					browserHistory.push('/');
 				})
 		}
@@ -49,7 +52,7 @@ class Article extends React.Component {
 						<div className="article_container">
 							<CardTitle className="article_title" expand>{this.props.article.title}</CardTitle>
 							<div className="article_info">
-								{this.props.article.author_nickname} | { this.props.article.reg_date } | 조회 {this.props.article.hit} | 추천 {this.props.article.star} | 댓글 {this.props.article.reply_count}
+								{ this.props.article.author_nickname} | { this.props.article.reg_date } | 조회 {this.props.article.hit} | 추천 {this.props.article.star} | 댓글 {this.props.article.reply_count}
 								{ this.state.isAuthor ? articleMenu : '' }
 							</div>
 							<hr/>
@@ -117,7 +120,10 @@ const mapDispatchToProps = (dispatch) => {
 		},
         removeArticleRequest: (token, id) => {
 			return dispatch(removeArticleRequest(token, id));
-		}
+		},
+        getCategoryRequest: (token) => {
+            return dispatch(getCategoryRequest(token));
+        }
 	}
 };
 

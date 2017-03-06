@@ -32,7 +32,8 @@ class Editor extends React.Component {
 			title: '',
 			content: '',
 			hidden: false,
-			savedMessageActive: false
+			savedMessageActive: false,
+			snackbarMessage: ''
 		};
 		this.handleChangeCategory = this.handleChangeCategory.bind(this);
 		this.handleChangeTitle = this.handleChangeTitle.bind(this);
@@ -74,6 +75,7 @@ class Editor extends React.Component {
 				.then(() => {
 					if(this.props.modify_temp.status === 'SUCCESS') {
 						this.setState({
+							snackbarMessage: '임시 저장되었습니다',
 							savedMessageActive: true
 						})
 					}
@@ -95,20 +97,39 @@ class Editor extends React.Component {
 		};
 
         const params = this.props.location.query;
-		if (params.mode === 'modify') {
-			article._id = this.props.article._id;
-			this.props.modifyArticleRequest(this.props.user.token, article)
-				.then(() => {
+
+        if (this.state.category === '') {
+            this.setState({
+                snackbarMessage: '카테고리를 선택하세요',
+                savedMessageActive: true
+            });
+			return;
+		}
+
+        if (this.state.title === '') {
+            this.setState({
+                snackbarMessage: '제목을 입력하세요',
+                savedMessageActive: true
+            });
+            return;
+        }
+
+        if (params.mode === 'modify') {
+            article._id = this.props.article._id;
+            this.props.modifyArticleRequest(this.props.user.token, article)
+                .then(() => {
+        			this.props.getCategoryRequest(this.props.user.token);
                     browserHistory.push('/article/' + this.props.article._id);
-				});
-		} else {
-			article.article_temp_id = localStorage.getItem('article_temp_id');
-			this.props.registerArticleRequest(this.props.user.token, article)
-				.then(() => {
-					localStorage.removeItem('write_state');
-					browserHistory.push('/');
-				});
-			}
+                });
+        } else {
+            article.article_temp_id = localStorage.getItem('article_temp_id');
+            this.props.registerArticleRequest(this.props.user.token, article)
+                .then(() => {
+                    localStorage.removeItem('write_state');
+                    this.props.getCategoryRequest(this.props.user.token);
+                    browserHistory.push('/');
+                });
+        }
 	}
 
 	render() {
@@ -174,7 +195,7 @@ class Editor extends React.Component {
 					}}
 					timeout={700}
 					// action="Undo"
-				>임시 저장되었습니다</Snackbar>
+				>{this.state.snackbarMessage}</Snackbar>
 			</div>
 		);
 	}
@@ -210,6 +231,13 @@ class Editor extends React.Component {
 							this.setState({
 								categories: this.props.category.response.response
 							});
+						}
+						if (params.mode !== 'modify') {
+							if (this.state.categories.length > 0) {
+								this.setState( {
+									category: this.state.categories[0]._id
+								})
+							}
 						}
 					});
 

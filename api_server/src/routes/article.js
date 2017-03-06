@@ -3,10 +3,32 @@ import mongoose from 'mongoose';
 const router = express.Router();
 import Article from '../models/article';
 import ArticleTemp from '../models/article_temp';
+import Category from '../models/category';
 import Image from '../models/image';
 import jsdom from 'jsdom';
 import fs from 'fs';
 import config from '../config';
+
+const syncCounts = (bypass) => {
+    return new Promise((resolve, reject) => {
+        Category.find({}, (err, categories) => {
+            if (err) reject(err);
+            let syncCount = 0;
+            for (let i = 0; i < categories.length; i++) {
+                Article.count({ category: categories[i]._id }, (err, count) => {
+                    if (err) reject(err);
+                    Category.update({ _id: categories[i]._id }, { count }, (err, result) => {
+                        if (err) reject(err);
+                        syncCount++;
+						if (syncCount === categories.length) {
+							resolve(bypass);
+						}
+                    });
+                });
+            }
+        })
+    });
+};
 
 /* =========================================
  POST /api/article
@@ -27,7 +49,17 @@ router.post('/', (req, res) => {
 
 		return new Promise((resolve, reject) => {
 
-			if (!req.payload.admin) throw { message: 'not admin' };
+			if (!req.payload.admin) reject({
+				status: 403,
+				message: 'not admin'
+			});
+
+			if (!category || category === '' || category === null) {
+				reject({
+					status: 400,
+					message: 'invalid parameters'
+				})
+			}
 			//TODO validate form
 
 			resolve();
@@ -102,6 +134,7 @@ router.post('/', (req, res) => {
 
 	validate(category, author_id, author_nickname, title, content, hidden)
 		.then(create)
+		.then(syncCounts)
 		.then(respond)
 		.catch(onError);
 
@@ -236,7 +269,11 @@ router.get('/:id', (req, res) => {
 router.put('/:id', (req, res) => {
 	Article.findOne({ _id: req.params.id }, (err, article) => {
 
-		const validate = (category, author_id, author_nickname, title, content, hidden) => {
+		const {category, author_id, author_nickname, title, content, hidden} = req.body;
+
+		const origin_category = article.category.toString();
+
+		const validate = () => {
 
 			return new Promise((resolve, reject) => {
 
@@ -286,7 +323,6 @@ router.put('/:id', (req, res) => {
 
 		const syncImage = (article) => {
 			return new Promise((resolve, reject) => {
-
                 // TODO Article document에 있는 이미지와 실제 DOM에 있는 이미지랑 Sync 해줘야 함.
                 Article.aggregate([
                     {
@@ -371,6 +407,7 @@ router.put('/:id', (req, res) => {
 
 		validate()
 			.then(update)
+			.then(syncCounts)
 			.then(syncImage)
 			.then(respond)
 			.catch(onError);
@@ -425,8 +462,7 @@ router.delete('/:id', (req, res) => {
 					fs.unlink(images[i].real_path);
 					Image.find({ _id: images[i]._id }).remove().exec();
 				}
-
-				resolve(true);
+				resolve(article);
 			});
 		});
 	};
@@ -447,6 +483,7 @@ router.delete('/:id', (req, res) => {
 
 	aggregate()
 		.then(remove)
+		.then(syncCounts)
 		.then(respond)
 		.catch(onError);
 
