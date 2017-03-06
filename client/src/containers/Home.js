@@ -1,12 +1,14 @@
 import React, {Component, PropTypes} from 'react';
 import { connect } from 'react-redux';
 import {Grid, Cell, Card, CardTitle, CardText, CardActions, Button, Icon} from 'react-mdl';
+import { logout } from 'actions/authentication';
 import { getArticleListRequest } from 'actions/article';
 import TimeAgo from 'react-timeago';
 import { Link } from 'react-router';
 import koreanStrings from 'react-timeago/lib/language-strings/ko';
 import buildFormatter from 'react-timeago/lib/formatters/buildFormatter';
 import * as colors from 'material-ui/styles/colors';
+import config from '../config';
 
 const formatter = buildFormatter(koreanStrings);
 
@@ -34,12 +36,26 @@ class Home extends React.Component {
 		}
 
 		const token = localStorage.getItem('ahribori_token');
-		this.props.getArticleRequest(0, 25, token)
-			.then(() => {
-				if (!this.props.articleList.error) {
-					this.setState({
-						articles: this.props.articleList.data
-					});
+
+		const setArticleListToState = () => {
+            if (!this.props.articleList.error) {
+                this.setState({
+                    articles: this.props.articleList.data
+                });
+            }
+		};
+
+		this.props.getArticleRequest(0, 25, token+1)
+            .then(() => {
+                if (this.props.articleList.error && this.props.articleList.error.status === 403) {
+                    localStorage.removeItem('ahribori_token');
+                    this.props.logout();
+                    this.props.getArticleRequest(0, 25, config.TOKEN)
+                        .then(() => {
+                           setArticleListToState();
+                        })
+                } else {
+                    setArticleListToState();
 				}
 			})
 	}
@@ -126,7 +142,10 @@ const mapDispatchToProps = (dispatch) => {
 	return {
 		getArticleRequest: (offset, limit, token) => {
 			return dispatch(getArticleListRequest(offset, limit, token));
-		}
+		},
+        logout: () => {
+            return dispatch(logout());
+        }
 	}
 };
 

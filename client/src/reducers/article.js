@@ -3,6 +3,7 @@ import update from 'react-addons-update';
 
 const initialState = {
 	articleList: {
+		status: 'INIT',
 		offset: 0,
 		limit: 10,
 		data: [],
@@ -44,10 +45,16 @@ const initialState = {
 export default function application(state= initialState, action) {
 	switch(action.type) {
 		case types.GET_ARTICLE_LIST:
-			return state;
+            return update(state, {
+                articleList: {
+                	status: { $set: 'WAITING' },
+                    error: { $set: null }
+                }
+            });
 		case types.GET_ARTICLE_LIST_SUCCESS:
 			return update(state, {
 				articleList: {
+                    status: { $set: 'SUCCESS' },
 					offset: { $set: action.offset },
 					limit: { $set: action.limit },
 					data: { $set: action.articles },
@@ -57,6 +64,7 @@ export default function application(state= initialState, action) {
 		case types.GET_ARTICLE_LIST_FAILURE:
 			return update(state, {
 				articleList: {
+                    status: { $set: 'FAILURE' },
 					error: { $set: action.error }
 				}
 			});
