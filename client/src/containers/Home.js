@@ -45,7 +45,7 @@ class Home extends React.Component {
             }
 		};
 
-		this.props.getArticleRequest(0, 25, token+1)
+		this.props.getArticleRequest(0, 25, token)
             .then(() => {
                 if (this.props.articleList.error && this.props.articleList.error.status === 403) {
                     localStorage.removeItem('ahribori_token');
