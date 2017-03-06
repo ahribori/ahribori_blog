@@ -3,8 +3,10 @@ import { Navigation, Sidebar } from 'components';
 import { browserHistory } from 'react-router';
 import { Layout, Content } from 'react-mdl';
 import { connect } from 'react-redux';
+import { getCategoryRequest } from 'actions/category';
 import { getStatusRequest, getKakaoStatusRequest, setKakaoAuth, logout, kakaoLogout } from 'actions/authentication';
 import { Snackbar } from 'react-mdl';
+import config from '../config';
 
 class App extends React.Component {
 
@@ -12,7 +14,8 @@ class App extends React.Component {
 		super(props);
 		this.state = {
 			snackbarMessage: '',
-			isSnackbarActive: false
+			isSnackbarActive: false,
+			categories: []
 		};
 
 		this.handleLogout = this.handleLogout.bind(this);
@@ -42,6 +45,13 @@ class App extends React.Component {
 		} else {
 			console.log('localStorage를 지원하지 않습니다.')
 		}
+
+		this.props.getCategoryRequest(config.TOKEN)
+			.then(() => {
+				this.setState({
+					categories: this.props.category.response.response
+				});
+			});
 	}
 
 	handleLogout() {
@@ -80,11 +90,14 @@ class App extends React.Component {
 	}
 
 	render() {
+
+		const categories = this.props.category.response ? this.props.category.response.response : [];
 		return (
 			<div>
 				<Layout fixedHeader fixedDrawer>
 					<Navigation isLoggedIn={this.props.status.isLoggedIn} onLogout={this.handleLogout}/>
-					<Sidebar user={this.props.user}/>
+					<Sidebar user={this.props.user}
+							 categories={categories} />
 					<Content>
 						<div style={{margin: 'auto'}}>
 							{this.props.children}
@@ -104,7 +117,8 @@ class App extends React.Component {
 const mapStateToProps = (state) => {
 	return {
 		status: state.authentication.status,
-		user: state.authentication.user
+		user: state.authentication.user,
+		category: state.category.get
 	}
 };
 
@@ -124,6 +138,9 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		kakaoLogout: () => {
 			return dispatch(kakaoLogout());
+		},
+		getCategoryRequest: (token) => {
+			return dispatch(getCategoryRequest(token));
 		}
 	}
 };

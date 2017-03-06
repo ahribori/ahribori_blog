@@ -3,6 +3,7 @@ import {Grid, Cell, Card, CardActions, Button, Textfield, Icon, Snackbar} from '
 import { connect } from 'react-redux';
 import { withRouter, browserHistory } from 'react-router';
 import { CKEditor } from 'components';
+import { getCategoryRequest } from 'actions/category';
 import { getStatusRequest } from 'actions/authentication';
 import {
 	registerArticleRequest,
@@ -26,7 +27,8 @@ class Editor extends React.Component {
 		super(props);
 		this.state = {
 			mode: 'register',
-			category: 0,
+			categories: [],
+			category: '',
 			title: '',
 			content: '',
 			hidden: false,
@@ -110,6 +112,13 @@ class Editor extends React.Component {
 	}
 
 	render() {
+		const renderCategories = (list) => {
+			return list.map((category, index) => {
+				return (
+					<MenuItem key={index} value={category._id} primaryText={category.name} />
+				);
+			})
+		};
 
 		return (
 			<div>
@@ -126,11 +135,7 @@ class Editor extends React.Component {
 									onChange={this.handleChangeCategory}
 									floatingLabelFixed={false}
 								>
-									<MenuItem value={1} primaryText="Never" />
-									<MenuItem value={2} primaryText="Every Night" />
-									<MenuItem value={3} primaryText="Weeknights" />
-									<MenuItem value={4} primaryText="Weekends" />
-									<MenuItem value={5} primaryText="Weekly" />
+									{renderCategories(this.state.categories)}
 								</SelectField>
 								<Textfield
 									name="title"
@@ -179,7 +184,6 @@ class Editor extends React.Component {
 		const params = this.props.location.query;
 		const token = localStorage.getItem('ahribori_token');
 
-
 		this.props.getStatusRequest(token)
 			.then(() => {
 
@@ -199,6 +203,15 @@ class Editor extends React.Component {
 				};
 
 				const editor =  CKEDITOR.instances['ck_editor'];
+
+				this.props.getCategoryRequest(this.props.user.token)
+					.then(() => {
+						if (this.props.category.status === 'SUCCESS') {
+							this.setState({
+								categories: this.props.category.response.response
+							});
+						}
+					});
 
                 if (params.mode === 'modify') {
 					/*	MODIFY */
@@ -294,7 +307,8 @@ const mapStateToProps = (state) => {
 		register_temp: state.article.register_temp,
 		modify_temp: state.article.modify_temp,
 		article_temp: state.article.article_temp.data,
-		article: state.article.article.data
+		article: state.article.article.data,
+		category: state.category.get
 	}
 };
 
@@ -323,6 +337,9 @@ const mapDispatchToProps = (dispatch) => {
         },
         removeArticleRequest: (token, id) => {
             return dispatch(removeArticleRequest(token, id));
+		},
+        getCategoryRequest: (token) => {
+			return dispatch(getCategoryRequest(token));
 		}
 	}
 };

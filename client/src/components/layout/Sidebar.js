@@ -44,6 +44,14 @@ class Sidebar extends React.Component {
 			}
 		};
 
+		const renderCategoryList = (list) => {
+			return list.map((category, index) => {
+				return (
+					<Link key={index} to="/" onClick={this.handleToggle}>{category.name} ({category.count})</Link>
+				);
+			})
+		};
+
 		return (
 			<Drawer	title={this.props.user ? `${this.props.user.nickname}님, 접속중`  : ''}>
 				{thumbnailImage()}
@@ -52,6 +60,7 @@ class Sidebar extends React.Component {
 					<Button onClick={this.handleWriteButtonClick} className="sidebar_button" raised colored ripple>글 쓰기</Button> : ''}
 				<Navigation>
 					<Link to="/" onClick={this.handleToggle}>Home</Link>
+					{renderCategoryList(this.props.categories)}
 				</Navigation>
 				<div></div>
 			</Drawer>

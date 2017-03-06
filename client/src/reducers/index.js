@@ -1,10 +1,12 @@
 import app from './app';
 import authentication from './authentication';
 import article from './article';
+import category from './category';
 
 import { combineReducers } from 'redux';
 export default combineReducers({
 	app,
 	authentication,
-	article
+	article,
+	category
 });

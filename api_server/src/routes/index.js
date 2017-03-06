@@ -17,8 +17,8 @@ router.get('/', (req, res) => {
 router.use('/api', authMiddleware);
 router.use('/api/article', article);
 router.use('/api/article_temp', article_temp);
-router.use('/category', authMiddleware);
-router.use('/category', category);
+router.use('/api/category', authMiddleware);
+router.use('/api/category', category);
 router.use('/search', authMiddleware);
 router.use('/search', search);
 
