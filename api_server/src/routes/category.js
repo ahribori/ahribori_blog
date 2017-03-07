@@ -182,11 +182,11 @@ router.put('/:id', (req, res) => {
 			}
 
 			let resolveObject = {};
-			if (name) {
+			if (name !== undefined) {
 				resolveObject.name = name;
 			}
 
-			if (prev_order) {
+			if (prev_order !== undefined) {
 				resolveObject.prev_order = prev_order;
 				resolveObject.order = prev_order + 1;
 			}
@@ -197,7 +197,7 @@ router.put('/:id', (req, res) => {
 
 	const pushOrder = (category) => {
 		return new Promise((resolve, reject) => {
-			if (category.prev_order) {
+			if (category.prev_order !== undefined) {
                 Category.aggregate([
                     {
                         $match: {
@@ -213,13 +213,6 @@ router.put('/:id', (req, res) => {
                     }
                 ], (err, categories) => {
                     if (categories.length > 0) {
-                        if (categories[0]._id.toString() === req.params.id.toString()) {
-                            reject({
-                                status: 400,
-                                message: 'prev_order must bigger then self order'
-                            })
-                        }
-
                         let updateCount = 0;
 
                         for (var i = 0; i < categories.length; i++) {
@@ -245,8 +238,8 @@ router.put('/:id', (req, res) => {
 
 	const update = (category) => {
 		let updateObject = {};
-		if (category.name) { updateObject.name = category.name }
-		if (category.prev_order) { updateObject.order = category.order }
+		if (category.name !== undefined) { updateObject.name = category.name }
+		if (category.prev_order !== undefined) { updateObject.order = category.order }
 		return new Promise((resolve, reject) => {
 			Category.update({ _id: req.params.id }, updateObject, (err, result) => {
 				if (err) reject(err);
