@@ -243,6 +243,7 @@ router.put('/:id', (req, res) => {
 		return new Promise((resolve, reject) => {
 			Category.update({ _id: req.params.id }, updateObject, (err, result) => {
 				if (err) reject(err);
+				console.log(req.params.id, result);
 				resolve(true);
 			})
 		});

@@ -32,6 +32,8 @@
     "bcryptjs": "^2.4.0",
     "classnames": "^2.2.5",
     "express": "^4.14.0",
+    "jquery": "^3.1.1",
+    "jquery-ui": "^1.12.1",
     "material-ui": "^0.16.7",
     "moment": "^2.17.1",
     "react": "^15.4.1",
