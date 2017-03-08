@@ -54,9 +54,9 @@ app.use(function (err, req, res, next) {
  			Mongoose Configuration
  ============================================*/
 const MONGO_URI = config.MONGO_URI;
-mongoose.Promise = global.Promise;
 mongoose.connect(MONGO_URI);
 const db = mongoose.connection;
+mongoose.Promise = global.Promise;
 db.on('error', console.error);
 db.once('open', ()=> {
 	console.log('connected to mongodb server =>', MONGO_URI);

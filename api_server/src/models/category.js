@@ -7,4 +7,8 @@ const Category = new Schema({
 	order: { type: Number }
 });
 
+Category.pre('remove', function(next) {
+	next();
+});
+
 export default mongoose.model('Category', Category);

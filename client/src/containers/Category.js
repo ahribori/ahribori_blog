@@ -122,11 +122,6 @@ class Category extends React.Component {
 				.then(() => {
                     this.syncCategories();
 				});
-				this.setState({
-					dialog: {
-						open: false
-					}
-				})
 		}
 	}
 

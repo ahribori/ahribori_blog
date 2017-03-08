@@ -3,6 +3,8 @@ import mongoose from 'mongoose';
 const router = express.Router();
 import Category from '../models/category';
 import Article from '../models/article';
+import Image from '../models/image';
+import fs from 'fs';
 
 /* =========================================
  POST /api/category
@@ -312,13 +314,34 @@ router.delete('/:id', (req, res) => {
 	const remove = () => {
 		return new Promise((resolve, reject) => {
 			const id = req.params.id;
-			Article.remove({ category: id })
-				.then(() => {
-					Category.remove({ _id: id }, (err, result) => {
-						if (err) reject(err);
-						resolve(result.result);
-					})
-				});
+
+            Article.aggregate([
+                {
+                    $match: {
+                        category: mongoose.Types.ObjectId(id)
+                    }
+                }
+            ], (err, result) => {
+                for (let i = 0; i < result.length; i ++) {
+                	const article = Article(result[i]);
+                	const images = article.images;
+                	for (let x = 0; x < images.length; x++) {
+                		Image.findOne(mongoose.Types.ObjectId(images[x]), (err, image) => {
+                			if (err) reject(err);
+                			fs.unlink(image.real_path);
+                			image.remove();
+						})
+					}
+                    article.remove((err,  removeResult) => {
+                        if (err) reject(err);
+                    });
+                }
+
+                Category({ _id: id }).remove((err, result) => {
+                    if (err) reject(err);
+                    resolve(result.result);
+                })
+            });
 		});
 	};
 
@@ -331,18 +354,23 @@ router.delete('/:id', (req, res) => {
 					}
 				}
 			], (err, categories) => {
-				let updateCount = 0;
-				for (var i = 0; i < categories.length; i++) {
-					categories[i].order = i;
-					Category(categories[i]).update({
-						order: i
-					}, (err, result) => {
-						if (err) reject(err);
-						updateCount++;
-						if (updateCount === categories.length) {
-							resolve(categories);
-						}
-					})
+				const length = categories.length;
+				if (length > 0) {
+					let updateCount = 0;
+					for (var i = 0; i < length; i++) {
+						categories[i].order = i;
+						Category(categories[i]).update({
+							order: i
+						}, (err, result) => {
+							if (err) reject(err);
+							updateCount++;
+							if (updateCount === length) {
+								resolve(categories);
+							}
+						})
+					}
+				} else {
+                    resolve(categories);
 				}
 			});
 		});
