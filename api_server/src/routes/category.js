@@ -187,8 +187,8 @@ router.put('/:id', (req, res) => {
 			}
 
 			if (prev_order !== undefined) {
-				resolveObject.prev_order = prev_order;
-				resolveObject.order = prev_order + 1;
+				resolveObject.prev_order = Number(prev_order);
+				resolveObject.order = Number(prev_order) + 1;
 			}
 
 			resolve(resolveObject);
@@ -243,7 +243,6 @@ router.put('/:id', (req, res) => {
 		return new Promise((resolve, reject) => {
 			Category.update({ _id: req.params.id }, updateObject, (err, result) => {
 				if (err) reject(err);
-				console.log(req.params.id, result);
 				resolve(true);
 			})
 		});

@@ -139,24 +139,23 @@ class Category extends React.Component {
     };
 
 	componentDidMount() {
-		const Sortable = $( "#category_sortable" );
+		this.Sortable = $( "#category_sortable" );
 
 		this.syncCategories(() => {
 
-            Sortable.sortable();
-            Sortable.on('sortupdate', (event, ui) => {
+            this.Sortable.sortable();
+            this.Sortable.on('sortupdate', (event, ui) => {
                 const target = ui.item;
                 const prev_target = $(target[0].previousSibling);
                 const category_id = target.attr('data-id');
                 const prev_order = prev_target.attr('data-order') ? prev_target.attr('data-order') : -1;
                 const prev_name = target.attr('data-index');
-                console.log(this.state.categories[target.attr('data-index')].name + '을 ' + this.state.categories[prev_order].name + ' 다음으로 ㅋㅋ');
-                console.log(category_id, prev_order);
                 this.props.modifyCategoryRequest({
                     _id: category_id,
 					prev_order
                 }, this.props.user.token)
                     .then(() => {
+                        this.Sortable.sortable('cancel');
                         this.syncCategories();
                     })
             });
@@ -164,8 +163,8 @@ class Category extends React.Component {
 		});
 	}
 
-	componentWillReceiveProps(nextProps) {
-
+	shouldComponentUpdate() {
+		return true;
 	}
 
 	render() {
