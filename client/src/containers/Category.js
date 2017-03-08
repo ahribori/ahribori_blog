@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { Grid, Cell, Card } from 'react-mdl';
+import { Grid, Cell, Card, Textfield } from 'react-mdl';
 import { connect } from 'react-redux';
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn}
 	from 'material-ui/Table';
@@ -9,7 +9,6 @@ import RemoveIcon from 'material-ui/svg-icons/content/clear';
 import AddIcon from 'material-ui/svg-icons/content/add';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
-import TextField from 'material-ui/TextField';
 
 import $ from 'jquery';
 import 'jquery-ui/ui/core';
@@ -211,7 +210,13 @@ class Category extends React.Component {
 					modal={true}
 					open={this.state.dialog.open}
 					onRequestClose={this.handleClose} >
-					<TextField id="category_name_input" fullWidth={true} hintText="카테고리 이름" onChange={this.handleChange} value={this.state.dialog.category_name}/>
+					<Textfield id="category_name_input"
+							   label="카테고리 이름"
+							   floatingLabel onChange={this.handleChange}
+							   value={this.state.dialog.category_name}
+							   style={{
+                                   width: '100%'
+                               }}/>
 				</Dialog>
 			</div>
 		);
