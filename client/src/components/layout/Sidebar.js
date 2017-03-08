@@ -9,6 +9,7 @@ class Sidebar extends React.Component {
 		super(props);
 		this.handleToggle = this.handleToggle.bind(this);
 		this.handleWriteButtonClick = this.handleWriteButtonClick.bind(this);
+		this.handleCategoryButtonClick = this.handleCategoryButtonClick.bind(this);
 	}
 
 	handleToggle() {
@@ -28,6 +29,10 @@ class Sidebar extends React.Component {
 			browserHistory.push('/editor?mode=register');
 		}
 	}
+
+    handleCategoryButtonClick() {
+        browserHistory.push('/category');
+    }
 
 	render() {
 
@@ -58,6 +63,8 @@ class Sidebar extends React.Component {
 				<div className="sidebar_username">{this.props.user ? this.props.user.username : ''}</div>
 				{this.props.user && this.props.user.admin ?
 					<Button onClick={this.handleWriteButtonClick} className="sidebar_button" raised colored ripple>글 쓰기</Button> : ''}
+				{this.props.user && this.props.user.admin ?
+					<Button onClick={this.handleCategoryButtonClick} className="sidebar_button" raised accent ripple>카테고리 관리</Button> : ''}
 				<Navigation>
 					<Link to="/" onClick={this.handleToggle}>Home</Link>
 					{renderCategoryList(this.props.categories)}
