@@ -1,20 +1,9 @@
-import React, {Component, PropTypes} from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {Grid, Cell, Card, CardTitle, CardText, CardActions, Button, Icon} from 'react-mdl';
 import { logout } from 'actions/authentication';
 import { getArticleListRequest } from 'actions/article';
-import TimeAgo from 'react-timeago';
-import { Link } from 'react-router';
-import koreanStrings from 'react-timeago/lib/language-strings/ko';
-import buildFormatter from 'react-timeago/lib/formatters/buildFormatter';
-import * as colors from 'material-ui/styles/colors';
 import config from '../config';
-
-const formatter = buildFormatter(koreanStrings);
-
-const propTypes = {};
-
-const defaultProps = {};
+import { CardList } from 'components';
 
 class Home extends React.Component {
 
@@ -23,114 +12,46 @@ class Home extends React.Component {
 		this.state = {
 			articles: []
 		};
+		this.fetchArticles = this.fetchArticles.bind(this);
 	}
 
-	componentDidMount() {
-		this.palette = [];
-		for (let key in colors) {
-			if (colors.hasOwnProperty(key)) {
-				if(/[^A]700$/.test(key)) {
-					this.palette.push(colors[key]);
-				}
-			}
-		}
-
+	fetchArticles() {
 		const token = localStorage.getItem('ahribori_token');
 
 		const setArticleListToState = () => {
-            if (!this.props.articleList.error) {
-                this.setState({
-                    articles: this.props.articleList.data
-                });
-            }
-		};
-
-		this.props.getArticleRequest(0, 25, token)
-            .then(() => {
-                if (this.props.articleList.error && this.props.articleList.error.status === 403) {
-                    localStorage.removeItem('ahribori_token');
-                    this.props.logout();
-                    this.props.getArticleRequest(0, 25, config.TOKEN)
-                        .then(() => {
-                           setArticleListToState();
-                        })
-                } else {
-                    setArticleListToState();
-				}
-			})
-	}
-
-	render() {
-
-		const getRandomColor = () => {
-			return this.palette[Math.floor(Math.random() * this.palette.length)];
-		};
-
-		const item = {
-			cell: {
-				col: 3,
-				tablet: 4,
-				phone: 6
+			if (!this.props.articleList.error) {
+				this.setState({
+					articles: this.props.articleList.data
+				});
 			}
 		};
 
-		const generateArticleCards = (list) => {
-			return list.map((article, index) => {
-				const cardContent = (
-					<div>
-						<CardText className="article_preview">
-							{article.preview}
-						</CardText>
-						<CardText>
-							<TimeAgo className="article_timeago" date={article.reg_date} formatter={formatter}/>
-						</CardText>
-						<div className="card-bottom">
-							<span className="item-author">{article.author_nickname}</span>
-							<span className="item-bottom-right">
-								<span className="item-value reply">댓글 {article.reply.length}</span>
-								<span className="item-value">|</span>
-								<span className="item-value hit">조회 {article.hit}</span>
-							</span>
-						</div>
-					</div>
-				);
-
-				return (
-					<Cell key={index} className="grid-item item-hover-effect" col={item.cell.col} phone={item.cell.phone}
-						  tablet={item.cell.tablet}>
-						<Link to={`/article/${article._id}`}>
-							<Card shadow={0} className="item-card">
-								<div className="card-top">
-									<Icon className="item-star" name="star"/>
-									<span className="item-value">{article.star}</span>
-								</div>
-								<CardTitle expand
-										   className="card_title"
-										   style={{
-										height: '200px',
-										backgroundImage: `url(${ article.thumbnail_image || '' })`,
-										backgroundColor: getRandomColor() }}>{article.title}</CardTitle>
-								{cardContent}
-							</Card>
-						</Link>
-					</Cell>
-				)
+		this.props.getArticleRequest(0, 25, token)
+			.then(() => {
+				if (this.props.articleList.error && this.props.articleList.error.status === 403) {
+					localStorage.removeItem('ahribori_token');
+					this.props.logout();
+					this.props.getArticleRequest(0, 25, config.TOKEN)
+						.then(() => {
+							setArticleListToState();
+						})
+				} else {
+					setArticleListToState();
+				}
 			})
-		};
 
+	}
+
+	componentDidMount() {
+		this.fetchArticles();
+	}
+
+	render() {
 		return (
-			<div>
-				<Grid className="home_grid" noSpacing={true}>
-						{generateArticleCards(this.state.articles)}
-				</Grid>
-			</div>
+			<CardList articles={this.props.articleList.data}/>
 		);
 	}
 }
-
-Home.propTypes = propTypes;
-
-Home.defaultProps = defaultProps;
 
 const mapStateToProps = (state) => {
 	return {

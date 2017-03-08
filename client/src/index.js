@@ -54,12 +54,17 @@ ReactDOM.render(
 					<Route path="article" component={Article}>
 						<Route path=":id" component={Article} />
 					</Route>
-					<Route path="category" component={Category}/>
+					<Route path="category_conf" component={Category} />
+					<Route path="category" component={Home}>
+						<Route path=":id" component={Home} />
+					</Route>
+					<Route path="search" component={Home}>
+						<Route path=":query" component={Home} />
+					</Route>
 					<Route path="login" component={Login}/>
 					<Route path="signup" component={SignUp}/>
 					<Route path="editor" component={Editor}/>
 					<Route path="*" component={NotFound} />
-					//	여기는 react-codelab 프로젝트를 참조해서 작성해
 				</Route>
 			</Router>
 		</Provider>
