@@ -12,6 +12,12 @@ router.post('/', (req, res) => {
 	const validate = () => {
 		return new Promise((resolve, reject) => {
 			const { name } = req.body;
+			if (name !== undefined && name === '') {
+			    reject({
+			        status: 400,
+                    message: 'name is empty space'
+                })
+            }
 			Category.find({ name }, (err, result) => {
 				if (err) reject(err);
 				if (result.length > 0) {
