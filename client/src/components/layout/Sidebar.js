@@ -52,7 +52,7 @@ class Sidebar extends React.Component {
 		const renderCategoryList = (list) => {
 			return list.map((category, index) => {
 				return (
-					<Link key={index} to="/" onClick={this.handleToggle}>{category.name} ({category.count})</Link>
+					<Link key={index} to={`/category/${category._id}`} onClick={this.handleToggle}>{category.name} ({category.count})</Link>
 				);
 			})
 		};

@@ -9,41 +9,19 @@ class Home extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.state = {
-			articles: []
-		};
-		this.fetchArticles = this.fetchArticles.bind(this);
-	}
-
-	fetchArticles() {
-		const token = localStorage.getItem('ahribori_token');
-
-		const setArticleListToState = () => {
-			if (!this.props.articleList.error) {
-				this.setState({
-					articles: this.props.articleList.data
-				});
-			}
-		};
-
-		this.props.getArticleRequest(0, 25, token)
-			.then(() => {
-				if (this.props.articleList.error && this.props.articleList.error.status === 403) {
-					localStorage.removeItem('ahribori_token');
-					this.props.logout();
-					this.props.getArticleRequest(0, 25, config.TOKEN)
-						.then(() => {
-							setArticleListToState();
-						})
-				} else {
-					setArticleListToState();
-				}
-			})
-
 	}
 
 	componentDidMount() {
-		this.fetchArticles();
+        const token = localStorage.getItem('ahribori_token');
+
+        this.props.getArticleRequest(token, { offset: 0, limit: 25 })
+            .then(() => {
+                if (this.props.articleList.error && this.props.articleList.error.status === 403) {
+                    localStorage.removeItem('ahribori_token');
+                    this.props.logout();
+                    this.props.getArticleRequest(config.token, { offset: 0, limit: 25 })
+                }
+            })
 	}
 
 	render() {
@@ -61,8 +39,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		getArticleRequest: (offset, limit, token) => {
-			return dispatch(getArticleListRequest(offset, limit, token));
+		getArticleRequest: (token, query) => {
+			return dispatch(getArticleListRequest(token, query));
 		},
         logout: () => {
             return dispatch(logout());

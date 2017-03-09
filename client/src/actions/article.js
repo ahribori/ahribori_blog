@@ -32,15 +32,29 @@ import axios from 'axios';
 import config from '../config';
 import moment from 'moment';
 
-export function getArticleListRequest(offset, limit, token) {
+export function getArticleListRequest(token, query) {
+	let url = `${config.API_SERVER}/api/article?`;
+	if (query.offset !== undefined && isNaN(Number(query.offset))) {
+		url += `offset=${query.offset}&`;
+	}
+	if (query.limit !== undefined && isNaN(Number(query.limit))) {
+		url += `limit=${query.limit}&`;
+	}
+	if (query.category !== undefined) {
+		url += `category=${query.category}&`;
+	}
+	if (query.search !== undefined) {
+		url += `search=${query.search}&`;
+	}
+
 	return (dispatch) => {
 		dispatch(getArticleList());
-		return axios.get(`${config.API_SERVER}/api/article?offset=${offset}&limit=${limit}`, {
+		return axios.get(url, {
 			headers: {
 				'authorization': token || config.TOKEN
 			}
 		}).then((response) => {
-			dispatch(getArticleListSuccess(offset, limit, response.data))
+			dispatch(getArticleListSuccess(query.offset, query.limit, response.data))
 		}).catch((error) => {
 			dispatch(getArticleListFailure(error.response))
 		})

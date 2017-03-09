@@ -144,78 +144,92 @@ router.post('/', (req, res) => {
  GET /api/article?offset={offset}&limit={limit}
  ============================================*/
 router.get('/', (req, res) => {
-	let { offset = 0, limit = 10 } = req.query;
+	let { offset = 0, limit = 10, category, search } = req.query;
 	offset = Number(offset);
 	limit = Number(limit);
 
 	const validate = () => {
 		return new Promise((resolve, reject) => {
 			if (isNaN(offset)) {
-				throw {
+				reject({
 					status: 400,
 					message: 'offset is not a number'
-				}
+				})
 			}
 
 			if (isNaN(limit)) {
-				throw {
+				reject({
 					status: 400,
 					message: 'limit is not a number'
+				})
+			}
+
+			if (category !== undefined) {
+				if (!/^(?=[a-f\d]{24}$)(\d+[a-f]|[a-f]+\d)/i.test(category)) {
+					reject({
+						status: 400,
+						message: 'category is not an objectId'
+					})
 				}
 			}
+
 			resolve();
 		})
 	};
 
-	const query = () => {
-		const find = req.payload.app ?
-			{
-				hidden: false
-			}
-			:
-			{
-				$or: [
-					{ hidden: false },
-					{ $and: [ { author_id: mongoose.Types.ObjectId(req.payload._id) }, { hidden: true } ] }
-				]
-
-			};
-
+	const buildQueryObject = () => {
 		return new Promise((resolve, reject) => {
-			Article.aggregate([
-				{
-					$match: find
-				},
-				{
-					$sort: {
-						reg_date: -1
-					}
-				},
-				{
-					$skip: offset
-				},
-				{
-					$limit: limit
-				},
-				{
-					$project: {
-						_id: true,
-						category: true,
-						author_id: true,
+			let query = [
+				{ $match: {} }, // [0]
+				{ $sort: { reg_date: -1 } }, // [1]
+				{ $skip: offset }, // [2]
+				{ $limit: limit	}, // [3]
+                {
+                    $project: {
+                        _id: true,
+                        category: true,
+                        author_id: true,
                         author_nickname: true,
-						mod_date: true,
-						reg_date: true,
-						star: true,
-						hit: true,
-						hidden: true,
-						reply: true,
-						tags: true,
-						title: true,
-						thumbnail_image: true,
-						preview: true
-					}
-				}
-			], (err, articles) => {
+                        mod_date: true,
+                        reg_date: true,
+                        star: true,
+                        hit: true,
+                        hidden: true,
+                        reply: true,
+                        tags: true,
+                        title: true,
+                        thumbnail_image: true,
+                        preview: true
+                    }
+                }
+			];
+
+			// app token or user token
+			if (req.payload.app) {
+				query[0].$match.hidden = false
+            } else {
+                query[0].$match.$or = [
+                    { hidden: false },
+                    {
+                        $and: [
+                            { author_id: mongoose.Types.ObjectId(req.payload._id) }, { hidden: true }
+                        ]
+                    }
+                ]
+			}
+
+			// category exist
+			if (category !== undefined) {
+                query[0].$match.category = mongoose.Types.ObjectId(category)
+			}
+
+			resolve(query);
+		});
+	};
+
+	const query = (query) => {
+		return new Promise((resolve, reject) => {
+			Article.aggregate(query, (err, articles) => {
 				if (err) throw err;
 				resolve(articles);
 			});
@@ -235,6 +249,7 @@ router.get('/', (req, res) => {
 	};
 
 	validate()
+		.then(buildQueryObject)
 		.then(query)
 		.then(respond)
 		.catch(onError)
