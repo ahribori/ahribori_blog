@@ -1,6 +1,6 @@
 var webpack = require('webpack');
 var path = require('path');
-
+var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 module.exports = {
 
 	/* webpack-dev-server를 콘솔이 아닌 자바스크립트로 실행 할 땐,
@@ -57,7 +57,8 @@ module.exports = {
 			'process.env':{
 				'NODE_ENV': JSON.stringify('development')
 			}
-		})
+		}),
+        new BundleAnalyzerPlugin()
 	],
 
 	module: {
