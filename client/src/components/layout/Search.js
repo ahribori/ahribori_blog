@@ -1,5 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import {Textfield} from 'react-mdl';
+import { browserHistory } from 'react-router';
 
 class Search extends React.Component {
 
@@ -26,8 +27,8 @@ class Search extends React.Component {
 			e.target.blur()
 		}
 
-		if (e.keyCode === 13 && e.target.value !== '') {
-			console.log(`${e.target.value} 검색!`);
+		if (e.keyCode === 13 && this.state.searchString !== '') {
+			browserHistory.push(`/search/${this.state.searchString}`);
 		}
 	}
 

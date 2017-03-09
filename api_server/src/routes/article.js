@@ -180,7 +180,7 @@ router.get('/', (req, res) => {
 	const buildQueryObject = () => {
 		return new Promise((resolve, reject) => {
 			let query = [
-				{ $match: {} }, // [0]
+				{ $match: { $and: [] } }, // [0]
 				{ $sort: { reg_date: -1 } }, // [1]
 				{ $skip: offset }, // [2]
 				{ $limit: limit	}, // [3]
@@ -206,16 +206,20 @@ router.get('/', (req, res) => {
 
 			// app token or user token
 			if (req.payload.app) {
-				query[0].$match.hidden = false
+				query[0].$match.$and.push({
+				    hidden: false
+                })
             } else {
-                query[0].$match.$or = [
-                    { hidden: false },
-                    {
-                        $and: [
-                            { author_id: mongoose.Types.ObjectId(req.payload._id) }, { hidden: true }
-                        ]
-                    }
-                ]
+                query[0].$match.$and.push({
+                    $or: [
+                        { hidden: false },
+                        {
+                            $and: [
+                                { author_id: mongoose.Types.ObjectId(req.payload._id) }, {hidden: true}
+                            ]
+                        }
+                    ]
+                })
 			}
 
 			// category exist
@@ -223,6 +227,24 @@ router.get('/', (req, res) => {
                 query[0].$match.category = mongoose.Types.ObjectId(category)
 			}
 
+			// search exist
+            if (search !== undefined) {
+			    const regExp = new RegExp(search, 'gi');
+			    query[0].$match.$and.push({
+			       $or: [
+                       {
+                           title: {
+                               $regex: regExp
+                           }
+                       },
+                       {
+                           content: {
+                               $regex: regExp
+                           }
+                       }
+                   ]
+                });
+            }
 			resolve(query);
 		});
 	};

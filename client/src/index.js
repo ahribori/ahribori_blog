@@ -13,6 +13,7 @@ import {
 	Editor,
 	Category,
 	CategoryConf,
+	Search,
 	NotFound
 } from 'containers';
 import injectTapEventPlugin from 'react-tap-event-plugin';
@@ -68,8 +69,8 @@ ReactDOM.render(
 					<Route path="category" component={Category}>
 						<Route path=":id" component={Category} />
 					</Route>
-					<Route path="search" component={Home}>
-						<Route path=":query" component={Home} />
+					<Route path="search" component={Search}>
+						<Route path=":search" component={Search} />
 					</Route>
 					<Route path="login" component={Login}/>
 					<Route path="signup" component={SignUp}/>
