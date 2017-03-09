@@ -96,11 +96,27 @@ router.post('/', (req, res) => {
 							for (let x = 0; x < tempImages.length; x++) {
 								let exist = false;
 								for (let i = 0; i < images.length; i++) {
-									if (images[i].src.indexOf(tempImages[x].name) !== -1) {
-										exist = true;
-										break;
+                                    if (images[i].src.indexOf(tempImages[x].name) !== -1) {
+
+                                    	// ***** 이미지 Max Width 정의
+                                    	if (images[i].width > config.MAX_IMAGE_WIDTH) {
+                                    		const bw = images[i].width;
+                                    		const bh = images[i].height;
+                                    		const aw = config.MAX_IMAGE_WIDTH;
+                                    		const ah = (aw * bh) / bw;
+											images[i].width = aw;
+											images[i].height = ah;
+										}
+
+                                        // ***** 이미지 클릭했을 때 새 창에서 열기
+										// images[i].style = 'cursor: pointer;';
+										// images[i].setAttribute('onClick', 'window.open("'+ images[i].src +'", "_blank");');
+
+                                        exist = true;
+                                        break;
 									}
 								}
+
 								if (exist) {
 									article.images.push(tempImages[x]._id);
 									if (!thumbnail_picked) {
@@ -112,6 +128,8 @@ router.post('/', (req, res) => {
 									Image.find({ _id: tempImages[x]._id }).remove().exec();
 								}
 							}
+
+                            article.content = window.document.body.innerHTML;
 							ArticleTemp(article_temp).remove()
 								.then(resolve(article.save()));
 						});
@@ -388,6 +406,21 @@ router.put('/:id', (req, res) => {
                             let exist = false;
                             for (let i = 0; i < images.length; i++) {
                                 if (images[i].src.indexOf(dbImages[x].name) !== -1) {
+
+                                    // ***** 이미지 Max Width 정의
+                                    if (images[i].width > config.MAX_IMAGE_WIDTH) {
+                                        const bw = images[i].width;
+                                        const bh = images[i].height;
+                                        const aw = config.MAX_IMAGE_WIDTH;
+                                        const ah = (aw * bh) / bw;
+                                        images[i].width = aw;
+                                        images[i].height = ah;
+                                    }
+
+                                    // ***** 이미지 클릭했을 때 새 창에서 열기
+									// images[i].style = 'cursor: pointer;';
+									// images[i].setAttribute('onClick', 'window.open("'+ images[i].src +'", "_blank");');
+
                                     exist = true;
                                     break;
                                 }
@@ -402,6 +435,7 @@ router.put('/:id', (req, res) => {
 
                         }
 
+                        dbArticle.content = window.document.body.innerHTML;
 						dbArticle.images = tempImages;
                         
                         // 썸네일 이미지 다시 지정

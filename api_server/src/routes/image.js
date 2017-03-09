@@ -31,7 +31,7 @@ router.post('/ckeditor_dragndrop', (req, res) => {
 	let form = new multiparty.Form({
 		autoFiles: true,
 		uploadDir: imagePath,
-		maxFilesSize: 1024 * 1024 * 5
+		maxFilesSize: config.MAX_IMAGE_SIZE
 	});
 
 	const parse = () => {
@@ -79,7 +79,7 @@ router.post('/ckeditor_dragndrop', (req, res) => {
 					reject({ message: '이미지 파일이 완전하지 않습니다.' });
 				}
 
-				if (image.bitmap.width > 800) image.resize(800, Jimp.AUTO); // max width
+				if (image.bitmap.width > config.MAX_IMAGE_WIDTH) image.resize(config.MAX_IMAGE_WIDTH, Jimp.AUTO);
 				image.quality(100);
 				Jimp.loadFont(Jimp.FONT_SANS_16_WHITE).then(function (font) {
 					const fontWidth = image.bitmap.width - 130;
