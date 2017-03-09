@@ -35,8 +35,16 @@ class Category extends React.Component {
     }
 
     render() {
+        const noCategoryResult = (
+            <div style={{ textAlign: 'center', marginTop: '20px' }}>
+                <h3 style={{ fontFamily: 'iropkeBatangM' }}>이 카테고리에 해당하는 게시물이 존재하지 않습니다.</h3>
+            </div>
+        );
         return (
-            <CardList articles={this.props.articleList.data}/>
+            <div>
+                { this.props.articleList.data.length === 0 ? noCategoryResult : ''}
+                <CardList articles={this.props.articleList.data}/>
+            </div>
         );
     }
 }
