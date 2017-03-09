@@ -279,7 +279,9 @@ class Editor extends React.Component {
 										title: this.props.article_temp.title,
 										content: this.props.article_temp.content
 									});
-									CKEDITOR.instances['ck_editor'].setData(this.props.article_temp.content);
+                                    editor.on('instanceReady', () => {
+                                        editor.setData(this.props.article_temp.content);
+                                    });
 								} else {
 									axios({
 										method: 'delete',

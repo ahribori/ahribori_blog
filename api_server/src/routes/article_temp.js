@@ -38,7 +38,7 @@ router.post('/', (req, res) => {
 				}
 				if (article_temp) {
 					reject({
-						status: 409,
+						status: 200,
 						message: 'article_temp already exist'
 					});
 				} else {
