@@ -31,6 +31,7 @@ class Sidebar extends React.Component {
 	}
 
     handleCategoryButtonClick() {
+        this.handleToggle();
         browserHistory.push('/category_conf');
     }
 
