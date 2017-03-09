@@ -4,7 +4,6 @@ import article from './article';
 import article_temp from './article_temp';
 import category from './category';
 import image from './image';
-import search from './search';
 import authMiddleware from '../middlewares/auth';
 
 router.get('/', (req, res) => {
