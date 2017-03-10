@@ -58,7 +58,11 @@ module.exports = {
 				'NODE_ENV': JSON.stringify('development')
 			}
 		}),
-        new BundleAnalyzerPlugin()
+        // new BundleAnalyzerPlugin({
+        //     analyzerHost: '127.0.0.1',
+        //     analyzerPort: 51234,
+        //     openAnalyzer: false,
+        // })
 	],
 
 	module: {

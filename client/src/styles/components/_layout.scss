@@ -46,6 +46,7 @@ $containerMargin: 8px; //
 @media screen and (min-width: 1025px) {
     .mdl-layout__drawer {
         // 사이드바
+        transition-duration: 0s;
     }
 
     .mdl-layout__drawer-button {
@@ -67,6 +68,7 @@ $containerMargin: 8px; //
 // When sidebar is invisible
 @media screen and (max-width: 1024px) {
     .mdl-layout__drawer {
+        transition-duration: 0s;
         -webkit-transform: translateX(-($sidebarWidth + 10));
         transform: translateX(-($sidebarWidth + 10));
     }

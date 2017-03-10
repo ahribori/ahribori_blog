@@ -12,25 +12,31 @@ class Category extends React.Component {
         this.fetchArticle = this.fetchArticle.bind(this);
     }
 
-    fetchArticle(category) {
+    fetchArticle(category, page = 1) {
         const token = localStorage.getItem('ahribori_token');
-        this.props.getArticleRequest(token, { offset: 0, limit: 25, category })
+        const limit = 12;
+        const offset = limit * (page -1);
+        this.props.getArticleRequest(token, { offset, limit, category })
             .then(() => {
                 if (this.props.articleList.error && this.props.articleList.error.status === 403) {
                     localStorage.removeItem('ahribori_token');
                     this.props.logout();
-                    this.props.getArticleRequest(config.token, { offset: 0, limit: 25, category })
+                    this.props.getArticleRequest(config.token, { offset, limit, category })
                 }
             })
     }
 
     componentDidMount() {
-        this.fetchArticle(this.props.params.id);
+        const page = this.props.location.query.page ? this.props.location.query.page : 1;
+        this.fetchArticle(this.props.params.id, page);
     }
 
     componentWillReceiveProps(nextProps) {
         if (this.props.location.pathname !== nextProps.location.pathname) {
             this.fetchArticle(nextProps.params.id);
+        }
+        if (this.props.location.query.page !== nextProps.location.query.page) {
+            this.fetchArticle(nextProps.params.id, nextProps.location.query.page);
         }
     }
 
@@ -43,7 +49,7 @@ class Category extends React.Component {
         return (
             <div>
                 { this.props.articleList.data.length === 0 ? noCategoryResult : ''}
-                <CardList articles={this.props.articleList.data}/>
+                <CardList onPageChange={this.onPageChange} articles={this.props.articleList.data} page={this.props.articleList.page}/>
             </div>
         );
     }

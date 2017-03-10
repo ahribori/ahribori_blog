@@ -1,28 +1,37 @@
 import React, { Component, PropTypes } from 'react';
 import {Grid, Cell, Card, CardTitle, CardText, Icon} from 'react-mdl';
 import TimeAgo from 'react-timeago';
-import { Link } from 'react-router';
+import { Link, browserHistory } from 'react-router';
 import koreanStrings from 'react-timeago/lib/language-strings/ko';
 import buildFormatter from 'react-timeago/lib/formatters/buildFormatter';
 import * as colors from 'material-ui/styles/colors';
 const formatter = buildFormatter(koreanStrings);
+import Pagination from 'material-ui-pagination';
 
 const propTypes = {
 	articles: React.PropTypes.array
 };
 
 const defaultProps = {
-    articles: []
+    articles: [],
 };
 
 class CardList extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.state = {
-
-		};
+        this.state = {
+            total: 16,
+            display: 7,
+            number: 7
+        };
+        this.onPageChange = this.onPageChange.bind(this);
 	}
+
+
+    onPageChange(page) {
+	    browserHistory.push(window.location.pathname + '?page=' + page);
+    }
 
     componentDidMount() {
         this.palette = [];
@@ -33,10 +42,11 @@ class CardList extends React.Component {
                 }
             }
         }
+
     }
 
-    componentWillReceiveProps() {
-
+    componentDidUpdate() {
+        document.querySelector('.mdl-layout__content').scrollTop = 0;
     }
 
     render() {
@@ -76,6 +86,7 @@ class CardList extends React.Component {
                     </div>
                 );
 
+
                 return (
                     <Cell key={index} className="grid-item item-hover-effect" col={item.cell.col} phone={item.cell.phone}
                           tablet={item.cell.tablet}>
@@ -99,11 +110,29 @@ class CardList extends React.Component {
             })
         };
 
+        const renderPagenation = () => {
+            if (this.props.page) {
+                return (
+                    <div className="pagination">
+                        <Pagination
+                            total={this.props.page.pageCount}
+                            current={this.props.page.currentPage}
+                            display={this.props.page.pageGroupSize}
+                            onChange={this.onPageChange}
+                        />
+                    </div>
+                )
+            } else {
+                return '';
+            }
+        };
+
         return (
             <div>
                 <Grid className="home_grid" noSpacing={true}>
                     {generateArticleCards(this.props.articles)}
                 </Grid>
+                {renderPagenation()}
             </div>
         );
 	}

@@ -7,6 +7,7 @@ const initialState = {
 		offset: 0,
 		limit: 10,
 		data: [],
+		page: null,
 		error: null
 	},
 	article: {
@@ -58,6 +59,7 @@ export default function application(state= initialState, action) {
 					offset: { $set: action.offset },
 					limit: { $set: action.limit },
 					data: { $set: action.articles },
+					page: { $set: action.page },
 					error: { $set: null }
 				}
 			});

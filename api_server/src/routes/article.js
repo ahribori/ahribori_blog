@@ -7,6 +7,7 @@ import Category from '../models/category';
 import Image from '../models/image';
 import jsdom from 'jsdom';
 import fs from 'fs';
+import Page from '../helpers/Page';
 import config from '../config';
 
 const syncCounts = (bypass) => {
@@ -165,6 +166,7 @@ router.get('/', (req, res) => {
 	let { offset = 0, limit = 10, category, search } = req.query;
 	offset = Number(offset);
 	limit = Number(limit);
+	const currentPage = Math.floor(offset/limit) + 1;
 
 	const validate = () => {
 		return new Promise((resolve, reject) => {
@@ -271,13 +273,34 @@ router.get('/', (req, res) => {
 		return new Promise((resolve, reject) => {
 			Article.aggregate(query, (err, articles) => {
 				if (err) throw err;
-				resolve(articles);
+				resolve({
+					query,
+					articles
+				});
+			});
+		});
+	};
+	
+	const pagination = (params) => {
+		return new Promise((resolve, reject) => {
+			const query = params.query;
+			const articles = params.articles;
+			Article.count(query[0].$match, (err, count) => {
+				if (err) reject(err);
+				const page = new Page(currentPage, count, limit, 7);
+				resolve({
+					articles,
+					page
+				})
 			});
 		});
 	};
 
-	const respond = (articles) => {
-		res.status(200).json(articles);
+	const respond = (result) => {
+		res.status(200).json({
+			articles: result.articles,
+			page: result.page
+		});
 	};
 
 	const onError = (error) => {
@@ -291,6 +314,7 @@ router.get('/', (req, res) => {
 	validate()
 		.then(buildQueryObject)
 		.then(query)
+		.then(pagination)
 		.then(respond)
 		.catch(onError)
 });

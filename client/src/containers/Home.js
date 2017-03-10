@@ -9,19 +9,32 @@ class Home extends React.Component {
 
 	constructor(props) {
 		super(props);
+		this.fetchArticle = this.fetchArticle.bind(this);
 	}
 
-	componentDidMount() {
+    fetchArticle(page = 1) {
         const token = localStorage.getItem('ahribori_token');
-
-        this.props.getArticleRequest(token, { offset: 0, limit: 25 })
+        const limit = 12;
+        const offset = limit * (page -1);
+        this.props.getArticleRequest(token, { offset, limit })
             .then(() => {
                 if (this.props.articleList.error && this.props.articleList.error.status === 403) {
                     localStorage.removeItem('ahribori_token');
                     this.props.logout();
-                    this.props.getArticleRequest(config.token, { offset: 0, limit: 25 })
+                    this.props.getArticleRequest(config.token, { offset, limit })
                 }
             })
+    }
+
+	componentDidMount() {
+        const page = this.props.location.query.page ? this.props.location.query.page : 1;
+        this.fetchArticle(this.props.location.query.page, page);
+	}
+
+	componentWillReceiveProps(nextProps) {
+        if (this.props.location.query.page !== nextProps.location.query.page) {
+            this.fetchArticle(nextProps.location.query.page);
+        }
 	}
 
 	render() {
@@ -33,7 +46,11 @@ class Home extends React.Component {
 		return (
 			<div>
 				{ this.props.articleList.data.length === 0 ? noArticles : ''}
-				<CardList articles={this.props.articleList.data}/>
+				<CardList
+					onPageChange={this.onPageChange}
+					articles={this.props.articleList.data}
+					page={this.props.articleList.page}
+				/>
 			</div>
 		);
 	}

@@ -34,10 +34,10 @@ import moment from 'moment';
 
 export function getArticleListRequest(token, query) {
 	let url = `${config.API_SERVER}/api/article?`;
-	if (query.offset !== undefined && isNaN(Number(query.offset))) {
+	if (query.offset !== undefined && !isNaN(Number(query.offset))) {
 		url += `offset=${query.offset}&`;
 	}
-	if (query.limit !== undefined && isNaN(Number(query.limit))) {
+	if (query.limit !== undefined && !isNaN(Number(query.limit))) {
 		url += `limit=${query.limit}&`;
 	}
 	if (query.category !== undefined) {
@@ -54,7 +54,7 @@ export function getArticleListRequest(token, query) {
 				'authorization': token || config.TOKEN
 			}
 		}).then((response) => {
-			dispatch(getArticleListSuccess(query.offset, query.limit, response.data))
+			dispatch(getArticleListSuccess(query.offset, query.limit, response.data.articles, response.data.page))
 		}).catch((error) => {
 			dispatch(getArticleListFailure(error.response))
 		})
@@ -67,12 +67,13 @@ export function getArticleList() {
 	}
 }
 
-export function getArticleListSuccess(offset, limit, articles) {
+export function getArticleListSuccess(offset, limit, articles, page) {
 	return {
 		type: GET_ARTICLE_LIST_SUCCESS,
 		offset,
 		limit,
-		articles
+		articles,
+		page
 	}
 }
 

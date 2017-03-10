@@ -12,25 +12,31 @@ class Search extends React.Component {
         this.fetchArticle = this.fetchArticle.bind(this);
     }
 
-    fetchArticle(search) {
+    fetchArticle(search, page = 1) {
         const token = localStorage.getItem('ahribori_token');
-        this.props.getArticleRequest(token, { offset: 0, limit: 25, search })
+        const limit = 12;
+        const offset = limit * (page -1);
+        this.props.getArticleRequest(token, { offset, limit, search })
             .then(() => {
                 if (this.props.articleList.error && this.props.articleList.error.status === 403) {
                     localStorage.removeItem('ahribori_token');
                     this.props.logout();
-                    this.props.getArticleRequest(config.token, { offset: 0, limit: 25, search })
+                    this.props.getArticleRequest(config.token, { offset, limit, search })
                 }
             })
     }
 
     componentDidMount() {
-        this.fetchArticle(this.props.params.search);
+        const page = this.props.location.query.page ? this.props.location.query.page : 1;
+        this.fetchArticle(this.props.params.search, page);
     }
 
     componentWillReceiveProps(nextProps) {
         if (this.props.location.pathname !== nextProps.location.pathname) {
             this.fetchArticle(nextProps.params.search);
+        }
+        if (this.props.location.query.page !== nextProps.location.query.page) {
+            this.fetchArticle(nextProps.params.search, nextProps.location.query.page);
         }
     }
 
@@ -43,7 +49,7 @@ class Search extends React.Component {
         return (
             <div>
                 { this.props.articleList.data.length === 0 ? noSearchResult : ''}
-                <CardList articles={this.props.articleList.data}/>
+                <CardList articles={this.props.articleList.data} page={this.props.articleList.page}/>
             </div>
         );
     }

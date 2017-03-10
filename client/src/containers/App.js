@@ -21,9 +21,18 @@ class App extends React.Component {
 		this.handleLogout = this.handleLogout.bind(this);
 		this.handleShowSnackbar = this.handleShowSnackbar.bind(this);
 		this.handleTimeoutSnackbar = this.handleTimeoutSnackbar.bind(this);
+		this.onLoad = this.onLoad.bind(this);
+	}
+
+	onLoad() {
+		setTimeout(() => {
+        	document.getElementById('layout').style.visibility = 'visible';
+		}, 0);
 	}
 
 	componentDidMount() {
+		this.onLoad();
+
 		if (window.localStorage) {
 			const localStorage = window.localStorage;
 			const token = localStorage.getItem('ahribori_token');
@@ -98,11 +107,10 @@ class App extends React.Component {
 	}
 
 	render() {
-
 		const categories = this.props.category.response ? this.props.category.response.response : [];
 		return (
 			<div>
-				<Layout fixedHeader fixedDrawer>
+				<Layout fixedHeader fixedDrawer id="layout" style={{ visibility: 'hidden'}}>
 					<Navigation isLoggedIn={this.props.status.isLoggedIn} onLogout={this.handleLogout}/>
 					<Sidebar user={this.props.user}
 							 categories={categories} />
