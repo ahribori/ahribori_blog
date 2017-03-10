@@ -30,6 +30,10 @@ class Search extends React.Component {
 		if (e.keyCode === 13 && this.state.searchString !== '') {
 			browserHistory.push(`/search/${this.state.searchString}`);
 		}
+
+		if (e.keyCode === 13 && this.state.searchString === '' && /\/search\/.+$/.test(window.location.pathname)) {
+            browserHistory.push('/');
+		}
 	}
 
 	render() {
