@@ -8,7 +8,7 @@ body
 {
 	/* Font */
 	font-family: D2 coding, sans-serif, Arial, Verdana, "Trebuchet MS";
-	font-size: 12px;
+	font-size: 13px;
 
 	/* Text color */
 	color: #333;
@@ -19,13 +19,9 @@ body
 	margin: 20px;
 }
 
-h1,h2,h3,h4,h5,h6 {
-	font-family: iropkeBatangM;
-}
-
 .cke_editable
 {
-	font-size: 13px;
+	font-size: 14px;
 	line-height: 1.6;
 
 	/* Fix for missing scrollbars with RTL texts. (#10488) */
@@ -71,8 +67,9 @@ ol,ul,dl
 
 h1,h2,h3,h4,h5,h6
 {
+	font-family: iropkeBatangM;
 	font-weight: bold;
-	line-height: 1.2;
+	line-height: normal;
 }
 
 hr
