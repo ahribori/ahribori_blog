@@ -24,9 +24,7 @@ $gridItemPadding: 8px;
 .item-card {
     @include item-card(100%, auto);
     height: auto;
-    h2 {
-        @include item-card-title(1.5rem);
-    }
+    overflow: hidden;
 }
 
 .article_preview {
@@ -48,7 +46,7 @@ $gridItemPadding: 8px;
     padding: $gridItemPadding;
 }
 
-.card_title {
+.card-title {
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -71,10 +69,49 @@ $gridItemPadding: 8px;
     transition-duration: 0.0s;
     -webkit-transition-property: transform;
     transition-property: transform;
+    .card-title-wrapper {
+        overflow: hidden;
+    }
+    .card-title {
+        transition: all .3s ease-in-out;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+
+        .card-title-value {
+            -webkit-align-self: flex-end;
+            -ms-flex-item-align: end;
+            align-self: flex-end;
+            h2 {
+                transition: all .3s ease-in-out;
+                line-height: 1;
+                @include item-card-title(1.5rem);
+            }
+        }
+    }
 }
 .item-hover-effect:hover, .item-hover-effect:focus, .item-hover-effect:active {
-    -webkit-transform: scale(1.02);
-    transform: scale(1.02);
+    -webkit-transform: scale(1.01);
+    transform: scale(1.01);
+
+    .card-title {
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        -webkit-transform: scale(1.1, 1.1);
+        transform: scale(1.1, 1.1);
+
+        .card-title-value {
+            h2 {
+                transition: all .3s ease-in-out;
+                -ms-transform: translate(9px, -9px); /* IE 9 */
+                -webkit-transform: translate(9px, -9px); /* Safari */
+                transform: translate(9px, -9px);
+                line-height: 1;
+                @include item-card-title(1.5rem);
+            }
+        }
+    }
 }
 
 .card-top {

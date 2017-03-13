@@ -102,12 +102,15 @@ class CardList extends React.Component {
                                     <Icon className="item-star" name="star"/>
                                     <span className="item-value">{article.star}</span>
                                 </div>
-                                <CardTitle expand
-                                           className="card_title"
-                                           style={{
-                                               height: '300px',
-                                               backgroundImage: `url(${ article.thumbnail_image || '' })`,
-                                               backgroundColor: getRandomColor() }}>{article.title}</CardTitle>
+                                <div className="card-title-wrapper">
+                                    <CardTitle expand
+                                               className="card-title"
+                                               style={{
+                                                   height: '300px',
+                                                   backgroundImage: `url(${ article.thumbnail_image || '' })`,
+                                                   backgroundColor: getRandomColor() }}><span className="card-title-value"><h2>{article.title}</h2></span></CardTitle>
+                                </div>
+
                                 {cardContent}
                             </Card>
                         </Link>
