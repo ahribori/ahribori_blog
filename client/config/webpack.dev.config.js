@@ -58,6 +58,11 @@ module.exports = {
 				'NODE_ENV': JSON.stringify('development')
 			}
 		}),
+        new webpack.optimize.UglifyJsPlugin({
+            compress: {
+                warnings: false
+            }
+        }),
         // new BundleAnalyzerPlugin({
         //     analyzerHost: '127.0.0.1',
         //     analyzerPort: 51234,

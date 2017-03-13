@@ -47,6 +47,8 @@ module.exports = {
 				warnings: false
 			}
 		}),
+        new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+        new webpack.optimize.DedupePlugin(),
         // new BundleAnalyzerPlugin({
         //     analyzerHost: '127.0.0.1',
         //     analyzerPort: 51234,
