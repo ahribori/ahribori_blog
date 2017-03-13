@@ -7,6 +7,7 @@ import buildFormatter from 'react-timeago/lib/formatters/buildFormatter';
 import * as colors from 'material-ui/styles/colors';
 const formatter = buildFormatter(koreanStrings);
 import Pagination from 'material-ui-pagination';
+import Masonry from 'masonry-layout';
 
 class CardList extends React.Component {
 
@@ -39,6 +40,19 @@ class CardList extends React.Component {
 
     componentDidUpdate(prevProps, prevState) {
         document.querySelector('.mdl-layout__content').scrollTop = 0;
+        if (prevProps.articleList.status === 'WAITING' && this.props.articleList.status === 'SUCCESS') {
+            const masonry = new Masonry('.card_list_grid', {
+                columnWidth: '.grid-sizer',
+                itemSelector: '.grid-item',
+                percentPosition: true,
+            });
+
+            masonry.on('layoutComplete', () => {});
+
+            if (masonry.items.length > 0) {
+                masonry.layout();
+            }
+        }
     }
 
     render() {
@@ -91,7 +105,7 @@ class CardList extends React.Component {
                                 <CardTitle expand
                                            className="card_title"
                                            style={{
-                                               height: '200px',
+                                               height: '300px',
                                                backgroundImage: `url(${ article.thumbnail_image || '' })`,
                                                backgroundColor: getRandomColor() }}>{article.title}</CardTitle>
                                 {cardContent}

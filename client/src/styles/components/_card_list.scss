@@ -4,7 +4,7 @@ $gridItemPadding: 8px;
 @mixin item-card ($width, $height) {
     width: $width;
     height: $height;
-    word-break: normal;
+    word-break: break-all;
 }
 
 @mixin item-card-title ($fontSize) {
@@ -23,7 +23,7 @@ $gridItemPadding: 8px;
 
 .item-card {
     @include item-card(100%, auto);
-    height: 550px;
+    height: auto;
     h2 {
         @include item-card-title(1.5rem);
     }
@@ -34,6 +34,7 @@ $gridItemPadding: 8px;
     color: $blueGrey700;
     padding: 8px;
     margin: 8px;
+    width: inherit;
 }
 
 .article_timeago {
@@ -66,8 +67,8 @@ $gridItemPadding: 8px;
     -webkit-transform: perspective(1px) translateZ(0);
     transform: perspective(1px) translateZ(0);
     box-shadow: 0 0 1px transparent;
-    -webkit-transition-duration: 0.3s;
-    transition-duration: 0.3s;
+    -webkit-transition-duration: 0.0s;
+    transition-duration: 0.0s;
     -webkit-transition-property: transform;
     transition-property: transform;
 }
