@@ -104,9 +104,9 @@ $gridItemPadding: 8px;
         .card-title-value {
             h2 {
                 transition: all .3s ease-in-out;
-                -ms-transform: translate(9px, -9px); /* IE 9 */
-                -webkit-transform: translate(9px, -9px); /* Safari */
-                transform: translate(9px, -9px);
+                -ms-transform: scale(0.9, 0.9) translate(5px, -15px); /* IE 9 */
+                -webkit-transform: scale(0.9, 0.9) translate(5px, -15px); /* Safari */
+                transform: scale(0.9, 0.9) translate(5px, -15px);
                 line-height: 1;
                 @include item-card-title(1.5rem);
             }
