@@ -49,7 +49,7 @@ class Search extends React.Component {
         return (
             <div>
                 { this.props.articleList.data.length === 0 ? noSearchResult : ''}
-                <CardList articles={this.props.articleList.data} page={this.props.articleList.page}/>
+                <CardList articleList={this.props.articleList} page={this.props.articleList.page}/>
             </div>
         );
     }

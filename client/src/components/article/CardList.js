@@ -8,14 +8,6 @@ import * as colors from 'material-ui/styles/colors';
 const formatter = buildFormatter(koreanStrings);
 import Pagination from 'material-ui-pagination';
 
-const propTypes = {
-	articles: React.PropTypes.array
-};
-
-const defaultProps = {
-    articles: [],
-};
-
 class CardList extends React.Component {
 
 	constructor(props) {
@@ -45,7 +37,7 @@ class CardList extends React.Component {
 
     }
 
-    componentDidUpdate() {
+    componentDidUpdate(prevProps, prevState) {
         document.querySelector('.mdl-layout__content').scrollTop = 0;
     }
 
@@ -88,7 +80,7 @@ class CardList extends React.Component {
 
 
                 return (
-                    <Cell key={index} className="grid-item item-hover-effect" col={item.cell.col} phone={item.cell.phone}
+                    <Cell key={index} className="grid-item grid-sizer item-hover-effect" col={item.cell.col} phone={item.cell.phone}
                           tablet={item.cell.tablet}>
                         <Link to={`/article/${article._id}`}>
                             <Card shadow={0} className="item-card">
@@ -129,8 +121,8 @@ class CardList extends React.Component {
 
         return (
             <div>
-                <Grid className="home_grid" noSpacing={true}>
-                    {generateArticleCards(this.props.articles)}
+                <Grid className="card_list_grid" noSpacing={true}>
+                    {generateArticleCards(this.props.articleList.data)}
                 </Grid>
                 {renderPagenation()}
             </div>
@@ -138,9 +130,5 @@ class CardList extends React.Component {
 	}
 
 }
-
-CardList.propTypes = propTypes;
-
-CardList.defaultProps = defaultProps;
 
 export default CardList;

@@ -48,7 +48,7 @@ class Home extends React.Component {
 				{ this.props.articleList.data.length === 0 ? noArticles : ''}
 				<CardList
 					onPageChange={this.onPageChange}
-					articles={this.props.articleList.data}
+					articleList={this.props.articleList}
 					page={this.props.articleList.page}
 				/>
 			</div>

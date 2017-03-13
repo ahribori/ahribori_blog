@@ -49,7 +49,7 @@ class Category extends React.Component {
         return (
             <div>
                 { this.props.articleList.data.length === 0 ? noCategoryResult : ''}
-                <CardList onPageChange={this.onPageChange} articles={this.props.articleList.data} page={this.props.articleList.page}/>
+                <CardList onPageChange={this.onPageChange} articleList={this.props.articleList} page={this.props.articleList.page}/>
             </div>
         );
     }
