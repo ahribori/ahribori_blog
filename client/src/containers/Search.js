@@ -9,6 +9,9 @@ class Search extends React.Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            message: '불러오는 중 입니다...'
+        };
         this.fetchArticle = this.fetchArticle.bind(this);
     }
 
@@ -23,6 +26,9 @@ class Search extends React.Component {
                     this.props.logout();
                     this.props.getArticleRequest(config.token, { offset, limit, search })
                 }
+                this.setState({
+                    message: `검색어 '${this.props.params.search}'에 해당하는 게시물이 존재하지 않습니다.`
+                })
             })
     }
 
@@ -43,7 +49,7 @@ class Search extends React.Component {
     render() {
         const noSearchResult = (
             <div style={{ textAlign: 'center', marginTop: '20px' }}>
-                <h3 style={{ fontFamily: 'iropkeBatangM' }}>검색어 '{this.props.params.search}'에 해당하는 게시물이 존재하지 않습니다.</h3>
+                <h3 style={{ fontFamily: 'iropkeBatangM' }}>{this.state.message}</h3>
             </div>
         );
         return (
