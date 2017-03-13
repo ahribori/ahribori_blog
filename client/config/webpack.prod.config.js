@@ -1,5 +1,6 @@
 var webpack = require('webpack');
 var path = require('path');
+var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = {
 	/* entry부터 시작하여 다른 의존 파일들을 재귀적으로 호출 */
@@ -45,7 +46,12 @@ module.exports = {
 			compress: {
 				warnings: false
 			}
-		})
+		}),
+        // new BundleAnalyzerPlugin({
+        //     analyzerHost: '127.0.0.1',
+        //     analyzerPort: 51234,
+        //     openAnalyzer: false,
+        // })
 	]
 
 };
