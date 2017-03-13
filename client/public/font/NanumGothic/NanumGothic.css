@@ -1,0 +1,16 @@
+@font-face {
+    font-family: 'Nanum Gothic';
+    font-style: normal;
+    font-weight: 400;
+    src: url('NanumGothic.eot');
+    src: local('※'), local('iropkeBatangM'),
+    url('NanumGothic.woff') format('woff')
+}
+@font-face {
+    font-family: 'Nanum Gothic';
+    font-style: normal;
+    font-weight: 700;
+    src: url('NanumGothicBold.eot');
+    src: local('※'), local('iropkeBatangM'),
+    url('NanumGothicBold.woff') format('woff')
+}
