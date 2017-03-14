@@ -30,6 +30,10 @@ class App extends React.Component {
 		}, 0);
 	}
 
+	componentWillMount() {
+        document.getElementById('loading').remove();
+	}
+
 	componentDidMount() {
 		this.onLoad();
 
