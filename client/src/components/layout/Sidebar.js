@@ -62,7 +62,10 @@ class Sidebar extends React.Component {
 		return (
 			<Drawer	title={this.props.user ? `${this.props.user.nickname}님, 접속중`  : ''}>
 				{thumbnailImage()}
-				<ClearIcon className="sidebar_close_button" onTouchTap={this.handleToggle}/>
+				<ClearIcon className="sidebar_close_button" onTouchTap={(e) => {
+					e.preventDefault();
+					this.handleToggle();
+				}}/>
 				<div className="sidebar_username">{this.props.user ? this.props.user.username : ''}</div>
 				{this.props.user && this.props.user.admin ?
 					<Button onClick={this.handleWriteButtonClick} className="sidebar_button" raised colored ripple>글 쓰기</Button> : ''}
