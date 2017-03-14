@@ -42,6 +42,20 @@ $containerMargin: 8px; //
     padding-left: 40px;
 }
 
+.sidebar_close_button {
+    width: 80px !important;
+    height: 80px !important;
+    color: $blueGrey200 !important;
+    left: $sidebarWidth - 85px;
+    position: absolute;
+    display: none !important;
+    cursor: pointer;
+}
+
+.sidebar_close_button:hover {
+    color: $navigationColor !important;
+}
+
 // When sidebar is visible
 @media screen and (min-width: 1025px) {
     .mdl-layout__drawer {
@@ -95,6 +109,12 @@ $containerMargin: 8px; //
 }
 
 // mobile
+@media screen and (max-width: 768px) {
+    .sidebar_close_button {
+        display: block !important;
+    }
+}
+
 @media screen and (max-width: 600px) {
     .mdl-layout__content {
         margin: 0 !important;

@@ -35,6 +35,7 @@
     "express": "^4.14.0",
     "jquery": "^3.1.1",
     "jquery-ui": "^1.12.1",
+    "jquery-ui-touch-punch": "^0.2.3",
     "masonry-layout": "^4.1.1",
     "material-ui": "^0.16.7",
     "material-ui-pagination": "^1.0.1",

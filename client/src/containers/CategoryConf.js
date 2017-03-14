@@ -1,8 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { Grid, Cell, Card, Textfield } from 'react-mdl';
 import { connect } from 'react-redux';
-import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn}
-	from 'material-ui/Table';
 import IconButton from 'material-ui/IconButton';
 import ModifyIcon from 'material-ui/svg-icons/content/create';
 import RemoveIcon from 'material-ui/svg-icons/content/clear';
@@ -10,9 +8,9 @@ import AddIcon from 'material-ui/svg-icons/content/add';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 
-import $ from 'jquery';
 import 'jquery-ui/ui/core';
 import 'jquery-ui/ui/widgets/sortable';
+import 'jquery-ui-touch-punch/jquery.ui.touch-punch.min';
 import update from 'react-addons-update';
 
 import {

@@ -2,6 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import {Link, browserHistory} from 'react-router';
 import {Drawer, Navigation, Button} from 'react-mdl';
 import Avatar from 'material-ui/Avatar';
+import ClearIcon from 'material-ui/svg-icons/content/clear';
 
 class Sidebar extends React.Component {
 
@@ -61,6 +62,7 @@ class Sidebar extends React.Component {
 		return (
 			<Drawer	title={this.props.user ? `${this.props.user.nickname}님, 접속중`  : ''}>
 				{thumbnailImage()}
+				<ClearIcon className="sidebar_close_button" onTouchTap={this.handleToggle}/>
 				<div className="sidebar_username">{this.props.user ? this.props.user.username : ''}</div>
 				{this.props.user && this.props.user.admin ?
 					<Button onClick={this.handleWriteButtonClick} className="sidebar_button" raised colored ripple>글 쓰기</Button> : ''}
