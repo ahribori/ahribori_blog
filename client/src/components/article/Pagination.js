@@ -118,7 +118,10 @@ class Pagination extends React.Component {
         return (
             <div >
                 <FirstPageLink
-                    onClick = { () => this.setCurrent(1) }
+                    onClick = { (e) => {
+                        this.setCurrent(1);
+                        e.preventDefault();
+                    } }
                 />
                 {
                     array.map((page, k) => (
@@ -126,12 +129,18 @@ class Pagination extends React.Component {
                             key = { k }
                             value = { page }
                             isActive = { this.state.current === page }
-                            onClick = { () => this.setCurrent(page) }
+                            onClick = { (e) => {
+                                this.setCurrent(page);
+                                e.preventDefault();
+                            } }
                         />
                     ))
                 }
                 <LastPageLink
-                    onClick = { () => this.setCurrent(this.state.total) }
+                    onClick = { (e) => {
+                        this.setCurrent(this.state.total)
+                        e.preventDefault();
+                    } }
                 />
             </div>
         );
