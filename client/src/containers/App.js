@@ -121,7 +121,10 @@ class App extends React.Component {
 							 categories={categories} />
 					<Content>
 						<div style={{margin: 'auto'}}>
-							{this.state.authChecked ? this.props.children : <div>Loding...</div>}
+							{this.state.authChecked ? this.props.children :
+								<div style={{ textAlign: 'center', marginTop: '20px' }}>
+									<h3 style={{ fontFamily: 'iropkeBatangM' }}>인증 요청 중...</h3>
+								</div>}
 						</div>
 					</Content>
 				</Layout>

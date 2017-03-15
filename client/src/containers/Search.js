@@ -10,7 +10,7 @@ class Search extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            message: '불러오는 중 입니다...'
+            message: '불러오는 중...'
         };
         this.fetchArticle = this.fetchArticle.bind(this);
     }
