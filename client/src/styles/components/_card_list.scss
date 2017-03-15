@@ -25,6 +25,7 @@ $gridItemPadding: 8px;
     @include item-card(100%, auto);
     height: auto;
     overflow: hidden;
+    cursor: pointer !important;
 }
 
 .article_preview {

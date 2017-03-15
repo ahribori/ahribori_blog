@@ -53,10 +53,11 @@ class Navigation extends React.Component {
 			);
 		};
 
-		return (
+        return (
 			<Header className="navigation" title={headerTitle()}>
-				<Search onFocus={this.handleFocus} onBlur={this.handleBlur}/>
-				<NavigationMenu isLoggedIn={this.props.isLoggedIn} onLogout={this.props.onLogout} />
+				<Search onFocus={this.handleFocus} onBlur={this.handleBlur} />
+                {this.state.searchFocused ? '' : <NavigationMenu isLoggedIn={this.props.isLoggedIn} onLogout={this.props.onLogout} />}
+
 			</Header>
 		);
 	}
