@@ -31,7 +31,8 @@ class App extends React.Component {
 	}
 
 	componentWillMount() {
-        document.getElementById('loading').remove();
+		const loadingElement =  document.getElementById('loading');
+		loadingElement.remove ? loadingElement.remove() : loadingElement.removeNode(true);
 	}
 
 	componentDidMount() {
