@@ -16,6 +16,23 @@ $containerMargin: 8px; //
     cursor: pointer;
 }
 
+.mdl-layout__drawer-button:focus {
+    outline: none;
+}
+
+/*==============================================
+    Bottom Navigation
+================================================*/
+.bottom_navigation {
+    display: none;
+}
+
+@media screen and (max-width: 1024px) {
+    .bottom_navigation {
+        display: block;
+    }
+}
+
 /*==============================================
     Search field
 ================================================*/
@@ -35,7 +52,7 @@ $containerMargin: 8px; //
 }
 
 .mdl-layout__content {
-    margin: $containerMargin $containerMargin $containerMargin ($containerMargin + $sidebarWidth) !important;
+    margin: 0 $containerMargin 0 ($containerMargin + $sidebarWidth) !important;
 }
 
 .sidebar_username {
@@ -88,7 +105,7 @@ $containerMargin: 8px; //
     }
 
     .mdl-layout__content {
-        margin: $containerMargin !important;
+        margin: 0 $containerMargin 0 $containerMargin !important;
     }
 
     .mdl-layout__drawer .mdl-layout-title {

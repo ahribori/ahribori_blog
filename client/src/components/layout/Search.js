@@ -9,10 +9,27 @@ class Search extends React.Component {
 		this.state = {
 			searchString: ''
 		};
+		this.handleFocus = this.handleFocus.bind(this);
+		this.handleBlur = this.handleBlur.bind(this);
 		this.handleChange = this.handleChange.bind(this);
 		this.handleKeyPress = this.handleKeyPress.bind(this);
 	}
-	
+
+	handleFocus(e) {
+        this.props.onFocus();
+        this.setState({
+        	searchString: ''
+		});
+	}
+
+	handleBlur(e) {
+        this.props.onBlur();
+        this.setState({
+            searchString: ''
+        });
+        e.target.parentNode.parentNode.classList.remove('is-focused');
+	}
+
 	handleChange(e) {
 		this.setState({
 			searchString: e.target.value
@@ -39,8 +56,8 @@ class Search extends React.Component {
 	render() {
 		return (
 			<Textfield
-				onFocus={this.props.onFocus}
-				onBlur={this.props.onBlur}
+				onFocus={this.handleFocus}
+				onBlur={this.handleBlur}
 				value={this.state.searchString}
 				onChange={this.handleChange}
 				onKeyDown={this.handleKeyPress}

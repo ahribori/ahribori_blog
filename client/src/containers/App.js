@@ -1,5 +1,5 @@
 import React, {Component, PropTypes} from 'react';
-import { Navigation, Sidebar } from 'components';
+import { Navigation, BottomNavigation, Sidebar } from 'components';
 import { browserHistory } from 'react-router';
 import { Layout, Content } from 'react-mdl';
 import { connect } from 'react-redux';
@@ -7,7 +7,6 @@ import { getCategoryRequest } from 'actions/category';
 import { getStatusRequest, getKakaoStatusRequest, setKakaoAuth, logout, kakaoLogout } from 'actions/authentication';
 import { Snackbar } from 'react-mdl';
 import config from '../config';
-
 class App extends React.Component {
 
 	constructor(props) {
@@ -16,6 +15,7 @@ class App extends React.Component {
 			snackbarMessage: '',
 			isSnackbarActive: false,
 			authChecked: false,
+            selectedIndex: 0,
 		};
 
 		this.handleLogout = this.handleLogout.bind(this);
@@ -32,7 +32,9 @@ class App extends React.Component {
 
 	componentWillMount() {
 		const loadingElement =  document.getElementById('loading');
-		loadingElement.remove ? loadingElement.remove() : loadingElement.removeNode(true);
+		if (loadingElement) {
+			loadingElement.remove ? loadingElement.remove() : loadingElement.removeNode(true);
+		}
 	}
 
 	componentDidMount() {
@@ -113,6 +115,7 @@ class App extends React.Component {
 
 	render() {
 		const categories = this.props.category.response ? this.props.category.response.response : [];
+
 		return (
 			<div>
 				<Layout fixedHeader fixedDrawer id="layout" style={{ visibility: 'hidden'}}>
@@ -127,6 +130,7 @@ class App extends React.Component {
 								</div>}
 						</div>
 					</Content>
+					<BottomNavigation />
 				</Layout>
 				<Snackbar
 					active={this.state.isSnackbarActive}

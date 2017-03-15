@@ -45,7 +45,7 @@ $gridItemPadding: 8px;
 }
 
 .grid-item {
-    padding: $gridItemPadding;
+    padding: 16px $gridItemPadding $gridItemPadding $gridItemPadding;
 }
 
 .card-title {

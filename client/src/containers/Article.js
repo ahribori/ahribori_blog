@@ -81,7 +81,9 @@ class Article extends React.Component {
                         isAuthor: true
                     });
                 }
-			})
+			});
+		const searchInput = document.getElementById('textfield-Search');
+		if (searchInput.blur) searchInput.blur();
 	}
 
 	componentWillReceiveProps() {
