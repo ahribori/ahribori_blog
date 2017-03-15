@@ -119,7 +119,9 @@ class Pagination extends React.Component {
             <div >
                 <FirstPageLink
                     onClick = { (e) => {
-                        this.setCurrent(1);
+                        if (e.nativeEvent.which !== 3) {
+                            this.setCurrent(1);
+                        }
                         e.preventDefault();
                     } }
                 />
@@ -130,7 +132,9 @@ class Pagination extends React.Component {
                             value = { page }
                             isActive = { this.state.current === page }
                             onClick = { (e) => {
-                                this.setCurrent(page);
+                                if (e.nativeEvent.which !== 3) {
+                                    this.setCurrent(page);
+                                }
                                 e.preventDefault();
                             } }
                         />
@@ -138,7 +142,9 @@ class Pagination extends React.Component {
                 }
                 <LastPageLink
                     onClick = { (e) => {
-                        this.setCurrent(this.state.total)
+                        if (e.nativeEvent.which !== 3) {
+                            this.setCurrent(this.state.total)
+                        }
                         e.preventDefault();
                     } }
                 />
