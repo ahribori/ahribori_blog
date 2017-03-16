@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { logout } from 'actions/authentication';
-import { getArticleListRequest } from 'actions/article';
+import { logout } from '../actions/authentication';
+import { getArticleListRequest } from '../actions/article';
 import config from '../config';
-import { CardList } from 'components';
+import { CardList } from '../components';
 
 class Search extends React.Component {
 

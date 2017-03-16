@@ -2,9 +2,9 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 import {Grid, Cell, Card, CardTitle, CardText, CardActions, Button, Textfield, Icon} from 'react-mdl';
-import { getArticleRequest, removeArticleRequest } from 'actions/article';
-import { getCategoryRequest } from 'actions/category';
-import { setEditorModeModify } from 'actions/app';
+import { getArticleRequest, removeArticleRequest } from '../actions/article';
+import { getCategoryRequest } from '../actions/category';
+import { setEditorModeModify } from '../actions/app';
 
 class Article extends React.Component {
 

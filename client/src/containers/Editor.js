@@ -2,8 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import {Grid, Cell, Card, CardActions, Button, Textfield, Icon, Snackbar} from 'react-mdl';
 import { connect } from 'react-redux';
 import { withRouter, browserHistory } from 'react-router';
-import { CKEditor } from 'components';
-import { getCategoryRequest } from 'actions/category';
+import { CKEditor } from '../components';
+import { getCategoryRequest } from '../actions/category';
 import {
 	registerArticleRequest,
 	modifyArticleRequest,
@@ -12,7 +12,7 @@ import {
 	modifyArticleTempRequest,
 	getArticleRequest,
     removeArticleRequest
-} from 'actions/article';
+} from '../actions/article';
 import Checkbox from 'material-ui/Checkbox';
 import Visibility from 'material-ui/svg-icons/action/visibility';
 import VisibilityOff from 'material-ui/svg-icons/action/visibility-off';

@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev-server": "cross-env NODE_ENV=development nodemon --exec babel-node --presets=latest ./server/server.js --watch server",
+    "dev-server": "cross-env NODE_ENV=development nodemon --exec babel-node ./src/server.js --watch src/server.js",
     "dev": "cross-env NODE_ENV=development webpack-dev-server --config ./config/webpack.dev.config.js",
-    "build": "cross-env NODE_ENV=development babel server --out-dir build --presets=latest && webpack --config ./config/webpack.prod.config.js",
+    "build": "cross-env NODE_ENV=development babel src --out-dir build && webpack --config ./config/webpack.prod.config.js",
     "boot": "cross-env NODE_ENV=production node ./build/server.js"
   },
   "author": "",
@@ -36,6 +36,8 @@
     "jquery": "^3.1.1",
     "jquery-ui": "^1.12.1",
     "jquery-ui-touch-punch": "^0.2.3",
+    "jsdom": "^9.12.0",
+    "jsdom-global": "^2.1.1",
     "masonry-layout": "^4.1.1",
     "material-ui": "^0.16.7",
     "moment": "^2.17.1",

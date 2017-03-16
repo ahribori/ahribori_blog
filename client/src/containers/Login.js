@@ -1,8 +1,8 @@
 import React, {Component, PropTypes} from 'react';
-import { Authentication, KakaoAuthentication } from 'components';
+import { Authentication, KakaoAuthentication } from '../components';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
-import { loginRequest, getStatusRequest, getKakaoStatusRequest, kakaoLogin } from 'actions/authentication';
+import { loginRequest, getStatusRequest, getKakaoStatusRequest, kakaoLogin } from '../actions/authentication';
 import { Snackbar } from 'react-mdl';
 
 class Login extends React.Component {

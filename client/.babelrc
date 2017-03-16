@@ -1,0 +1,12 @@
+{
+	"plugins": [
+		"transform-object-rest-spread"
+	],
+	"presets": [
+		"latest",
+		"react"
+	],
+	"ignore": [
+		"node_modulesy"
+	]
+}

@@ -1,10 +1,10 @@
 import React, {Component, PropTypes} from 'react';
-import { Navigation, BottomNavigation, Sidebar } from 'components';
+import { Navigation, BottomNavigation, Sidebar } from '../components';
 import { browserHistory } from 'react-router';
 import { Layout, Content } from 'react-mdl';
 import { connect } from 'react-redux';
-import { getCategoryRequest } from 'actions/category';
-import { getStatusRequest, getKakaoStatusRequest, setKakaoAuth, logout, kakaoLogout } from 'actions/authentication';
+import { getCategoryRequest } from '../actions/category';
+import { getStatusRequest, getKakaoStatusRequest, setKakaoAuth, logout, kakaoLogout } from '../actions/authentication';
 import { Snackbar } from 'react-mdl';
 import config from '../config';
 class App extends React.Component {

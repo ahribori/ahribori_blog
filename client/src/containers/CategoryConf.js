@@ -8,9 +8,12 @@ import AddIcon from 'material-ui/svg-icons/content/add';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 
-import 'jquery-ui/ui/core';
-import 'jquery-ui/ui/widgets/sortable';
-import 'jquery-ui-touch-punch/jquery.ui.touch-punch.min';
+if (typeof define !== 'undefined') require('jquery-ui/ui/core');
+if (typeof jQuery !== 'undefined') {
+	require('jquery-ui/ui/widgets/sortable');
+	require('jquery-ui-touch-punch/jquery.ui.touch-punch.min');
+}
+
 import update from 'react-addons-update';
 
 import {
@@ -18,7 +21,7 @@ import {
 	getCategoryRequest,
 	modifyCategoryRequest,
 	removeCategoryRequest
-} from 'actions/category';
+} from '../actions/category';
 
 class CategoryConf extends React.Component {
 

@@ -14,10 +14,6 @@ module.exports = {
 		filename: 'ahribori.js'
 	},
 
-	resolve: {
-		root: path.resolve('./src')
-	},
-
 	module: {
 		loaders: [
 			{

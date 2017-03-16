@@ -7,7 +7,10 @@ import buildFormatter from 'react-timeago/lib/formatters/buildFormatter';
 import * as colors from 'material-ui/styles/colors';
 const formatter = buildFormatter(koreanStrings);
 import Pagination from './Pagination';
-import Masonry from 'masonry-layout';
+let Masonry = {};
+if (typeof window !== 'undefined') { Masonry = require('masonry-layout')}
+
+// import Masonry from 'masonry-layout';
 
 class CardList extends React.Component {
 

@@ -18,10 +18,6 @@ module.exports = {
 		filename: 'ahribori.js'
 	},
 
-	resolve: {
-		root: path.resolve('./src')
-	},
-
 	// 개발서버 설정입니다
 	devServer: {
 		hot: true,
