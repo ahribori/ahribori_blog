@@ -33,7 +33,6 @@ import config from '../config';
 import moment from 'moment';
 
 export function getArticleListRequest(token, query) {
-	console.log(config.API_SERVER)
 	let url = `${config.API_SERVER}/api/article?`;
 	if (query.offset !== undefined && !isNaN(Number(query.offset))) {
 		url += `offset=${query.offset}&`;
