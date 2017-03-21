@@ -47,9 +47,9 @@ CKEDITOR.editorConfig = function( config ) {
 
 	config.tabSpaces = 4;
 
-	config.extraPlugins = 'image2';
+	// extraPlugins는 쉼표(,)로 구분해서 나열한다
+	config.extraPlugins = 'autolink,image2';
 	config.image2_alignClasses = [ 'image-left', 'image-center', 'image-right' ];
 	config.image2_captionedClass = 'image-captioned';
 
-    config.extraPlugins = 'autolink';
 };
