@@ -7,6 +7,8 @@ import { getCategoryRequest } from '../actions/category';
 import { getStatusRequest, getKakaoStatusRequest, setKakaoAuth, logout, kakaoLogout } from '../actions/authentication';
 import { Snackbar } from 'react-mdl';
 import config from '../config';
+const isServer = typeof window === 'undefined' || !window.document || !window.document.createElement;
+
 class App extends React.Component {
 
 	constructor(props) {
@@ -17,7 +19,6 @@ class App extends React.Component {
 			authChecked: false,
             selectedIndex: 0,
 		};
-
 		this.handleLogout = this.handleLogout.bind(this);
 		this.handleShowSnackbar = this.handleShowSnackbar.bind(this);
 		this.handleTimeoutSnackbar = this.handleTimeoutSnackbar.bind(this);
@@ -124,7 +125,7 @@ class App extends React.Component {
 							 categories={categories} />
 					<Content>
 						<div style={{margin: 'auto'}}>
-							{this.state.authChecked ? this.props.children :
+							{(this.state.authChecked || isServer) ? this.props.children :
 								<div style={{ textAlign: 'center', marginTop: '20px' }}>
 									<h3 style={{ fontFamily: 'iropkeBatangM' }}>인증 요청 중...</h3>
 								</div>}

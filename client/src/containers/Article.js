@@ -18,6 +18,11 @@ class Article extends React.Component {
 		this.handleClickRemove = this.handleClickRemove.bind(this);
 	}
 
+    static fetchDataServerSide({ store, params, history }) {
+        const article_id = params.id;
+        return store.dispatch(getArticleRequest(article_id));
+    }
+
 	handleClickModify() {
         this.props.getCategoryRequest(this.props.user.token);
 		browserHistory.push('/editor?mode=modify&id=' + this.props.article._id);
@@ -33,7 +38,29 @@ class Article extends React.Component {
 		}
 	}
 
-	render() {
+    componentDidMount() {
+        const id = this.props.params.id;
+        this.props.getArticleRequest(id)
+            .then(() => {
+				/* Prism force initialize */
+                Prism.highlightAll();
+
+                const author_id = this.props.article ? this.props.article.author_id : null;
+                const user_id = this.props.user ? this.props.user._id : null;
+                const isAdmin = this.props.user ? this.props.user.admin : null;
+
+                // 꽌리자이거나 자신이 쓴 글일 때 수정/삭제 버튼 보여줌
+                if ((author_id && user_id) || isAdmin) {
+                    this.setState({
+                        isAuthor: true
+                    });
+                }
+            });
+        const searchInput = document.getElementById('textfield-Search');
+        if (searchInput.blur) searchInput.blur();
+    }
+
+    render() {
 
 		const articleMenu = (
 			<div className="article_menu">
@@ -63,49 +90,6 @@ class Article extends React.Component {
 			</Grid>
 		);
 	}
-
-	componentDidMount() {
-		const id = this.props.params.id;
-		this.props.getArticleRequest(id)
-			.then(() => {
-				/* Prism force initialize */
-				Prism.highlightAll();
-
-                const author_id = this.props.article ? this.props.article.author_id : null;
-                const user_id = this.props.user ? this.props.user._id : null;
-                const isAdmin = this.props.user ? this.props.user.admin : null;
-
-                // 꽌리자이거나 자신이 쓴 글일 때 수정/삭제 버튼 보여줌
-                if ((author_id && user_id) || isAdmin) {
-                    this.setState({
-                        isAuthor: true
-                    });
-                }
-			});
-		const searchInput = document.getElementById('textfield-Search');
-		if (searchInput.blur) searchInput.blur();
-	}
-
-	componentWillReceiveProps() {
-
-	}
-
-	shouldComponentUpdate() {
-	    /*
-		 props/state 변경시 rerendering 여부
-		 true 반환시 render() 실행 후 componentWillUpdate 실행
-		 */
-		return true;
-	}
-
-	componentWillUpdate() {
-	    // setState() 사용 금지
-	}
-
-	componentDidUpdate() {
-	    // setState() 사용 금지
-	}
-
 }
 
 const mapStateToProps = (state) => {

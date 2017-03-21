@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import {Grid, Cell, Card, CardTitle, CardText, Icon} from 'react-mdl';
 import TimeAgo from 'react-timeago';
-import { browserHistory } from 'react-router';
+import { Link, browserHistory } from 'react-router';
 import koreanStrings from 'react-timeago/lib/language-strings/ko';
 import buildFormatter from 'react-timeago/lib/formatters/buildFormatter';
 import * as colors from 'material-ui/styles/colors';
@@ -99,27 +99,29 @@ class CardList extends React.Component {
                 return (
                     <Cell key={index} className="grid-item grid-sizer item-hover-effect" col={item.cell.col} phone={item.cell.phone}
                           tablet={item.cell.tablet}>
-                        <Card shadow={0} className="item-card" onTouchTap={(e) => {
-                            if (e.nativeEvent.which !== 3) {
-                                browserHistory.push(`/article/${article._id}`);
-                            }
-                            e.preventDefault();
-                        }}>
-                            <div className="card-top">
-                                <Icon className="item-star" name="star"/>
-                                <span className="item-value">{article.star}</span>
-                            </div>
-                            <div className="card-title-wrapper">
-                                <CardTitle expand
-                                           className="card-title"
-                                           style={{
-                                               height: '300px',
-                                               backgroundImage: `url(${ article.thumbnail_image || '' })`,
-                                               backgroundColor: getRandomColor() }}><span className="card-title-value"><h2>{article.title}</h2></span></CardTitle>
-                            </div>
+                        <Link to={`/article/${article._id}`}>
+                            <Card shadow={0} className="item-card" onTouchTap={(e) => {
+                                if (e.nativeEvent.which !== 3) {
+                                    browserHistory.push(`/article/${article._id}`);
+                                }
+                                e.preventDefault();
+                            }}>
+                                <div className="card-top">
+                                    <Icon className="item-star" name="star"/>
+                                    <span className="item-value">{article.star}</span>
+                                </div>
+                                <div className="card-title-wrapper">
+                                    <CardTitle expand
+                                               className="card-title"
+                                               style={{
+                                                   height: '300px',
+                                                   backgroundImage: `url(${ article.thumbnail_image || '' })`,
+                                                   backgroundColor: getRandomColor() }}><span className="card-title-value"><h2>{article.title}</h2></span></CardTitle>
+                                </div>
 
-                            {cardContent}
-                        </Card>
+                                {cardContent}
+                            </Card>
+                        </Link>
                     </Cell>
                 )
             })

@@ -15,6 +15,14 @@ class Search extends React.Component {
         this.fetchArticle = this.fetchArticle.bind(this);
     }
 
+    static fetchDataServerSide({ store, params, history }) {
+        const page = params.page ? params.page : 1;
+        const limit = 12;
+        const offset = limit * (page -1);
+        const search = params.search;
+        return store.dispatch(getArticleListRequest(null, { offset, limit, search }));
+    }
+
     fetchArticle(search, page = 1) {
         const token = localStorage.getItem('ahribori_token');
         const limit = 12;
