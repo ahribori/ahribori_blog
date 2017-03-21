@@ -81,18 +81,23 @@ router.post('/ckeditor_dragndrop', (req, res) => {
 
 				if (image.bitmap.width > config.MAX_IMAGE_WIDTH) image.resize(config.MAX_IMAGE_WIDTH, Jimp.AUTO);
 				image.quality(100);
-				Jimp.loadFont(Jimp.FONT_SANS_16_WHITE).then(function (font) {
-					const fontWidth = image.bitmap.width - 130;
-					const fontHeight = image.bitmap.height - 25;
-					image.print(font, fontWidth, fontHeight, "AHRIBORI.COM");
-					image.write(file_path);
-					result.file.savedFilename = path.basename(file_path);
-					resolve({
-						mode: result.mode,
-						article_id: result.article_id,
-						article_temp_id: result.article_temp_id,
-						file: result.file
-					});
+
+                /**
+				 * 이미지 워터마크
+                 */
+				// Jimp.loadFont(Jimp.FONT_SANS_16_WHITE).then(function (font) {
+				// 	const fontWidth = image.bitmap.width - 130;
+				// 	const fontHeight = image.bitmap.height - 25;
+				// 	image.print(font, fontWidth, fontHeight, "AHRIBORI.COM");
+				// });
+
+				image.write(file_path);
+				result.file.savedFilename = path.basename(file_path);
+				resolve({
+					mode: result.mode,
+					article_id: result.article_id,
+					article_temp_id: result.article_temp_id,
+					file: result.file
 				});
 			});
 		});
