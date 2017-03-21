@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { getCategoryRequest } from '../actions/category';
 import { getStatusRequest, getKakaoStatusRequest, setKakaoAuth, logout, kakaoLogout } from '../actions/authentication';
 import { Snackbar } from 'react-mdl';
+import DocumentTitle from 'react-document-title';
 import config from '../config';
 const isServer = typeof window === 'undefined' || !window.document || !window.document.createElement;
 
@@ -119,17 +120,20 @@ class App extends React.Component {
 
 		return (
 			<div>
+
 				<Layout fixedHeader fixedDrawer id="layout" style={{ visibility: 'hidden'}}>
 					<Navigation isLoggedIn={this.props.status.isLoggedIn} onLogout={this.handleLogout}/>
 					<Sidebar user={this.props.user}
 							 categories={categories} />
 					<Content>
+						<DocumentTitle title={ `아리보리's 메모장 :: AHRIBORI.COM` }>
 						<div style={{margin: 'auto'}}>
 							{(this.state.authChecked || isServer) ? this.props.children :
 								<div style={{ textAlign: 'center', marginTop: '20px' }}>
 									<h3 style={{ fontFamily: 'iropkeBatangM' }}>인증 요청 중...</h3>
 								</div>}
 						</div>
+						</DocumentTitle>
 					</Content>
 					<BottomNavigation />
 				</Layout>
