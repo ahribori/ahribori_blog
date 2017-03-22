@@ -1,6 +1,6 @@
+require('dotenv').config();
 import express from 'express';
 const router = express.Router();
-import config from '../config';
 import path from 'path';
 import fs from 'fs';
 import Image from '../models/image';
@@ -9,8 +9,8 @@ import ArticleTemp from '../models/article_temp';
 import Jimp from 'jimp';
 
 const publicPath = path.resolve(__dirname, '../../public');
-const imagePath = (config.IMAGE_REPOSITORY && config.IMAGE_REPOSITORY !== '') ?
-	path.resolve(config.IMAGE_REPOSITORY) : path.join(publicPath, '/image');
+const imagePath = (process.env.IMAGE_REPOSITORY && process.env.IMAGE_REPOSITORY !== '') ?
+	path.resolve(process.env.IMAGE_REPOSITORY) : path.join(publicPath, '/image');
 
 if(!fs.existsSync(publicPath)) {
 	fs.mkdirSync(publicPath);
@@ -28,10 +28,12 @@ if (!fs.existsSync(imagePath)) {
 import multiparty from 'multiparty';
 router.post('/ckeditor_dragndrop', (req, res) => {
 
+	const MAX_FILE_SIZE = process.env.MAX_IMAGE_SIZE * 1024 * 1024;
+
 	let form = new multiparty.Form({
 		autoFiles: true,
 		uploadDir: imagePath,
-		maxFilesSize: config.MAX_IMAGE_SIZE
+		maxFilesSize: MAX_FILE_SIZE
 	});
 
 	const parse = () => {
@@ -79,7 +81,7 @@ router.post('/ckeditor_dragndrop', (req, res) => {
 					reject({ message: '이미지 파일이 완전하지 않습니다.' });
 				}
 
-				if (image.bitmap.width > config.MAX_IMAGE_WIDTH) image.resize(config.MAX_IMAGE_WIDTH, Jimp.AUTO);
+				if (image.bitmap.width > process.env.MAX_IMAGE_WIDTH) image.resize(process.env.MAX_IMAGE_WIDTH, Jimp.AUTO);
 				image.quality(100);
 
                 /**
@@ -132,7 +134,7 @@ router.post('/ckeditor_dragndrop', (req, res) => {
 		res.json({
 			uploaded: 1,
 			fileName: fileName,
-			url: config.API_SERVER +'/image/' + fileName
+			url: process.env.API_SERVER +'/image/' + fileName
 		});
 	};
 

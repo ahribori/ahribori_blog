@@ -1,3 +1,4 @@
+require('dotenv').config();
 import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 import crypto from 'crypto';

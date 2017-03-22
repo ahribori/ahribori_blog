@@ -1,3 +1,4 @@
+require('dotenv').config();
 /* =========================================
 			Load dependencies
 ============================================*/
@@ -10,8 +11,7 @@ import CORS from './middlewares/CORS';
 /* =========================================
 			 Load Config.js
  ============================================*/
-import config from './config';
-const port = process.env.PORT || config.PORT || 3000;
+const port = process.env.PORT || 3000;
 
 /* =========================================
 			Express Configuration
@@ -25,9 +25,6 @@ app.use(bodyParser.json());
 // print the request log on console
 app.use(morgan('dev'));
 
-// set the config
-app.set('config', config);
-
 // set api router
 import routes from './routes';
 app.use('*', CORS);
@@ -40,8 +37,8 @@ app.listen(port, () => {
 
 // set public path
 app.use('/', express.static(path.join(__dirname, './../public')));
-if (config.IMAGE_REPOSITORY !== '') {
-	app.use('/image', express.static(config.IMAGE_REPOSITORY));
+if (process.env.IMAGE_REPOSITORY !== '') {
+	app.use('/image', express.static(process.env.IMAGE_REPOSITORY));
 }
 
 /* handle error */
@@ -53,7 +50,7 @@ app.use(function (err, req, res, next) {
 /* =========================================
  			Mongoose Configuration
  ============================================*/
-const MONGO_URI = config.MONGO_URI;
+const MONGO_URI = process.env.MONGO_URI;
 mongoose.connect(MONGO_URI);
 const db = mongoose.connection;
 mongoose.Promise = global.Promise;

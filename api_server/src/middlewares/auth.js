@@ -1,6 +1,5 @@
+require('dotenv').config();
 import request from 'request';
-import config from '../config';
-
 const authMiddleware = (req, res, next) => {
 	const token = req.headers['authorization'] || req.headers['x-access-token'] || req.query.token;
 
@@ -13,7 +12,7 @@ const authMiddleware = (req, res, next) => {
 
 	const verify = new Promise((resolve, reject) => {
 		request({
-			url: config.AUTH_SERVER + '/auth/check',
+			url: process.env.AUTH_SERVER + '/auth/check',
 			headers: {
 				authorization: token
 			}
