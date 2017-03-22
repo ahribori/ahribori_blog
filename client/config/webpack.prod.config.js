@@ -1,5 +1,6 @@
 var webpack = require('webpack');
 var path = require('path');
+var Dotenv = require('dotenv-webpack');
 var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = {
@@ -38,6 +39,9 @@ module.exports = {
 				NODE_ENV: JSON.stringify('production')
 			}
 		}),
+        new Dotenv({
+            path: './.env',
+        }),
         new webpack.ProvidePlugin({
             $: "jquery",
             jQuery: "jquery",
