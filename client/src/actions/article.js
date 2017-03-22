@@ -29,11 +29,10 @@ import {
 } from './ActionTypes';
 
 import axios from 'axios';
-import config from '../config';
 import moment from 'moment';
 
 export function getArticleListRequest(token, query) {
-	let url = `${config.API_SERVER}/api/article?`;
+	let url = `${process.env.API_SERVER}/api/article?`;
 	if (query.offset !== undefined && !isNaN(Number(query.offset))) {
 		url += `offset=${query.offset}&`;
 	}
@@ -51,7 +50,7 @@ export function getArticleListRequest(token, query) {
 		dispatch(getArticleList());
 		return axios.get(url, {
 			headers: {
-				'authorization': token || config.TOKEN
+				'authorization': token || process.env.TOKEN
 			}
 		}).then((response) => {
 			dispatch(getArticleListSuccess(query.offset, query.limit, response.data.articles, response.data.page))
@@ -87,9 +86,9 @@ export function getArticleListFailure(error) {
 export function getArticleRequest(id, token) {
 	return (dispatch) => {
 		dispatch(getArticle());
-		return axios.get(`${config.API_SERVER}/api/article/${id}`, {
+		return axios.get(`${process.env.API_SERVER}/api/article/${id}`, {
 			headers: {
-				'authorization': token || config.TOKEN
+				'authorization': token || process.env.TOKEN
 			}
 		}).then((response) => {
 			dispatch(getArticleSuccess(response.data))
@@ -126,7 +125,7 @@ export function registerArticleRequest(token, article) {
 		dispatch(registerArticle());
 		return axios({
 			method: 'post',
-			url: `${config.API_SERVER}/api/article`,
+			url: `${process.env.API_SERVER}/api/article`,
 			headers: {
 				'authorization': token
 			},
@@ -173,7 +172,7 @@ export function modifyArticleRequest(token, article) {
 		dispatch(modifyArticle());
 		return axios({
 			method: 'put',
-			url: `${config.API_SERVER}/api/article/${article._id}`,
+			url: `${process.env.API_SERVER}/api/article/${article._id}`,
 			headers: {
 				'authorization': token
 			},
@@ -211,7 +210,7 @@ export function removeArticleRequest(token, article_id) {
 		dispatch(removeArticle());
 		return axios({
             method: 'delete',
-            url: `${config.API_SERVER}/api/article/${article_id}`,
+            url: `${process.env.API_SERVER}/api/article/${article_id}`,
             headers: {
                 'authorization': token
             }
@@ -246,7 +245,7 @@ export function removeArticleFailure(error) {
 export function getArticleTempRequest(token) {
 	return (dispatch) => {
 		dispatch(getArticleTemp());
-		return axios.get(`${config.API_SERVER}/api/article_temp`, {
+		return axios.get(`${process.env.API_SERVER}/api/article_temp`, {
 			headers: {
 				'authorization': token
 			}
@@ -283,7 +282,7 @@ export function registerArticleTempRequest(token, article) {
 		dispatch(registerArticleTemp());
 		return axios({
 			method: 'post',
-			url: `${config.API_SERVER}/api/article_temp`,
+			url: `${process.env.API_SERVER}/api/article_temp`,
 			headers: {
 				'authorization': token
 			},
@@ -329,7 +328,7 @@ export function modifyArticleTempRequest(token, article_temp) {
 		dispatch(modifyArticleTemp());
 		return axios({
 			method: 'put',
-			url: `${config.API_SERVER}/api/article_temp/${article_temp._id}`,
+			url: `${process.env.API_SERVER}/api/article_temp/${article_temp._id}`,
 			headers: {
 				'authorization': token
 			},
@@ -367,7 +366,7 @@ export function removeArticleTempRequest(token, article_temp_id) {
         dispatch(removeArticleTemp());
         return axios({
             method: 'delete',
-            url: `${config.API_SERVER}/api/article_temp/${article_temp_id}`,
+            url: `${process.env.API_SERVER}/api/article_temp/${article_temp_id}`,
             headers: {
                 'authorization': token
             }

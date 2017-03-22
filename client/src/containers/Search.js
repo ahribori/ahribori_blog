@@ -2,9 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { logout } from '../actions/authentication';
 import { getArticleListRequest } from '../actions/article';
-import config from '../config';
-import { CardList } from '../components';
-
 class Search extends React.Component {
 
     constructor(props) {
@@ -32,7 +29,7 @@ class Search extends React.Component {
                 if (this.props.articleList.error && this.props.articleList.error.status === 403) {
                     localStorage.removeItem('ahribori_token');
                     this.props.logout();
-                    this.props.getArticleRequest(config.token, { offset, limit, search })
+                    this.props.getArticleRequest(process.env.TOKEN, { offset, limit, search })
                 }
                 this.setState({
                     message: `검색어 '${this.props.params.search}'에 해당하는 게시물이 존재하지 않습니다.`

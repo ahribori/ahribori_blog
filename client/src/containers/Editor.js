@@ -19,7 +19,6 @@ import VisibilityOff from 'material-ui/svg-icons/action/visibility-off';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import axios from 'axios';
-import config from '../config';
 
 class Editor extends React.Component {
 	constructor(props) {
@@ -285,7 +284,7 @@ class Editor extends React.Component {
 								} else {
 									axios({
 										method: 'delete',
-										url: `${config.API_SERVER}/api/article_temp/clear_images/${this.props.article_temp._id}`,
+										url: `${process.env.API_SERVER}/api/article_temp/clear_images/${this.props.article_temp._id}`,
 										headers: {
 											'authorization': token
 										}

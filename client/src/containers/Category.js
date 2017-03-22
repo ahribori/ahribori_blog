@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { logout } from '../actions/authentication';
 import { getArticleListRequest } from '../actions/article';
-import config from '../config';
 import { CardList } from '../components';
 
 class Category extends React.Component {
@@ -32,7 +31,7 @@ class Category extends React.Component {
                 if (this.props.articleList.error && this.props.articleList.error.status === 403) {
                     localStorage.removeItem('ahribori_token');
                     this.props.logout();
-                    this.props.getArticleRequest(config.token, { offset, limit, category })
+                    this.props.getArticleRequest(process.env.TOKEN, { offset, limit, category })
                 }
                 this.setState({
                     message: '이 카테고리에 해당하는 게시물이 존재하지 않습니다.'

@@ -18,7 +18,6 @@ import {
 } from './ActionTypes';
 
 import axios from 'axios';
-import config from '../config'
 
 /*============================================================================
  authentication
@@ -32,7 +31,7 @@ export function loginRequest(username, password) {
 	*/
 	return (dispatch) => {
 		dispatch(login());
-		return axios.post(config.AUTH_SERVER + '/auth/login', { username, password })
+		return axios.post(process.env.AUTH_SERVER + '/auth/login', { username, password })
 			.then((response) => {
 				dispatch(loginSuccess(response.data));
 			})
@@ -129,7 +128,7 @@ export function logout() {
 export function registerRequest(username, password, nickname) {
 	return (dispatch) => {
 		dispatch(register());
-		return axios.post(config.AUTH_SERVER + '/auth/register', { username, password, nickname })
+		return axios.post(process.env.AUTH_SERVER + '/auth/register', { username, password, nickname })
 			.then((response) => {
 				dispatch(registerSuccess());
 			})
@@ -162,7 +161,7 @@ export function registerFailure(error) {
 export function getStatusRequest(token) {
 	return (dispatch) => {
 		dispatch(getStatus());
-		return axios.get(config.AUTH_SERVER + '/auth/check', {
+		return axios.get(process.env.AUTH_SERVER + '/auth/check', {
 			headers: {
 				'authorization': token
 			}

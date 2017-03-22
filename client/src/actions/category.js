@@ -14,13 +14,12 @@ import {
 } from './ActionTypes';
 
 import axios from 'axios';
-import config from '../config'
 
 export function registerCategoryRequest(category, token) {
     return (dispatch) => {
         dispatch(registerCategory());
         return axios({
-            url: `${config.API_SERVER}/api/category`,
+            url: `${process.env.API_SERVER}/api/category`,
             method: 'post',
             data: category,
             headers: {
@@ -60,7 +59,7 @@ export function getCategoryRequest(token) {
     return (dispatch) => {
         dispatch(getCategory());
         return axios({
-            url: `${config.API_SERVER}/api/category`,
+            url: `${process.env.API_SERVER}/api/category`,
             method: 'get',
             headers: {
                 'authorization': token
@@ -99,7 +98,7 @@ export function modifyCategoryRequest(category, token) {
     return (dispatch) => {
         dispatch(modifyCategory());
         return axios({
-            url: `${config.API_SERVER}/api/category/${category._id}`,
+            url: `${process.env.API_SERVER}/api/category/${category._id}`,
             method: 'put',
             data: category,
             headers: {
@@ -139,7 +138,7 @@ export function removeCategoryRequest(category, token) {
     return (dispatch) => {
         dispatch(removeCategory());
         return axios({
-            url: `${config.API_SERVER}/api/category/${category._id}`,
+            url: `${process.env.API_SERVER}/api/category/${category._id}`,
             method: 'delete',
             headers: {
                 'authorization': token

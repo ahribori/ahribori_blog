@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 import { getCategoryRequest } from '../actions/category';
 import { getStatusRequest, getKakaoStatusRequest, setKakaoAuth, logout, kakaoLogout } from '../actions/authentication';
 import { Snackbar } from 'react-mdl';
-import config from '../config';
 const isServer = typeof window === 'undefined' || !window.document || !window.document.createElement;
 
 class App extends React.Component {
@@ -76,7 +75,7 @@ class App extends React.Component {
 			console.log('localStorage를 지원하지 않습니다.')
 		}
 
-		this.props.getCategoryRequest(config.TOKEN)
+		this.props.getCategoryRequest(process.env.TOKEN)
 	}
 
 	handleLogout() {
