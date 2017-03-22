@@ -99,7 +99,7 @@ router.post('/register', (req, res) => {
  ============================================*/
 router.post('/login', (req, res) => {
 	const {username, password} = req.body;
-	const secret = req.app.get('config').SECRET;
+	const secret = process.env.SECRET;
 
 	const check = (user) => {
 		let promise = null;
@@ -173,7 +173,7 @@ router.get('/check', (req, res) => {
 router.use('/registerApplication', authMiddleware);
 router.post('/registerApplication', (req, res) => {
 	const {app} = req.body;
-	const secret = req.app.get('config').SECRET;
+	const secret = process.env.SECRET;
 	const user = req.decoded;
 
 	const createToken = (application) => {

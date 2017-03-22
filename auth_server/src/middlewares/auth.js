@@ -11,7 +11,7 @@ const authMiddleware = (req, res, next) => {
 	}
 
 	const decode = new Promise((resolve, reject) => {
-		jwt.verify(token, req.app.get('config').SECRET, (err, decoded) => {
+		jwt.verify(token, process.env.SECRET, (err, decoded) => {
 			if (err) reject(err);
 			resolve(decoded);
 		});

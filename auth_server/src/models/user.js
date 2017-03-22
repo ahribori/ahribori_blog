@@ -1,7 +1,6 @@
 import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 import crypto from 'crypto';
-import config from '../config';
 
 const User = new Schema({
 	username: String,
@@ -14,7 +13,7 @@ const User = new Schema({
 // create new User document
 User.statics.create = function (username, password, nickname) {
 	if (typeof password === 'number') password = password.toString();
-	const encrypted = crypto.createHmac('sha1', config.SECRET).update(password).digest('base64');
+	const encrypted = crypto.createHmac('sha1', process.env.SECRET).update(password).digest('base64');
 	const user = new this({
 		username,
 		password: encrypted,
@@ -35,7 +34,7 @@ User.statics.findOneByUsername = function (username) {
 // verify the password of the User documment
 User.methods.verify = function (password) {
 	if (typeof password === 'number') password = password.toString();
-	const encrypted = crypto.createHmac('sha1', config.SECRET).update(password).digest('base64');
+	const encrypted = crypto.createHmac('sha1', process.env.SECRET).update(password).digest('base64');
 	return this.password === encrypted;
 };
 
