@@ -1,4 +1,5 @@
 require('dotenv').config();
+const env = env;
 /* =========================================
 			Load dependencies
 ============================================*/
@@ -10,7 +11,7 @@ import path from 'path';
 /* =========================================
 			 Load Config.js
  ============================================*/
-const port = process.env.PORT || 3000;
+const port = env.PORT || 3000;
 
 /* =========================================
 			Express Configuration
@@ -39,7 +40,7 @@ app.use('/', express.static(path.join(__dirname, './../public')));
 /* =========================================
  			Mongoose Configuration
  ============================================*/
-const MONGO_URI = process.env.MONGO_URI;
+const MONGO_URI = env.MONGO_URI;
 mongoose.Promise = global.Promise;
 mongoose.connect(MONGO_URI);
 const db = mongoose.connection;

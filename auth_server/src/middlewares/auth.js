@@ -1,4 +1,5 @@
 require('dotenv').config();
+const env = process.env;
 import jwt from 'jsonwebtoken';
 
 const authMiddleware = (req, res, next) => {
@@ -12,7 +13,7 @@ const authMiddleware = (req, res, next) => {
 	}
 
 	const decode = new Promise((resolve, reject) => {
-		jwt.verify(token, process.env.SECRET, (err, decoded) => {
+		jwt.verify(token, env.SECRET, (err, decoded) => {
 			if (err) reject(err);
 			resolve(decoded);
 		});

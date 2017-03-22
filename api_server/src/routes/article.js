@@ -1,4 +1,5 @@
 require('dotenv').config();
+const env = process.env;
 import express from 'express';
 import mongoose from 'mongoose';
 const router = express.Router();
@@ -99,10 +100,10 @@ router.post('/', (req, res) => {
                                     if (images[i].src.indexOf(tempImages[x].name) !== -1) {
 
                                     	// ***** 이미지 Max Width 정의
-                                    	if (images[i].width > process.env.MAX_IMAGE_WIDTH) {
+                                    	if (images[i].width > env.MAX_IMAGE_WIDTH) {
                                     		const bw = images[i].width;
                                     		const bh = images[i].height;
-                                    		const aw = process.env.MAX_IMAGE_WIDTH;
+                                    		const aw = env.MAX_IMAGE_WIDTH;
                                     		const ah = (aw * bh) / bw;
 											images[i].width = aw;
 											images[i].height = ah;
@@ -120,7 +121,7 @@ router.post('/', (req, res) => {
 								if (exist) {
 									article.images.push(tempImages[x]._id);
 									if (!thumbnail_picked) {
-										article.thumbnail_image = `${process.env.API_SERVER}/image/${tempImages[x].name}`;
+										article.thumbnail_image = `${env.API_SERVER}/image/${tempImages[x].name}`;
 										thumbnail_picked = true;
 									}
 								} else {
@@ -431,10 +432,10 @@ router.put('/:id', (req, res) => {
                                 if (images[i].src.indexOf(dbImages[x].name) !== -1) {
 
                                     // ***** 이미지 Max Width 정의
-                                    if (images[i].width > process.env.MAX_IMAGE_WIDTH) {
+                                    if (images[i].width > env.MAX_IMAGE_WIDTH) {
                                         const bw = images[i].width;
                                         const bh = images[i].height;
-                                        const aw = process.env.MAX_IMAGE_WIDTH;
+                                        const aw = env.MAX_IMAGE_WIDTH;
                                         const ah = (aw * bh) / bw;
                                         images[i].width = aw;
                                         images[i].height = ah;
@@ -465,7 +466,7 @@ router.put('/:id', (req, res) => {
 						if (dbArticle.images.length === 0) {
 							dbArticle.thumbnail_image = '';
 						} else {
-							dbArticle.thumbnail_image = `${process.env.API_SERVER}/image/${dbImages[0].name}`;
+							dbArticle.thumbnail_image = `${env.API_SERVER}/image/${dbImages[0].name}`;
 						}
 
 						Article.update({ _id: req.params.id }, dbArticle, (err, result) => {

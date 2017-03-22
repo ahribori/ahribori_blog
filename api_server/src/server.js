@@ -1,4 +1,5 @@
 require('dotenv').config();
+const env = process.env;
 /* =========================================
 			Load dependencies
 ============================================*/
@@ -11,7 +12,7 @@ import CORS from './middlewares/CORS';
 /* =========================================
 			 Load Config.js
  ============================================*/
-const port = process.env.PORT || 3000;
+const port = env.PORT || 3000;
 
 /* =========================================
 			Express Configuration
@@ -37,8 +38,8 @@ app.listen(port, () => {
 
 // set public path
 app.use('/', express.static(path.join(__dirname, './../public')));
-if (process.env.IMAGE_REPOSITORY !== '') {
-	app.use('/image', express.static(process.env.IMAGE_REPOSITORY));
+if (env.IMAGE_REPOSITORY !== '') {
+	app.use('/image', express.static(env.IMAGE_REPOSITORY));
 }
 
 /* handle error */
@@ -50,7 +51,7 @@ app.use(function (err, req, res, next) {
 /* =========================================
  			Mongoose Configuration
  ============================================*/
-const MONGO_URI = process.env.MONGO_URI;
+const MONGO_URI = env.MONGO_URI;
 mongoose.connect(MONGO_URI);
 const db = mongoose.connection;
 mongoose.Promise = global.Promise;

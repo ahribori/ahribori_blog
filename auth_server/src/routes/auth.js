@@ -1,4 +1,5 @@
 require('dotenv').config();
+const env = process.env;
 import express from 'express';
 const router = express.Router();
 import User from '../models/user';
@@ -100,7 +101,7 @@ router.post('/register', (req, res) => {
  ============================================*/
 router.post('/login', (req, res) => {
 	const {username, password} = req.body;
-	const secret = process.env.SECRET;
+	const secret = env.SECRET;
 
 	const check = (user) => {
 		let promise = null;
@@ -174,7 +175,7 @@ router.get('/check', (req, res) => {
 router.use('/registerApplication', authMiddleware);
 router.post('/registerApplication', (req, res) => {
 	const {app} = req.body;
-	const secret = process.env.SECRET;
+	const secret = env.SECRET;
 	const user = req.decoded;
 
 	const createToken = (application) => {

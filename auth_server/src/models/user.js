@@ -1,4 +1,5 @@
 require('dotenv').config();
+const env = process.env;
 import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 import crypto from 'crypto';
@@ -14,7 +15,7 @@ const User = new Schema({
 // create new User document
 User.statics.create = function (username, password, nickname) {
 	if (typeof password === 'number') password = password.toString();
-	const encrypted = crypto.createHmac('sha1', process.env.SECRET).update(password).digest('base64');
+	const encrypted = crypto.createHmac('sha1', env.SECRET).update(password).digest('base64');
 	const user = new this({
 		username,
 		password: encrypted,
@@ -35,7 +36,7 @@ User.statics.findOneByUsername = function (username) {
 // verify the password of the User documment
 User.methods.verify = function (password) {
 	if (typeof password === 'number') password = password.toString();
-	const encrypted = crypto.createHmac('sha1', process.env.SECRET).update(password).digest('base64');
+	const encrypted = crypto.createHmac('sha1', env.SECRET).update(password).digest('base64');
 	return this.password === encrypted;
 };
 
