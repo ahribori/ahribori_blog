@@ -27,12 +27,6 @@ $containerMargin: 8px; //
     display: none;
 }
 
-@media screen and (max-width: 1024px) {
-    .bottom_navigation {
-        display: block;
-    }
-}
-
 /*==============================================
     Search field
 ================================================*/
@@ -135,5 +129,9 @@ $containerMargin: 8px; //
 @media screen and (max-width: 600px) {
     .mdl-layout__content {
         margin: 0 !important;
+    }
+
+    .bottom_navigation {
+        display: block;
     }
 }
