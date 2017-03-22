@@ -181,7 +181,7 @@ class Editor extends React.Component {
 									<Button raised accent ripple onClick={this.handleSubmit}><Icon name="edit"/> 수정</Button>
                                 }
 								{ this.state.mode === 'register' ? <Button ripple onClick={this.handleSaveTemp}><Icon name="save" />저장</Button> : '' }
-								<Button ripple onClick={browserHistory.goBack}>취소</Button>
+								<Button ripple onClick={browserHistory ? browserHistory.goBack : ''}>취소</Button>
 							</CardActions>
 						</Card>
 					</Cell>
