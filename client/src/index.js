@@ -22,7 +22,9 @@ if (process.env.NODE_ENV === 'development') {
 	const logger = createLogger();
 	// middlewares.push(logger);
 }
-const store = compose(applyMiddleware(...middlewares))(createStore)(reducers);
+let preloadedState = {};
+if (typeof window !== 'undefined') { preloadedState = window.__REDUX_STATE__; }
+const store = createStore(reducers, preloadedState, compose(applyMiddleware(...middlewares)));
 
 /* =========================================
  Load MDL dependencies

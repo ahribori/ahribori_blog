@@ -8,6 +8,12 @@ import WebpackDevServer from 'webpack-dev-server';
 import fs from 'fs';
 
 /* =========================================
+ Set .env values to process.env
+ ============================================*/
+const env = require('dotenv').parse(fs.readFileSync('./.env'));
+for (let k in env) { process.env[k] = env[k]; }
+
+/* =========================================
  Load server side rendering dependencies
  ============================================*/
 import React from 'react';
@@ -45,10 +51,14 @@ const app = express();
 const getReduxPromise = (props) => {
     let { query, params } = props;
     let comp = props.components[props.components.length - 1].WrappedComponent;
-    let promise = comp.fetchDataServerSide ?
-        comp.fetchDataServerSide({ store, params, history }) :
-        Promise.resolve();
-    return promise;
+    if (comp) {
+		let promise = comp.fetchDataServerSide ?
+			comp.fetchDataServerSide({ store, params, history }) :
+			Promise.resolve();
+		return promise;
+	} else {
+    	return Promise.reject()
+	}
 };
 
 const renderFullPage = (html, reduxState, res) => {
@@ -79,6 +89,8 @@ app.use('/',(req,res,next) => {
                     reduxState = {};
                 }
 				renderFullPage(appHtml, reduxState, res);
+			}).catch(() => {
+                res.sendFile(path.resolve(__dirname, './../public/index.html'));
 			});
         });
 	} else {
@@ -107,6 +119,8 @@ app.get('*', function (req, res) {
 					reduxState = {};
 				}
                 renderFullPage(appHtml, reduxState, res)
+            }).catch(() => {
+                res.sendFile(path.resolve(__dirname, './../public/index.html'));
             });
         });
     } else if (process.env.NODE_ENV === 'development') {
