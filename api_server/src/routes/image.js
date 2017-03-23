@@ -81,8 +81,15 @@ router.post('/ckeditor_dragndrop', (req, res) => {
 					reject({ message: '이미지 파일이 완전하지 않습니다.' });
 				}
 
-				if (image.bitmap.width > env.MAX_IMAGE_WIDTH) image.resize(env.MAX_IMAGE_WIDTH, Jimp.AUTO);
-				image.quality(100);
+                /**
+				 * MAX_IMAGE_WIDTH로 리사이징
+                 */
+				// try {
+				// 	if (image.bitmap.width > env.MAX_IMAGE_WIDTH) image.resize(env.MAX_IMAGE_WIDTH, Jimp.AUTO);
+				// 	image.quality(100);
+				// } catch(e) {
+				// 	console.error(e);
+				// }
 
                 /**
 				 * 이미지 워터마크

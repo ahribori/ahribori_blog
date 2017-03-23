@@ -18,9 +18,9 @@ const authMiddleware = (req, res, next) => {
 				authorization: token
 			}
 		}, (error, response, body) => {
-			if (!body) throw {
+			if (!body) return reject ({
 				message: 'empty body received'
-			};
+			});
 			const verified = JSON.parse(body);
 			if (verified.success) {
 				resolve(verified.info)
