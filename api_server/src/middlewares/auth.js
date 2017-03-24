@@ -21,14 +21,22 @@ const authMiddleware = (req, res, next) => {
 			if (!body) return reject ({
 				message: 'empty body received'
 			});
-			const verified = JSON.parse(body);
-			if (verified.success) {
-				resolve(verified.info)
-			} else {
-				reject ({
-					status: 403,
-					message: verified.message
-				});
+
+			try {
+				const verified = JSON.parse(body);
+				if (verified.success) {
+					resolve(verified.info)
+				} else {
+					reject ({
+						status: 403,
+						message: verified.message
+					});
+				}
+			} catch (e) {
+                reject ({
+                    status: 500,
+                    message: 'JSON parse error'
+                });
 			}
 		});
 	});
