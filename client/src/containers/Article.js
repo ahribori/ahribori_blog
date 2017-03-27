@@ -50,7 +50,7 @@ class Article extends React.Component {
                 const isAdmin = this.props.user ? this.props.user.admin : null;
 
                 // 꽌리자이거나 자신이 쓴 글일 때 수정/삭제 버튼 보여줌
-                if ((author_id && user_id) || isAdmin) {
+                if ((author_id === user_id) || isAdmin) {
                     this.setState({
                         isAuthor: true
                     });
