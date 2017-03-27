@@ -28,6 +28,7 @@ class FacebookAuthentication extends React.Component {
                 fields="name,email,picture"
                 textButton="페이스북 계정으로 로그인"
                 cssClass="facebook_login_btn_block"
+                language="ko_KR"
                 callback={this.handleFacebookResponse} />
         );
     }
