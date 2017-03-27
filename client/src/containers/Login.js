@@ -1,8 +1,9 @@
 import React, {Component, PropTypes} from 'react';
-import { Authentication, KakaoAuthentication } from '../components';
+import { Authentication, KakaoAuthentication, FacebookAuthentication, GoogleAuthentication } from '../components';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
-import { loginRequest, getStatusRequest, getKakaoStatusRequest, kakaoLogin } from '../actions/authentication';
+import { Grid, Cell, Card, CardText } from 'react-mdl';
+import { loginRequest, oAuthLoginRequest, getStatusRequest } from '../actions/authentication';
 import { Snackbar } from 'react-mdl';
 
 class Login extends React.Component {
@@ -15,6 +16,7 @@ class Login extends React.Component {
 		};
 
 		this.handleLogin = this.handleLogin.bind(this);
+		this.handleOAuthLogin = this.handleOAuthLogin.bind(this);
 		this.handleShowSnackbar = this.handleShowSnackbar.bind(this);
 		this.handleTimeoutSnackbar = this.handleTimeoutSnackbar.bind(this);
 	}
@@ -32,6 +34,26 @@ class Login extends React.Component {
 					this.handleShowSnackbar('아이디 또는 패스워드가 잘못되었습니다');
 					return false;
 				}
+			})
+	}
+
+	handleOAuthLogin(account_type, social_id, nickname, thumbnail_image) {
+        this.props.oAuthLoginRequest(account_type, social_id, nickname, thumbnail_image)
+			.then(() => {
+                if (this.props.status === 'SUCCESS') {
+                    if (window.localStorage) {
+                        const localStorage = window.localStorage;
+                        this.props.getStatusRequest(this.props.token).then(() => {
+                        	localStorage.setItem('ahribori_token', this.props.token);
+							localStorage.setItem('snackbar', `${this.props.user.type} 계정으로 인증되었습니다.`);
+							browserHistory.push('/');
+						});
+                    }
+                    return true;
+                } else {
+                    this.handleShowSnackbar('인증 과정에 문제가 발생하셨습니다.');
+                    return false;
+                }
 			})
 	}
 
@@ -60,10 +82,21 @@ class Login extends React.Component {
 					getStatusRequest={this.props.getStatusRequest}
 					token={this.props.token}
 				/>
-				<KakaoAuthentication
-					onLogin={this.props.kakaoLogin}
-					getKakaoStatusRequest={this.props.getKakaoStatusRequest}
-				/>
+				<Grid className="socialAuthentication">
+					<Cell
+						offsetDesktop={3}
+						col={6}
+						tablet={12}
+						phone={12}>
+						<Card shadow={0} style={{width: 'auto', margin: '0px auto', minHeight: '80px'}}>
+							<CardText  style={{ width: 'auto', margin: '0px auto' }} >
+								<KakaoAuthentication loginRequest={this.handleOAuthLogin}/>
+								<FacebookAuthentication loginRequest={this.handleOAuthLogin}/>
+								<GoogleAuthentication loginRequest={this.handleOAuthLogin}/>
+							</CardText>
+						</Card>
+					</Cell>
+				</Grid>
 				<Snackbar
 					active={this.state.isSnackbarActive}
 					onTimeout={this.handleTimeoutSnackbar}
@@ -89,15 +122,12 @@ const mapDispatchToProps = (dispatch) => {
 		loginRequest: (id, pw) => {
 			return dispatch(loginRequest(id, pw));
 		},
+		oAuthLoginRequest: (account_type, social_id, nickname, thumbnail_image) => {
+			return dispatch(oAuthLoginRequest(account_type, social_id, nickname, thumbnail_image));
+		},
 		getStatusRequest: (token) => {
 			return dispatch(getStatusRequest(token));
 		},
-		kakaoLogin: (response) => {
-			return dispatch(kakaoLogin(response));
-		},
-		getKakaoStatusRequest: () => {
-			return dispatch(getKakaoStatusRequest());
-		}
 	}
 };
 

@@ -5,11 +5,16 @@ const Schema = mongoose.Schema;
 import crypto from 'crypto';
 
 const User = new Schema({
+	account_type: String, // ahribori(undefined), kakao, google, facebook
 	username: String,
 	password: String,
-	nickname: String,
-	admin: {type: Boolean, default: false},
-	reg_date: {type: Date, default: Date.now}
+    nickname: String,
+    social_id: String,
+    thumbnail_image: String,
+    admin: { type: Boolean, default: false },
+    reg_date: { type: Date, default: Date.now },
+    last_login: { type: Date, default: Date.now },
+    blocked: { type: Boolean, default: false }
 });
 
 // create new User document

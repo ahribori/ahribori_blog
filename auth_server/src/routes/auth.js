@@ -156,6 +156,89 @@ router.post('/login', (req, res) => {
 });
 
 /* =========================================
+ POST /auth/oauth (oAuth save)
+ {
+ 	account_type
+ 	social_id
+ 	nickname
+ 	thumbnail_image
+ }
+ ============================================*/
+router.post('/oauth', (req, res) => {
+	const { account_type, social_id, nickname, thumbnail_image } = req.body;
+    const secret = env.SECRET;
+	console.log(req.body);
+
+	const findUserBySocialId = new Promise((resolve, reject) => {
+		User.findOne({ social_id }, (err, user) => {
+			if (err) reject(err);
+			if (!user) {
+				new User({
+					account_type,
+					social_id,
+					nickname,
+					thumbnail_image
+				}).save((err, user) => {
+					if (err) reject(err);
+					resolve(user);
+				})
+			} else {
+				user.account_type = account_type;
+				user.nickname = nickname;
+				user.thumbnail_image = thumbnail_image;
+				user.last_login = Date.now();
+				user.save((err, result) => {
+					if (err) reject(err);
+					resolve(result);
+				});
+			}
+		})
+	});
+
+    const createToken = (user) => new Promise((resolve, reject) => {
+        jwt.sign(
+            {
+                _id: user._id,
+				type: user.account_type,
+				s_id: user.social_id,
+                nickname: user.nickname,
+				thumbnail_image: user.thumbnail_image,
+                admin: user.admin
+            },
+            secret,
+            {
+                expiresIn: '7d',
+                issuer: 'ahribori.com',
+                subject: 'userInfo'
+            }, (err, token) => {
+                if (err) reject(err);
+                resolve(token);
+            }
+        );
+    });
+
+    const respond = (token) => {
+        res.status(200).json({
+            success: true,
+            token
+        });
+    };
+
+    const onError = (error) => {
+        const status = error.status || 500;
+        const message = error.message || 'somting broke';
+        res.status(status).json({
+            message: message
+        })
+    };
+
+	findUserBySocialId
+		.then(createToken)
+		.then(respond)
+		.catch(onError)
+});
+
+/* =========================================
  GET /auth/check (Login)
  ============================================*/
 router.use('/check', authMiddleware);

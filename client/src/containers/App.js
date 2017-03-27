@@ -39,25 +39,9 @@ class App extends React.Component {
 
 	componentDidMount() {
 		this.onLoad();
-
 		if (window.localStorage) {
 			const localStorage = window.localStorage;
 			const token = localStorage.getItem('ahribori_token');
-
-			let storedKakaoAuth = localStorage.getItem('kakao_token');
-			if (storedKakaoAuth) {
-				storedKakaoAuth = JSON.parse(atob(storedKakaoAuth));
-				this.props.setKakaoAuth(storedKakaoAuth);
-				this.props.getKakaoStatusRequest()
-					.then(() => {
-						this.setState({
-							authChecked: true
-						})
-					})
-					.catch(() => {
-						Kakao.Auth.logout();
-					})
-			}
 			if (token) {
 				this.props.getStatusRequest(token)
 					.then(() => {

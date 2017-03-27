@@ -1,69 +1,42 @@
-import React, {Component, PropTypes} from 'react';
-import { Grid, Cell, Card, CardText } from 'react-mdl';
-import { browserHistory } from 'react-router';
-
-const propTypes = {};
-
-const defaultProps = {};
+import React from 'react';
+import KakaoLogin from 'react-kakao-login';
 
 class KakaoAuthentication extends React.Component {
 
 	constructor(props) {
 		super(props);
+		this.handleKakaoSuccess = this.handleKakaoSuccess.bind(this);
+		this.handleKakaoError = this.handleKakaoError.bind(this);
 		this.handleLogin = this.handleLogin.bind(this);
-		this.handleCreateLoginButton = this.handleCreateLoginButton.bind(this);
 	}
 
-	handleLogin(response) {
-		this.props.onLogin(response);
-		const localStorage = window.localStorage;
-		localStorage.setItem('kakao_token', btoa(JSON.stringify(response)));
-		browserHistory.push('/');
+	handleKakaoSuccess(response) {
+		const social_id = response.profile.id;
+		const nickname = response.profile.properties.nickname;
+		const thumbnail_image = response.profile.properties.thumbnail_image;
+		this.handleLogin('kakao', social_id, nickname, thumbnail_image);
 	}
 
-	handleCreateLoginButton() {
-		const self = this;
-		Kakao.Auth.createLoginButton({
-			container: '#kakao-login-btn',
-			success: function(authObj) {
-				self.handleLogin(authObj);
-				self.props.getKakaoStatusRequest()
-					.then(() => {
-						// 카카오 유저정보 획득 성공
-					})
-					.catch(() => {
-						// 카카오 유저정보 획득 실패
-					})
-			},
-			fail: function(err) {
-				alert(JSON.stringify(err));
-			}
-		});
+	handleKakaoError(error) {
+		console.log(error)
 	}
-	
-	componentDidMount() {
-		this.handleCreateLoginButton();
+
+	handleLogin(account_type, social_id, nickname, thumbnail_image) {
+		this.props.loginRequest(account_type, social_id, nickname, thumbnail_image);
 	}
 
 	render() {
-		return (
-			<Grid className="kakaoAuthentication">
-				<Cell
-					offsetDesktop={3}
-					col={6}
-					tablet={12}
-					phone={12}>
-					<Card shadow={0} style={{width: 'auto', margin: '0px auto', minHeight: '80px'}}>
-						<CardText id="kakao-login-btn" style={{width: 'auto', margin: '0px auto'}}/>
-					</Card>
-				</Cell>
-			</Grid>
-		);
+        return (
+			<KakaoLogin
+				jsKey={process.env.KAKAO_KEY}
+				onSuccess={this.handleKakaoSuccess}
+				onFailure={this.handleKakaoError}
+				getProfile={true}
+				buttonClass="kakao_login_btn_block"
+				buttonText="카카오 계정으로 로그인"
+			/>
+        );
 	}
 }
-
-KakaoAuthentication.propTypes = propTypes;
-
-KakaoAuthentication.defaultProps = defaultProps;
 
 export default KakaoAuthentication;

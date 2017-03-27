@@ -1,0 +1,29 @@
+@mixin login_btn_block ($fontColor, $backgroundColor) {
+  display: inline-block;
+  cursor: pointer;
+  padding: 0;
+  width: 100%;
+  height: 49px;
+  line-height: 49px;
+  color: $fontColor;
+  background-color: $backgroundColor;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  font-weight: 700;
+  font-size: 16px;
+  text-align: center;
+}
+
+.kakao_login_btn_block {
+  @include login_btn_block(#3C1E1E, #FFEB00);
+  margin-bottom: 5px;
+}
+
+.facebook_login_btn_block {
+  @include login_btn_block(#fff, #4c69ba);
+  margin-bottom: 5px;
+}
+
+.google_login_btn_block {
+  @include login_btn_block(#fff, #d14836);
+}
