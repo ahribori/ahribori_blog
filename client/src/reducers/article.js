@@ -11,7 +11,8 @@ const initialState = {
 		error: null
 	},
 	article: {
-		data: {}
+		data: {},
+		comments: []
 	},
 	article_temp: {
 		data: {},
@@ -76,6 +77,7 @@ export default function application(state= initialState, action) {
 			return update(state, {
 				article: {
 					data: { $set: action.article },
+					comments: { $set: action.comments },
 					error: { $set: null }
 				}
 			});

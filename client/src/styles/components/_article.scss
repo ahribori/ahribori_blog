@@ -31,6 +31,76 @@
     padding: 30px;
 }
 
+.comments_container {
+    padding: 20px 30px 20px 30px;
+    width: 100%;
+    margin-top: 10px;
+    min-height: 50px;
+    font-family: 'D2 coding';
+
+    .comments_social_icon {
+        margin-left: 10px;
+    }
+
+    .comments_nickname {
+        margin-left: 5px;
+    }
+
+    .comments_menu {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        color: $grey300;
+    }
+
+    .comments_timeago {
+        margin-left: 10px;
+        font-size: 0.8em;
+        color: $grey500;
+    }
+
+    .comments_body {
+        margin: 10px 0 10px 0;
+    }
+
+    .comments_comments {
+        margin-bottom: 0;
+    }
+
+
+    .ref.comments_social_icon {
+        margin-left: 2px;
+    }
+
+    .ref.comments_nickname {
+        font-size: 0.7em;
+        margin-left: 2px;
+    }
+
+    .ref.comments_comments {
+        margin-top: 7px;
+    }
+}
+
+.comments_container.child {
+    padding: 20px 30px 20px 70px;
+    .comments_child_icon {
+        position: absolute;
+        top: 25px;
+        left: 25px;
+        height: 30px !important;
+        width: 30px !important;
+        color: $grey500 !important;
+    }
+}
+
+.comments_add_btn {
+    position: fixed;
+    bottom: 20px;
+    right: 40px;
+    z-index: 1000;
+}
+
 // 모바일
 @media (max-width: 600px) and (min-width: 200px) {
     .article_grid {
@@ -39,6 +109,22 @@
 
     .article_container {
         padding: 8px;
+    }
+
+    .comments_container {
+        padding: 8px;
+    }
+
+    .comments_container.child {
+        padding: 20px 30px 20px 50px;
+        .comments_child_icon {
+            position: absolute;
+            top: 30px;
+            left: 15px;
+            height: 25px !important;
+            width: 25px !important;
+            color: $grey500 !important;
+        }
     }
 
     .article_title {
@@ -67,6 +153,13 @@
         pre {
             font-size: 0.7em !important;
         }
+    }
+
+    .comments_add_btn {
+        position: fixed;
+        bottom: 65px;
+        right: 15px;
+        z-index: 1000;
     }
 }
 

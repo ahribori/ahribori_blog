@@ -7,6 +7,7 @@ import FacebookAuthentication from './authentication/FacebookAuthentication';
 import GoogleAuthentication from './authentication/GoogleAuthentication';
 import CKEditor from './article/CKEditor';
 import CardList from './article/CardList';
+import Comments from './article/Comments';
 
 export { Navigation,
     BottomNavigation,
@@ -16,4 +17,6 @@ export { Navigation,
     FacebookAuthentication,
     GoogleAuthentication,
     CKEditor,
-    CardList };
+    CardList,
+    Comments
+};

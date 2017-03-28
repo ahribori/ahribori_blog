@@ -5,6 +5,7 @@ import {Grid, Cell, Card, CardTitle, CardText, CardActions, Button, Textfield, I
 import { getArticleRequest, removeArticleRequest } from '../actions/article';
 import { getCategoryRequest } from '../actions/category';
 import { setEditorModeModify } from '../actions/app';
+import { Comments } from '../components';
 
 class Article extends React.Component {
 
@@ -79,13 +80,14 @@ class Article extends React.Component {
 						<div className="article_container">
 							<CardTitle className="article_title" expand>{this.props.article.title}</CardTitle>
 							<div className="article_info">
-								{ this.props.article.author_nickname} | { this.props.article.reg_date } | 조회 {this.props.article.hit} | 추천 {this.props.article.star} | 댓글 {this.props.article.reply_count}
+								{ this.props.article.author_nickname} | { this.props.article.reg_date } | 조회 {this.props.article.hit} | 추천 {this.props.article.star} | 댓글 {this.props.article.comments_count}
 								{ this.state.isAuthor ? articleMenu : '' }
 							</div>
 							<hr/>
 							<div className="article_content" dangerouslySetInnerHTML={{ __html: this.props.article.content }}></div>
 						</div>
 					</Card>
+					<Comments data={this.props.comments}/>
 				</Cell>
 			</Grid>
 		);
@@ -95,6 +97,7 @@ class Article extends React.Component {
 const mapStateToProps = (state) => {
 	return {
 		article: state.article.article.data,
+		comments: state.article.article.comments,
 		user: state.authentication.user,
 	}
 };

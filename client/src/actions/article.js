@@ -104,12 +104,13 @@ export function getArticle() {
 	}
 }
 
-export function getArticleSuccess(article) {
-	article.reg_date = moment(new Date(article.reg_date)).format('YYYY.MM.DD hh:mm');
-	article.reply_count = article.reply.length;
+export function getArticleSuccess(data) {
+	data.article.reg_date = moment(new Date(data.article.reg_date)).format('YYYY.MM.DD hh:mm');
+	data.article.comments_count = data.comments.length;
 	return {
 		type: GET_ARTICLE_SUCCESS,
-		article
+		article: data.article,
+		comments: data.comments
 	}
 }
 

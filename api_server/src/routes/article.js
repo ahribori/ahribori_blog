@@ -5,6 +5,7 @@ import mongoose from 'mongoose';
 const router = express.Router();
 import Article from '../models/article';
 import ArticleTemp from '../models/article_temp';
+import Comment from '../models/comment';
 import Category from '../models/category';
 import Image from '../models/image';
 import jsdom from 'jsdom';
@@ -217,7 +218,7 @@ router.get('/', (req, res) => {
                         star: true,
                         hit: true,
                         hidden: true,
-                        reply: true,
+                        comments: true,
                         tags: true,
                         title: true,
                         thumbnail_image: true,
@@ -325,20 +326,63 @@ router.get('/', (req, res) => {
  GET /api/article/{id}
  ============================================*/
 router.get('/:id', (req, res) => {
-	Article.findById(req.params.id, (err, article) => {
-		if (err) throw err;
-		if (!article) {
-			res.status(404).json({
-				message: 'resource not found'
-			});
-			return;
-		}
-		article.hit++;
-		article.save()
-			.then(()=> {
-				res.json(article);
-			})
+
+	const findArticle = new Promise((resolve, reject) => {
+		Article.findOne({ _id: req.params.id }, (err, article) => {
+			if (err) reject(err);
+			if (!article) {
+				reject({
+					status: 404,
+					message: 'article not found'
+				})
+			} else {
+                article.hit++;
+                article.save((err, result) => {
+                	if (err) reject(err);
+					resolve(result);
+				});
+			}
+		});
 	});
+
+	const findComments = (article) => new Promise((resolve, reject) => {
+        Comment.aggregate([
+            {
+                $match: {
+                    ref_article: mongoose.Types.ObjectId(req.params.id)
+                }
+            },
+            {
+                $sort: {
+                    ref_comment: -1,
+                    reg_date: 1
+                }
+            }
+        ], (err, comments) => {
+            if (err) reject(err);
+            resolve({
+            	article,
+            	comments
+            });
+        });
+	});
+
+    const respond = (response) => {
+        res.status(200).json(response);
+    };
+
+    const onError = (error) => {
+        const status = error.status || 500;
+        const message = error.message || 'somting broke';
+        res.status(status).json({
+            message: message
+        })
+    };
+
+    findArticle
+		.then(findComments)
+		.then(respond)
+		.catch(onError)
 });
 
 /* =========================================

@@ -167,7 +167,6 @@ router.post('/login', (req, res) => {
 router.post('/oauth', (req, res) => {
 	const { account_type, social_id, nickname, thumbnail_image } = req.body;
     const secret = env.SECRET;
-	console.log(req.body);
 
 	const findUserBySocialId = new Promise((resolve, reject) => {
 		User.findOne({ social_id }, (err, user) => {

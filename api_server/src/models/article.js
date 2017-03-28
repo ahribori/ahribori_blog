@@ -10,7 +10,7 @@ const Article = new Schema({
 	content: {type: String, default: '(내용없음)'},
 	preview:  {type: String, default: '(내용없음)'},
 	tags: [String],
-	reply: [{type: Schema.Types.ObjectId, ref: 'Reply'}],
+	comments: [{type: Schema.Types.ObjectId, ref: 'Comment'}],
 	hidden: {type: Boolean, default: false},
 	thumbnail_image: {type: String},
 	images: [{type: Schema.Types.ObjectId}],

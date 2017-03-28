@@ -87,7 +87,7 @@ class CardList extends React.Component {
                         <div className="card-bottom">
                             <span className="item-author">{article.author_nickname}</span>
                             <span className="item-bottom-right">
-								<span className="item-value reply">댓글 {article.reply.length}</span>
+								<span className="item-value comments">댓글 {article.comments.length}</span>
 								<span className="item-value">|</span>
 								<span className="item-value hit">조회 {article.hit}</span>
 							</span>
