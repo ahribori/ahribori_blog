@@ -11,10 +11,15 @@ class KakaoAuthentication extends React.Component {
 	}
 
 	handleKakaoSuccess(response) {
-		const social_id = response.profile.id;
-		const nickname = response.profile.properties.nickname;
-		const thumbnail_image = response.profile.properties.thumbnail_image;
-		this.handleLogin('kakao', social_id, nickname, thumbnail_image);
+        Kakao.API.request({
+            url: '/v1/api/talk/profile',
+			success: (profile) => {
+				const social_id = response.profile.id;
+				const nickname = profile.nickName;
+				const thumbnail_image = profile.thumbnailURL;
+				this.handleLogin('kakao', social_id, nickname, thumbnail_image);
+			}
+		});
 	}
 
 	handleKakaoError(error) {
