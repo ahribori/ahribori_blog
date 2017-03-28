@@ -10,13 +10,15 @@ class Login extends React.Component {
 
 	constructor(props) {
 		super(props);
+		const callback = props.location.callback ? props.location.query.callback : '';
 		this.state = {
 			snackbarMessage: '',
-			isSnackbarActive: false
+			isSnackbarActive: false,
+            callback
 		};
-
 		this.handleLogin = this.handleLogin.bind(this);
 		this.handleOAuthLogin = this.handleOAuthLogin.bind(this);
+		this.handleRedirect = this.handleRedirect.bind(this);
 		this.handleShowSnackbar = this.handleShowSnackbar.bind(this);
 		this.handleTimeoutSnackbar = this.handleTimeoutSnackbar.bind(this);
 	}
@@ -46,7 +48,7 @@ class Login extends React.Component {
                         this.props.getStatusRequest(this.props.token).then(() => {
                         	localStorage.setItem('ahribori_token', this.props.token);
 							localStorage.setItem('snackbar', `${this.props.user.type} 계정으로 인증되었습니다.`);
-							browserHistory.push('/');
+							this.handleRedirect();
 						});
                     }
                     return true;
@@ -55,6 +57,14 @@ class Login extends React.Component {
                     return false;
                 }
 			})
+	}
+
+	handleRedirect() {
+		if (this.state.callback === '') {
+			browserHistory.push('/');
+		} else {
+			browserHistory.push(this.state.callback);
+		}
 	}
 
 	handleShowSnackbar(message) {
@@ -69,6 +79,10 @@ class Login extends React.Component {
 			snackbarMessage: '',
 			isSnackbarActive: false
 		});
+	}
+
+	componentDidMount() {
+		console.log(this.state)
 	}
 
 	render() {
