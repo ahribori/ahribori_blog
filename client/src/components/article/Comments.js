@@ -98,7 +98,8 @@ class Comments extends React.Component {
 
     handleSubmitDialog() {
         const user = this.props.user;
-        const comments = this.state.dialogComments.replace(/(?:\r\n|\r|\n)/g, '<br />');
+        // const comments = this.state.dialogComments.replace(/(?:\r\n|\r|\n)/g, '<br />');
+        const comments = this.state.dialogComments;
         this.props.registerRequest(user.token, {
             author: {
                 _id: user._id,
@@ -149,7 +150,8 @@ class Comments extends React.Component {
             }
         } else {
             const ref_article = this.props.refArticle;
-            const comments = this.state.comments.replace(/(?:\r\n|\r|\n)/g, '<br />');
+            // const comments = this.state.comments.replace(/(?:\r\n|\r|\n)/g, '<br />');
+            const comments = this.state.comments;
             this.props.registerRequest(user.token, {
                 author: {
                     _id: user._id,
@@ -227,7 +229,7 @@ class Comments extends React.Component {
                                 </Tooltip>
                             </div>
                             <div className="comments_body">
-                                <div className="comments_comments" dangerouslySetInnerHTML={{ __html: comment.comments} }></div>
+                                <div className="comments_comments">{comment.comments}</div>
                             </div>
                         </Card>
                     )
@@ -264,7 +266,7 @@ class Comments extends React.Component {
                                 <Avatar className="comments_thumbnail ref" src={ref_comments.author.thumbnail_image} size={22} />
                                 <img className="comments_social_icon ref" src={ref_comments_social_icon} width={22} height={22}/>
                                 <span className="comments_nickname ref">{ref_comments.author.nickname}님에게</span>
-                                <div className="comments_comments ref" dangerouslySetInnerHTML={{ __html: comment.comments} }></div>
+                                <div className="comments_comments ref">{comment.comments}</div>
                             </div>
                         </Card>
                     )
