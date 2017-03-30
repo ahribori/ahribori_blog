@@ -10,6 +10,7 @@ const Comment = new Schema({
     },
     ref_article: Schema.Types.ObjectId,
     ref_comment: Schema.Types.ObjectId, // default: self
+    ref_comment_comment: Schema.Types.ObjectId,
     comments: {type: String, default: '(내용없음)'},
     hidden: {type: Boolean, default: false},
     star: {type: Number, default: 0},

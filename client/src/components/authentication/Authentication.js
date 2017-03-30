@@ -72,14 +72,7 @@ class Authentication extends React.Component {
 					this.setState({
 						password: ''
 					})
-				} else {
-					return this.props.getStatusRequest(this.props.token)
-						.then(() => {
-							localStorage.setItem('snackbar', `인증되었습니다.`);
-							browserHistory.push('/');
-						});
 				}
-
 			});
 	}
 

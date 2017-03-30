@@ -10,7 +10,7 @@ class Login extends React.Component {
 
 	constructor(props) {
 		super(props);
-		const callback = props.location.callback ? props.location.query.callback : '';
+		const callback = props.location.query ? props.location.query.callback : '';
 		this.state = {
 			snackbarMessage: '',
 			isSnackbarActive: false,
@@ -31,7 +31,11 @@ class Login extends React.Component {
 						const localStorage = window.localStorage;
 						localStorage.setItem('ahribori_token', this.props.token);
 					}
-					return true;
+                    this.props.getStatusRequest(this.props.token).then(() => {
+						localStorage.setItem('snackbar', `인증되었습니다.`);
+						this.handleRedirect();
+						return true;
+                    });
 				} else {
 					this.handleShowSnackbar('아이디 또는 패스워드가 잘못되었습니다');
 					return false;
@@ -60,10 +64,11 @@ class Login extends React.Component {
 	}
 
 	handleRedirect() {
-		if (this.state.callback === '') {
+		if (this.state.callback === ('' || undefined)) {
 			browserHistory.push('/');
 		} else {
-			browserHistory.push(this.state.callback);
+			let redirectURL = this.state.callback;
+			browserHistory.push(redirectURL);
 		}
 	}
 

@@ -46,10 +46,17 @@
         margin-left: 5px;
     }
 
-    .comments_menu {
+    .comments_comments_btn {
         position: absolute;
-        top: 10px;
-        right: 10px;
+        top: 15px;
+        right: 50px;
+        font-size: 14px;
+        color: $grey500;
+    }
+    .comments_star_btn {
+        position: absolute;
+        top: 15px;
+        right: 15px;
         color: $grey300;
     }
 
@@ -61,12 +68,13 @@
 
     .comments_body {
         margin: 10px 0 10px 0;
+        font-family: "D2 coding";
+        font-size: 14px;
     }
 
     .comments_comments {
         margin-bottom: 0;
     }
-
 
     .ref.comments_social_icon {
         margin-left: 2px;
@@ -79,6 +87,32 @@
 
     .ref.comments_comments {
         margin-top: 7px;
+    }
+}
+
+.comments_dialog {
+    .comments_social_icon {
+        margin-left: 4px;
+    }
+    .comments_nickname {
+        margin-left: 4px;
+    }
+    .comments_hidden_checkbox {
+        margin-top: 10px;
+    }
+}
+
+.comments_container.form {
+    padding: 0 !important;
+    .form_wrapper {
+        margin: 0 30px 0 30px;
+    }
+    .comments_hidden_checkbox {
+        margin-top: 10px;
+        font-size: 0.8em;
+    }
+    .comments_card_actions {
+        margin: 10px 20px 10px 20px;
     }
 }
 
@@ -113,6 +147,15 @@
 
     .comments_container {
         padding: 8px;
+    }
+
+    .comments_container.form {
+        .form_wrapper {
+            margin: 0 20px 0 20px;
+        }
+        .comments_card_actions {
+            margin: 7px 20px 7px 10px;
+        }
     }
 
     .comments_container.child {

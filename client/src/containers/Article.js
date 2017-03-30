@@ -1,10 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
-import {Grid, Cell, Card, CardTitle, CardText, CardActions, Button, Textfield, Icon} from 'react-mdl';
+import { Grid, Cell, Card, CardTitle } from 'react-mdl';
 import { getArticleRequest, removeArticleRequest } from '../actions/article';
+import { registerCommentRequest } from '../actions/comments';
 import { getCategoryRequest } from '../actions/category';
-import { setEditorModeModify } from '../actions/app';
 import { Comments } from '../components';
 
 class Article extends React.Component {
@@ -12,7 +12,8 @@ class Article extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			isAuthor: false
+			isAuthor: false,
+			fetchComplete: false,
 		};
 
 		this.handleClickModify = this.handleClickModify.bind(this);
@@ -56,6 +57,10 @@ class Article extends React.Component {
                         isAuthor: true
                     });
                 }
+
+                this.setState({
+                	fetchComplete: true
+				})
             });
         const searchInput = document.getElementById('textfield-Search');
         if (searchInput.blur) searchInput.blur();
@@ -87,7 +92,18 @@ class Article extends React.Component {
 							<div className="article_content" dangerouslySetInnerHTML={{ __html: this.props.article.content }}></div>
 						</div>
 					</Card>
-					<Comments data={this.props.comments}/>
+                    {this.state.fetchComplete ? (
+							<Comments data={this.props.comments}
+									  comments={this.props.comments_state}
+									  refArticle={this.props.params.id}
+									  user={this.props.user}
+									  redirected={this.props.location.query.redirected}
+									  registerRequest={this.props.registerCommentRequest}
+									  getArticleRequest={this.props.getArticleRequest}
+									  location={this.props.location}
+							/>
+                        ) : ''}
+
 				</Cell>
 			</Grid>
 		);
@@ -98,6 +114,7 @@ const mapStateToProps = (state) => {
 	return {
 		article: state.article.article.data,
 		comments: state.article.article.comments,
+		comments_state: state.comment,
 		user: state.authentication.user,
 	}
 };
@@ -112,7 +129,10 @@ const mapDispatchToProps = (dispatch) => {
 		},
         getCategoryRequest: (token) => {
             return dispatch(getCategoryRequest(token));
-        }
+        },
+		registerCommentRequest: (token, data) => {
+			return dispatch(registerCommentRequest(token, data));
+		}
 	}
 };
 

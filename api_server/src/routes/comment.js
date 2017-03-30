@@ -9,7 +9,7 @@ import Comment from '../models/comment';
  ============================================*/
 router.post('/', (req, res) => {
 
-    const { author, ref_article, ref_comment, comments, hidden } = req.body;
+    const { author, ref_article, ref_comment, ref_comment_comment, comments, hidden } = req.body;
 
     const validate = new Promise((resolve, reject) => {
         if (comments !== undefined && comments === '') {
@@ -26,6 +26,7 @@ router.post('/', (req, res) => {
             author,
             ref_article,
             ref_comment,
+            ref_comment_comment,
             comments,
             hidden
         }).save((err, savedComments) => {
