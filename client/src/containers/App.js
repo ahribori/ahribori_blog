@@ -72,7 +72,6 @@ class App extends React.Component {
 			this.props.logout();
 		}
 		this.handleShowSnackbar('로그아웃 되었습니다.');
-		browserHistory.push('/login');
 	}
 
 	handleShowSnackbar(message) {
