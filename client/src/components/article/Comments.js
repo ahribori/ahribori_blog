@@ -40,6 +40,8 @@ class Comments extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleSubmitDialog = this.handleSubmitDialog.bind(this);
         this.handleCheck = this.handleCheck.bind(this);
+		this.handleClickModify = this.handleClickModify.bind(this);
+		this.handleClickRemove = this.handleClickRemove.bind(this);
         this.handleDialogCheck = this.handleDialogCheck.bind(this);
         this.redirectLoginPage = this.redirectLoginPage.bind(this);
     }
@@ -177,6 +179,16 @@ class Comments extends React.Component {
         }
     }
 
+	handleClickModify(e) {
+		const node = e.target.dataset.id ? e.target : e.target.parentNode;
+		console.log('modify ' + node.dataset.id);
+	}
+
+	handleClickRemove(e) {
+		const node = e.target.dataset.id ? e.target : e.target.parentNode;
+		console.log('remove ' + node.dataset.id);
+	}
+
     redirectLoginPage(mode, ref_comment) {
         let redirectURL = '';
         if (mode === 'c') {
@@ -205,14 +217,42 @@ class Comments extends React.Component {
             return list.map((comment, index, comments) => {
                 const social_icon = `/image/${comment.author.login_type}_icon.png`;
                 const hasRef = comment._id !== comment.ref_comment;
+
+				const commentsMenu = (
+					<span className="comments_btn_group">
+						<Tooltip label="수정">
+							<IconButton
+								className="comments_modify_btn"
+								data-id={comment._id}
+								onClick={this.handleClickModify}
+								name="edit"/>
+						</Tooltip>
+						<Tooltip label="삭제">
+							<IconButton
+								className="comments_remove_btn"
+								data-id={comment._id}
+								onClick={this.handleClickRemove}
+								name="clear"/>
+						</Tooltip>
+					</span>
+				);
+
+				const profile = (
+					<div>
+						<Avatar className="comments_thumbnail" src={comment.author.thumbnail_image} size={50} />
+						<img className="comments_social_icon" src={social_icon} width={25} height={25}/>
+						<span className="comments_nickname">{comment.author.nickname}</span>
+						<TimeAgo className="comments_timeago" date={comment.reg_date} formatter={formatter}/>
+						{this.props.user && ((this.props.user._id === comment.author._id) || this.props.user.admin) ? commentsMenu : ''}
+					</div>
+				);
+
+
                 if (!hasRef) { // 일반
                     return (
                         <Card id={`comments_${comment._id}`} key={index} shadow={0} className="comments_container">
                             <div className="comments_header">
-                                <Avatar className="comments_thumbnail" src={comment.author.thumbnail_image} size={50} />
-                                <img className="comments_social_icon" src={social_icon} width={25} height={25}/>
-                                <span className="comments_nickname">{comment.author.nickname}</span>
-                                <TimeAgo className="comments_timeago" date={comment.reg_date} formatter={formatter}/>
+								{profile}
                                 <Tooltip label="댓글달기">
                                     <IconButton
                                         data-ref-comment={comment._id}
@@ -243,10 +283,7 @@ class Comments extends React.Component {
                         <Card id={`comments_${comment._id}`} key={index} shadow={0} className="comments_container child">
                             <CommentArrowIcon className="comments_child_icon"/>
                             <div className="comments_header">
-                                <Avatar className="comments_thumbnail" src={comment.author.thumbnail_image} size={50} />
-                                <img className="comments_social_icon" src={social_icon} width={25} height={25}/>
-                                <span className="comments_nickname">{comment.author.nickname}</span>
-                                <TimeAgo className="comments_timeago" date={comment.reg_date} formatter={formatter}/>
+								{profile}
                                 <Tooltip label="댓글달기">
                                     <IconButton
                                         data-ref-comment={comment.ref_comment}

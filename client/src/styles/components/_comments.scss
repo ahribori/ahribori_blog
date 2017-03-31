@@ -1,0 +1,152 @@
+
+.comments_container {
+    padding: 20px 30px 20px 30px;
+    width: 100%;
+    margin-top: 10px;
+    min-height: 50px;
+    font-family: 'D2 coding';
+
+    .comments_social_icon {
+        margin-left: 10px;
+    }
+
+    .comments_nickname {
+        margin-left: 5px;
+    }
+
+    .comments_comments_btn {
+        position: absolute;
+        top: 15px;
+        right: 50px;
+        font-size: 14px;
+        color: $grey500;
+    }
+    .comments_star_btn {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        color: $grey300;
+    }
+
+    .comments_timeago {
+        margin-left: 10px;
+        font-size: 0.8em;
+        color: $grey500;
+    }
+
+    .comments_body {
+        margin: 10px 0 10px 0;
+        font-family: "D2 coding";
+        font-size: 14px;
+    }
+
+    .comments_comments {
+        margin-bottom: 0;
+        white-space: pre-wrap;
+    }
+
+    .ref.comments_social_icon {
+        margin-left: 2px;
+    }
+
+    .ref.comments_nickname {
+        font-size: 0.7em;
+        margin-left: 2px;
+    }
+
+    .ref.comments_comments {
+        margin-top: 7px;
+    }
+}
+
+.comments_dialog {
+    .comments_social_icon {
+        margin-left: 4px;
+    }
+    .comments_nickname {
+        margin-left: 4px;
+    }
+    .comments_hidden_checkbox {
+        margin-top: 10px;
+    }
+}
+
+.comments_container.form {
+    padding: 0 !important;
+    .form_wrapper {
+        margin: 0 30px 0 30px;
+    }
+    .comments_hidden_checkbox {
+        margin-top: 10px;
+        font-size: 0.8em;
+    }
+    .comments_card_actions {
+        margin: 10px 20px 10px 20px;
+    }
+}
+
+.comments_container.child {
+    padding: 20px 30px 20px 70px;
+    .comments_child_icon {
+        position: absolute;
+        top: 25px;
+        left: 25px;
+        height: 30px !important;
+        width: 30px !important;
+        color: $grey500 !important;
+    }
+}
+
+.comments_btn_group {
+    position: absolute;
+    right: 15px;
+    top: 50px;
+    .comments_modify_btn {
+        cursor: pointer;
+        color: $grey500;
+    }
+    .comments_remove_btn {
+        margin-left: 5px;
+        cursor: pointer;
+        color: $grey500;
+    }
+}
+
+// 모바일
+@media (max-width: 600px) and (min-width: 200px) {
+    .comments_container {
+        padding: 8px;
+        font-size: 13px;
+        .comments_body {
+            font-size: 13px;
+        }
+    }
+
+    .comments_container.form {
+        .form_wrapper {
+            margin: 0 20px 0 20px;
+        }
+        .comments_card_actions {
+            margin: 7px 20px 7px 10px;
+        }
+    }
+
+    .comments_container.child {
+        padding: 20px 30px 20px 50px;
+        .comments_child_icon {
+            position: absolute;
+            top: 30px;
+            left: 15px;
+            height: 25px !important;
+            width: 25px !important;
+            color: $grey500 !important;
+        }
+    }
+
+    .comments_add_btn {
+        position: fixed;
+        bottom: 65px;
+        right: 15px;
+        z-index: 1000;
+    }
+}
