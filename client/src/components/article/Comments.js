@@ -186,7 +186,12 @@ class Comments extends React.Component {
 
 	handleClickRemove(e) {
 		const node = e.target.dataset.id ? e.target : e.target.parentNode;
-		console.log('remove ' + node.dataset.id);
+		if (confirm('댓글을 정말 삭제하시겠습니까? 댓글의 댓글이 있을 경우 모두 삭제됩니다.')) {
+			this.props.removeRequest(this.props.user.token, node.dataset.id)
+				.then(() => {
+					this.props.getArticleRequest(this.props.refArticle);
+				});
+		}
 	}
 
     redirectLoginPage(mode, ref_comment) {

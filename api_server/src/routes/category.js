@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 const router = express.Router();
 import Category from '../models/category';
 import Article from '../models/article';
+import Comment from '../models/comment';
 import Image from '../models/image';
 import fs from 'fs';
 
@@ -335,6 +336,8 @@ router.delete('/:id', (req, res) => {
                     article.remove((err,  removeResult) => {
                         if (err) reject(err);
                     });
+
+					Comment.remove({ ref_article: article._id }, (err, result) => {});
                 }
 
                 Category({ _id: id }).remove((err, result) => {

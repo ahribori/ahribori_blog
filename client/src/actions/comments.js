@@ -62,15 +62,40 @@ export function modifyCommentFailure() {
 
 }
 
+export function removeCommentRequest(token, id) {
+	return (dispatch) => {
+		dispatch(removeComment());
+		return axios({
+			method: 'delete',
+			url: `${process.env.API_SERVER}/api/comment/${id}`,
+			headers: {
+				'authorization': token
+			}
+		}).then((response) => {
+			dispatch(removeCommentSuccess(response.data));
+		}).catch((error) => {
+			dispatch(removeCommentFailure(error.response));
+		})
+	}
+}
+
 export function removeComment() {
-
+	return {
+		type: REMOVE_COMMENT
+	}
 }
 
-export function removeCommentSuccess() {
-
+export function removeCommentSuccess(data) {
+	return {
+		type: REMOVE_COMMENT_SUCCESS,
+		data
+	}
 }
 
-export function removeCommentFailure() {
-
+export function removeCommentFailure(error) {
+	return {
+		type: REMOVE_COMMENT_FAILURE,
+		error
+	}
 }
 

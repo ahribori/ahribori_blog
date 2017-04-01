@@ -172,16 +172,22 @@ router.put('/:id', (req, res) => {
 /* =========================================
  DELETE /api/comment/{id}
  ============================================*/
+router.delete('/test/:id', (req, res) => {
+	Comment.remove({ ref_comment: req.params.id}, (err, comments) => {
+		console.log(comments);
+		res.json(comments)
+	});
+});
 router.delete('/:id', (req, res) => {
 
     const remove = new Promise((resolve, reject) => {
-        Comment.findOne({ _id: req.params.id }, (err, comments) => {
+        Comment.find({ ref_comment: req.params.id }, (err, comments) => {
             if (err) reject(err);
             if (comments) {
-                comments.remove((err) => {
-                    if (err) reject(err);
-                    resolve(comments);
-                });
+				Comment.remove({ ref_comment: req.params.id}, (err) => {
+					if (err) reject(err);
+					resolve(comments);
+				});
             } else {
                 reject({
                     status: 404,
@@ -192,12 +198,15 @@ router.delete('/:id', (req, res) => {
     });
 
     const updateArticle = (comments) => new Promise((resolve, reject) => {
-        Article.findOne(comments.ref_article, (err, article) => {
+        Article.findOne(comments[0].ref_article, (err, article) => {
             if (err) reject(err);
-            const index = article.comments.indexOf(comments._id);
-            if (index > -1) {
-                article.comments.splice(index, 1);
-            }
+			for (let i = 0; i < comments.length; i++) {
+				const index = article.comments.indexOf(comments[i]._id);
+				if (index > -1) {
+					article.comments.splice(index, 1);
+				}
+			}
+			console.log(article.comments);
             article.save((err) => {
                 if (err) reject(err);
                 resolve(comments);

@@ -605,6 +605,9 @@ router.delete('/:id', (req, res) => {
 					fs.unlink(images[i].real_path);
 					Image.find({ _id: images[i]._id }).remove().exec();
 				}
+
+				Comment.remove({ ref_article: article._id }, (err, result) => {});
+
 				resolve(article);
 			});
 		});
