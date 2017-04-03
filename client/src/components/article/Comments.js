@@ -170,6 +170,15 @@ class Comments extends React.Component {
                         if (!this.props.comments.register.error) {
                             const location = window.location || {};
                             location.hash = '#comments_form';
+                        } else {
+                            switch (this.props.comments.register.error.status) {
+                                case 400:
+                                    alert('댓글을 작성하신 뒤에 댓글 달기 버튼을 클릭하세요');
+                                    break;
+                                case 444:
+                                    alert('짧은 시간 동안 여러 번 요청할 수 없습니다');
+                                    break;
+                            }
                         }
                     });
                 this.setState(update(this.state, {

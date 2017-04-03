@@ -18,7 +18,39 @@ router.post('/', (req, res) => {
                 message: 'comment is empty space'
             })
         }
-        resolve();
+        Comment.aggregate([
+            {
+                $match: {
+                    'author._id': mongoose.Types.ObjectId(author._id)
+                }
+            },
+            {
+                $project: {
+                    reg_date: 1
+                }
+            },
+            {
+                $sort: {
+                    reg_date: -1
+                }
+            },
+            {
+                $limit: 1
+            }
+        ], (err, results) => {
+            if (err) reject(err);
+            if (results[0]) {
+                const reg_date = results[0].reg_date;
+                const diff = Date.now() - reg_date.getTime();
+                if (diff < 5000) {
+                    reject({
+                        status: 444,
+                        message: 'comments는 5초에 한번만 등록할 수 있습니다'
+                    })
+                }
+            }
+            resolve();
+        });
     });
 
     const create = (category) => new Promise((resolve, reject) => {
