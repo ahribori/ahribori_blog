@@ -30,10 +30,6 @@ class Share extends React.Component {
         this.state = { ... props }
     }
 
-    componentDidMount() {
-        console.log(this.state);
-    }
-
     render() {
         return (
             <div className="share_btn_group">
