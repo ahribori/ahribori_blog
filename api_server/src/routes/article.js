@@ -326,7 +326,6 @@ router.get('/', (req, res) => {
  GET /api/article/{id}
  ============================================*/
 router.get('/:id', (req, res) => {
-
 	const findArticle = new Promise((resolve, reject) => {
 		Article.findOne({ _id: req.params.id }, (err, article) => {
 			if (err) reject(err);
@@ -336,7 +335,9 @@ router.get('/:id', (req, res) => {
 					message: 'article not found'
 				})
 			} else {
-                article.hit++;
+				if (req.header('x-h') * 1 === 1) {
+                	article.hit++;
+				}
                 article.save((err, result) => {
                 	if (err) reject(err);
 					resolve(result);

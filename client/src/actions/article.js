@@ -83,12 +83,13 @@ export function getArticleListFailure(error) {
 	}
 }
 
-export function getArticleRequest(id, token) {
+export function getArticleRequest(id, token, upHits) {
 	return (dispatch) => {
 		dispatch(getArticle());
 		return axios.get(`${process.env.API_SERVER}/api/article/${id}`, {
 			headers: {
-				'authorization': token || process.env.TOKEN
+				'authorization': token || process.env.TOKEN,
+				'X-h': upHits
 			}
 		}).then((response) => {
 			dispatch(getArticleSuccess(response.data))

@@ -42,7 +42,14 @@ class Article extends React.Component {
 
     componentDidMount() {
         const id = this.props.params.id;
-        this.props.getArticleRequest(id)
+		const sessionStarageHits = sessionStorage.getItem('ahribori_hits');
+		const hits = sessionStarageHits ? sessionStarageHits.split('|') : [];
+		let upHits = 0;
+		if (hits.indexOf(id) === -1) {
+			sessionStorage.setItem('ahribori_hits', `${sessionStarageHits}|${id}`);
+			upHits = 1;
+		}
+        this.props.getArticleRequest(id, null, upHits)
             .then(() => {
 				/* Prism force initialize */
                 Prism.highlightAll();
@@ -60,7 +67,7 @@ class Article extends React.Component {
 
                 this.setState({
                 	fetchComplete: true
-				})
+				});
             });
         const searchInput = document.getElementById('textfield-Search');
         if (searchInput.blur) searchInput.blur();
@@ -122,8 +129,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		getArticleRequest: (id, token) => {
-			return dispatch(getArticleRequest(id, token));
+		getArticleRequest: (id, token, upHits) => {
+			return dispatch(getArticleRequest(id, token, upHits));
 		},
         removeArticleRequest: (token, id) => {
 			return dispatch(removeArticleRequest(token, id));
