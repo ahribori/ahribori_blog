@@ -86,7 +86,7 @@ class Comments extends React.Component {
         this.setState({
             dialogTitle: (
                 <div>
-                    <Avatar className="comments_thumbnail" src={currentComments.author.thumbnail_image} size={50} />
+                    <Avatar className="comments_thumbnail" src={currentComments.author.thumbnail_image ? currentComments.author.thumbnail_image : '/image/default_icon.png'} size={50} />
                     <img className="comments_social_icon" src={social_icon} width={30} height={30}/>
                     <span className="comments_nickname">{currentComments.author.nickname}님에게</span>
                 </div>
@@ -244,7 +244,7 @@ class Comments extends React.Component {
 
 				const profile = (
 					<div>
-						<Avatar className="comments_thumbnail" src={comment.author.thumbnail_image} size={50} />
+						<Avatar className="comments_thumbnail" src={comment.author.thumbnail_image ? comment.author.thumbnail_image : '/image/default_icon.png'} size={50} />
 						<img className="comments_social_icon" src={social_icon} width={25} height={25}/>
 						<span className="comments_nickname">{comment.author.nickname}</span>
 						<TimeAgo className="comments_timeago" date={comment.reg_date} formatter={formatter}/>
@@ -305,7 +305,7 @@ class Comments extends React.Component {
                                 </Tooltip>
                             </div>
                             <div className="comments_body">
-                                <Avatar className="comments_thumbnail ref" src={ref_comments.author.thumbnail_image} size={22} />
+                                <Avatar className="comments_thumbnail ref" src={ref_comments.author.thumbnail_image ? ref_comments.author.thumbnail_image : '/image/default_icon.png'} size={22} />
                                 <img className="comments_social_icon ref" src={ref_comments_social_icon} width={22} height={22}/>
                                 <span className="comments_nickname ref">{ref_comments.author.nickname}님에게</span>
                                 <div className="comments_comments ref">{comment.comments}</div>
