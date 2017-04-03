@@ -97,7 +97,10 @@ class Article extends React.Component {
 							</div>
 							<hr/>
 							<div className="article_content" dangerouslySetInnerHTML={{ __html: this.props.article.content }}></div>
-							{this.state.fetchComplete ? <Share url={location.href}/> : ''}
+							{this.state.fetchComplete ? <Share url={location.href}
+															   description={this.props.article.preview}
+															   picture={this.props.article.thumbnail_image ? this.props.article.thumbnail_image : ''}
+															   title={this.props.article.title}/> : ''}
 						</div>
 					</Card>
                     {this.state.fetchComplete ? (
