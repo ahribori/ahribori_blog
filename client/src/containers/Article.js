@@ -5,7 +5,7 @@ import { Grid, Cell, Card, CardTitle } from 'react-mdl';
 import { getArticleRequest, removeArticleRequest } from '../actions/article';
 import { registerCommentRequest, removeCommentRequest } from '../actions/comments';
 import { getCategoryRequest } from '../actions/category';
-import { Comments } from '../components';
+import { Comments, Share } from '../components';
 
 class Article extends React.Component {
 
@@ -97,6 +97,7 @@ class Article extends React.Component {
 							</div>
 							<hr/>
 							<div className="article_content" dangerouslySetInnerHTML={{ __html: this.props.article.content }}></div>
+							{this.state.fetchComplete ? <Share url={location.href}/> : ''}
 						</div>
 					</Card>
                     {this.state.fetchComplete ? (

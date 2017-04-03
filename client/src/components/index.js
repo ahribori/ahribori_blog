@@ -8,6 +8,7 @@ import GoogleAuthentication from './authentication/GoogleAuthentication';
 import CKEditor from './article/CKEditor';
 import CardList from './article/CardList';
 import Comments from './article/Comments';
+import Share from './article/Share';
 
 export { Navigation,
     BottomNavigation,
@@ -18,5 +19,6 @@ export { Navigation,
     GoogleAuthentication,
     CKEditor,
     CardList,
-    Comments
+    Comments,
+    Share
 };
