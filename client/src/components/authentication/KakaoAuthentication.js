@@ -13,6 +13,9 @@ class KakaoAuthentication extends React.Component {
 	handleKakaoSuccess(response) {
         Kakao.API.request({
             url: '/v1/api/talk/profile',
+			data: {
+                secure_resource: true
+			},
 			success: (profile) => {
 				const social_id = response.profile.id;
 				const nickname = profile.nickName;
