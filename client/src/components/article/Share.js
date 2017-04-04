@@ -57,7 +57,8 @@ class Share extends React.Component {
                         title: this.state.title,
                         imageUrl: this.state.picture,
                         link: {
-                            webUrl: this.state.url
+                            webUrl: this.state.url,
+                            mobileWebUrl: this.state.url
                         },
                         description: this.state.description
                     }
