@@ -1,6 +1,5 @@
 .share_btn_group {
-    margin-top: 40px;
-    margin-left: -50px;
+    margin: 50px 0 0 -50px;
     text-align: center;
 }
 
@@ -16,6 +15,10 @@
     cursor: pointer;
 }
 
+.kakao_share_btn {
+    cursor: pointer;
+}
+
 .article_share_network {
     display: inline-block;
     margin-right: 20px;
@@ -25,4 +28,10 @@
 .article_share_count {
     margin-top: 3px;
     font-size: 12px;
+}
+
+@media (max-width: 600px) {
+    .share_btn_group {
+        margin: 50px 0 20px -50px;
+    }
 }
