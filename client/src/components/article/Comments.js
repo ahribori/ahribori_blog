@@ -28,6 +28,7 @@ class Comments extends React.Component {
             redirected: this.props.redirected,
             openDialog: false,
             dialogMode: '',
+            DialogButtonText: '',
             dialogCommentsId: '',
             dialogTitle: '',
             dialogComments: '',
@@ -114,6 +115,7 @@ class Comments extends React.Component {
             dialogMode: 'register',
             dialogHidden: false,
             dialogComments: '',
+            dialogButtonText: '댓글 등록',
             ref_comment,
             ref_comment_comment
         });
@@ -126,6 +128,7 @@ class Comments extends React.Component {
             dialogTitle: '댓글 수정하기',
             openDialog: true,
             dialogMode: 'modify',
+            dialogButtonText: '댓글 수정',
             dialogCommentsId: comments._id,
             dialogHidden: comments.hidden,
             dialogComments: comments.comments
@@ -151,7 +154,7 @@ class Comments extends React.Component {
                 hidden: this.state.hidden,
                 comments
             }).then(() => {
-                this.props.getArticleRequest(this.props.refArticle);
+                this.props.getArticleRequest(this.props.refArticle, user.token);
                 this.handleShowSnackbar('댓글이 등록되었습니다');
                 this.setState(update(this.state, {
                     openDialog: { $set: false },
@@ -164,7 +167,7 @@ class Comments extends React.Component {
                 comments: this.state.dialogComments,
                 hidden: this.state.dialogHidden
             }).then(() => {
-                this.props.getArticleRequest(this.props.refArticle);
+                this.props.getArticleRequest(this.props.refArticle, user.token);
                 this.handleShowSnackbar('댓글이 수정되었습니다');
                 this.setState(update(this.state, {
                     openDialog: { $set: false },
@@ -213,7 +216,7 @@ class Comments extends React.Component {
                 ref_article,
                 comments
             }).then(() => {
-                this.props.getArticleRequest(this.props.refArticle)
+                this.props.getArticleRequest(this.props.refArticle, user.token)
                     .then(()=> {
                         if (!this.props.comments.register.error) {
                             const location = window.location || {};
@@ -377,7 +380,7 @@ class Comments extends React.Component {
                 onTouchTap={this.handleCloseDialog}
             />,
             <RaisedButton
-                label="댓글 달기"
+                label={this.state.dialogButtonText || '댓글 등록'}
                 primary={true}
                 onTouchTap={this.handleSubmitDialog}
             />,
@@ -408,7 +411,7 @@ class Comments extends React.Component {
                         />
                     </div>
                     <CardActions className="comments_card_actions">
-                        <Button raised colored ripple onClick={this.handleSubmit}>댓글 달기</Button>
+                        <Button raised colored ripple onClick={this.handleSubmit}>댓글 등록</Button>
                     </CardActions>
                 </Card>
                 {mapToComponents(this.props.data)}
