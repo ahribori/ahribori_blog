@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 import { Grid, Cell, Card, CardTitle } from 'react-mdl';
 import { getArticleRequest, removeArticleRequest } from '../actions/article';
-import { registerCommentRequest, removeCommentRequest } from '../actions/comments';
+import { registerCommentRequest, modifyCommentRequest, removeCommentRequest } from '../actions/comments';
 import { getCategoryRequest } from '../actions/category';
 import { Comments, Share } from '../components';
 
@@ -110,6 +110,7 @@ class Article extends React.Component {
 									  user={this.props.user}
 									  redirected={this.props.location.query.redirected}
 									  registerRequest={this.props.registerCommentRequest}
+                                      modifyRequest={this.props.modifyCommentRequest}
 									  removeRequest={this.props.removeCommentRequest}
 									  getArticleRequest={this.props.getArticleRequest}
 									  location={this.props.location}
@@ -145,6 +146,9 @@ const mapDispatchToProps = (dispatch) => {
 		registerCommentRequest: (token, data) => {
 			return dispatch(registerCommentRequest(token, data));
 		},
+        modifyCommentRequest: (token, data) => {
+            return dispatch(modifyCommentRequest(token, data));
+        },
 		removeCommentRequest: (token, id) => {
 			return dispatch(removeCommentRequest(token, id));
 		},

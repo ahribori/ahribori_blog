@@ -50,16 +50,43 @@ export function registerCommentFailure(error) {
     }
 }
 
+
+export function modifyCommentRequest(token, data) {
+    return (dispatch) => {
+        dispatch(modifyComment());
+        return axios({
+            method: 'put',
+            url: `${process.env.API_SERVER}/api/comment/${data._id}`,
+            headers: {
+                'authorization': token
+            },
+            data
+        }).then((response) => {
+            dispatch(modifyCommentSuccess(response.data));
+        }).catch((error) => {
+            dispatch(modifyCommentFailure(error.response));
+        })
+    }
+}
+
 export function modifyComment() {
-
+    return {
+        type: MODIFY_COMMENT
+    }
 }
 
-export function modifyCommentSuccess() {
-
+export function modifyCommentSuccess(data) {
+    return {
+        type: MODIFY_COMMENT_SUCCESS,
+        data
+    }
 }
 
-export function modifyCommentFailure() {
-
+export function modifyCommentFailure(error) {
+    return {
+        type: MODIFY_COMMENT_FAILURE,
+        error
+    }
 }
 
 export function removeCommentRequest(token, id) {

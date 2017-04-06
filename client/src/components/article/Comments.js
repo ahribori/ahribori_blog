@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { browserHistory } from 'react-router';
-import { Card, CardActions, IconButton, Button, Tooltip } from 'react-mdl';
+import { Card, CardActions, IconButton, Button, Tooltip, Snackbar } from 'react-mdl';
 import Dialog from 'material-ui/Dialog';
 import RaisedButton from 'material-ui/RaisedButton';
 import Visibility from 'material-ui/svg-icons/action/visibility';
@@ -27,23 +27,42 @@ class Comments extends React.Component {
             hidden: false,
             redirected: this.props.redirected,
             openDialog: false,
+            dialogMode: '',
+            dialogCommentsId: '',
             dialogTitle: '',
             dialogComments: '',
             dialogHidden: false,
-            params: this.props.location.query
+            params: this.props.location.query,
+            isSnackbarActive: false,
         };
+        this.handleShowSnackbar = this.handleShowSnackbar.bind(this);
+        this.handleTimeoutSnackbar = this.handleTimeoutSnackbar.bind(this);
         this.handleTextFieldChange = this.handleTextFieldChange.bind(this);
         this.handleDialogTextFieldChange = this.handleDialogTextFieldChange.bind(this);
         this.handleTextFieldFocus = this.handleTextFieldFocus.bind(this);
-        this.handleOpenDialog = this.handleOpenDialog.bind(this);
+        this.handleOpenRegisterDialog = this.handleOpenRegisterDialog.bind(this);
+        this.handleOpenModifyDialog = this.handleOpenModifyDialog.bind(this);
         this.handleCloseDialog = this.handleCloseDialog.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleSubmitDialog = this.handleSubmitDialog.bind(this);
         this.handleCheck = this.handleCheck.bind(this);
-		this.handleClickModify = this.handleClickModify.bind(this);
 		this.handleClickRemove = this.handleClickRemove.bind(this);
         this.handleDialogCheck = this.handleDialogCheck.bind(this);
         this.redirectLoginPage = this.redirectLoginPage.bind(this);
+    }
+
+    handleShowSnackbar(message) {
+        this.setState({
+            snackbarMessage: message,
+            isSnackbarActive: true
+        });
+    }
+
+    handleTimeoutSnackbar() {
+        this.setState({
+            snackbarMessage: '',
+            isSnackbarActive: false
+        });
     }
 
     handleTextFieldChange(e) {
@@ -69,7 +88,7 @@ class Comments extends React.Component {
         }
     }
 
-    handleOpenDialog(e) {
+    handleOpenRegisterDialog(e) {
         const node = e.target.dataset.refComment ? e.target : e.target.parentNode;
         const user = this.props.user;
         const ref_comment = node.dataset.refComment;
@@ -92,9 +111,24 @@ class Comments extends React.Component {
                 </div>
             ),
             openDialog: true,
+            dialogMode: 'register',
             dialogHidden: false,
+            dialogComments: '',
             ref_comment,
             ref_comment_comment
+        });
+    }
+
+    handleOpenModifyDialog(e) {
+        const node = e.target.dataset.id ? e.target : e.target.parentNode;
+        const comments = this.props.data.find((list) => { return list._id === node.dataset.id });
+        this.setState({
+            dialogTitle: '댓글 수정하기',
+            openDialog: true,
+            dialogMode: 'modify',
+            dialogCommentsId: comments._id,
+            dialogHidden: comments.hidden,
+            dialogComments: comments.comments
         });
     }
 
@@ -102,28 +136,42 @@ class Comments extends React.Component {
         const user = this.props.user;
         // const comments = this.state.dialogComments.replace(/(?:\r\n|\r|\n)/g, '<br />');
         const comments = this.state.dialogComments;
-        this.props.registerRequest(user.token, {
-            author: {
-                _id: user._id,
-                nickname: user.nickname,
-                thumbnail_image: user.thumbnail_image,
-                login_type: user.type || 'ahribori',
-            },
-            ref_comment: this.state.ref_comment,
-            ref_comment_comment: this.state.ref_comment_comment,
-            ref_article: this.props.refArticle,
-            hidden: this.state.hidden,
-            comments
-        }).then(() => {
-            this.props.getArticleRequest(this.props.refArticle)
-                .then(() => {
 
-                });
-            this.setState(update(this.state, {
-                openDialog: { $set: false },
-                dialogComments: { $set: '' }
-            }))
-        })
+        if (this.state.dialogMode === 'register') {
+            this.props.registerRequest(user.token, {
+                author: {
+                    _id: user._id,
+                    nickname: user.nickname,
+                    thumbnail_image: user.thumbnail_image,
+                    login_type: user.type || 'ahribori',
+                },
+                ref_comment: this.state.ref_comment,
+                ref_comment_comment: this.state.ref_comment_comment,
+                ref_article: this.props.refArticle,
+                hidden: this.state.hidden,
+                comments
+            }).then(() => {
+                this.props.getArticleRequest(this.props.refArticle);
+                this.handleShowSnackbar('댓글이 등록되었습니다');
+                this.setState(update(this.state, {
+                    openDialog: { $set: false },
+                    dialogComments: { $set: '' }
+                }))
+            })
+        } else {
+            this.props.modifyRequest(user.token, {
+                _id: this.state.dialogCommentsId,
+                comments: this.state.dialogComments,
+                hidden: this.state.dialogHidden
+            }).then(() => {
+                this.props.getArticleRequest(this.props.refArticle);
+                this.handleShowSnackbar('댓글이 수정되었습니다');
+                this.setState(update(this.state, {
+                    openDialog: { $set: false },
+                    dialogComments: { $set: '' }
+                }));
+            })
+        }
     }
 
     handleCloseDialog() {
@@ -181,17 +229,13 @@ class Comments extends React.Component {
                             }
                         }
                     });
+                this.handleShowSnackbar('댓글이 등록되었습니다');
                 this.setState(update(this.state, {
                     comments: { $set: '' }
                 }))
             })
         }
     }
-
-	handleClickModify(e) {
-		const node = e.target.dataset.id ? e.target : e.target.parentNode;
-		console.log('modify ' + node.dataset.id);
-	}
 
 	handleClickRemove(e) {
 		const node = e.target.dataset.id ? e.target : e.target.parentNode;
@@ -238,7 +282,7 @@ class Comments extends React.Component {
 							<IconButton
 								className="comments_modify_btn"
 								data-id={comment._id}
-								onClick={this.handleClickModify}
+								onClick={this.handleOpenModifyDialog}
 								name="edit"/>
 						</Tooltip>
 						<Tooltip label="삭제">
@@ -273,7 +317,7 @@ class Comments extends React.Component {
                                         data-ref-comment-comment={comment._id}
                                         className="comments_comments_btn"
                                         name="subdirectory_arrow_right"
-                                        onClick={this.handleOpenDialog}
+                                        onClick={this.handleOpenRegisterDialog}
                                     />
                                 </Tooltip>
                                 <Tooltip label="추천하기">
@@ -304,7 +348,7 @@ class Comments extends React.Component {
                                         data-ref-comment-comment={comment._id}
                                         className="comments_comments_btn"
                                         name="subdirectory_arrow_right"
-                                        onClick={this.handleOpenDialog}
+                                        onClick={this.handleOpenRegisterDialog}
                                     />
                                 </Tooltip>
                                 <Tooltip label="추천하기">
@@ -396,6 +440,10 @@ class Comments extends React.Component {
                         label={this.state.dialogHidden ? '게시물 작성자와 나만 볼 수 있습니다' : '모두가 볼 수 있습니다'}
                     />
                 </Dialog>
+                <Snackbar
+                    active={this.state.isSnackbarActive}
+                    onTimeout={this.handleTimeoutSnackbar}
+                >{this.state.snackbarMessage}</Snackbar>
             </div>
         );
     }

@@ -1,6 +1,5 @@
 import React, {Component, PropTypes} from 'react';
 import { Navigation, BottomNavigation, Sidebar } from '../components';
-import { browserHistory } from 'react-router';
 import { Layout, Content } from 'react-mdl';
 import { connect } from 'react-redux';
 import { getCategoryRequest } from '../actions/category';
@@ -119,7 +118,6 @@ class App extends React.Component {
 				<Snackbar
 					active={this.state.isSnackbarActive}
 					onTimeout={this.handleTimeoutSnackbar}
-					// action="Undo"
 				>{this.state.snackbarMessage}</Snackbar>
 			</div>
 		);

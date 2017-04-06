@@ -42,6 +42,27 @@ export default function comment(state= initialState, action) {
                     error: { $set: action.error }
                 }
             });
+        case types.MODIFY_COMMENT:
+            return update(state, {
+                modify: {
+                    status: { $set: 'WAITING' },
+                    error: { $set: null }
+                }
+            });
+        case types.MODIFY_COMMENT_SUCCESS:
+            return update(state, {
+                modify: {
+                    status: { $set: 'SUCCESS' },
+                    response: { $set: action.data }
+                }
+            });
+        case types.MODIFY_COMMENT_FAILURE:
+            return update(state, {
+                modify: {
+                    status: { $set: 'FAILURE' },
+                    error: { $set: action.error }
+                }
+            });
 		case types.REMOVE_COMMENT:
 			return update(state, {
 				remove: {
