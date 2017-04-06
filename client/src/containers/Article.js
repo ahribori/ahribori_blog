@@ -49,7 +49,9 @@ class Article extends React.Component {
 			sessionStorage.setItem('ahribori_hits', `${sessionStarageHits}|${id}`);
 			upHits = 1;
 		}
-        this.props.getArticleRequest(id, null, upHits)
+
+		const token = this.props.user ? this.props.user.token : null;
+        this.props.getArticleRequest(id, token, upHits)
             .then(() => {
 				/* Prism force initialize */
                 Prism.highlightAll();

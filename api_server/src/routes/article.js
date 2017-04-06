@@ -347,11 +347,30 @@ router.get('/:id', (req, res) => {
 	});
 
 	const findComments = (article) => new Promise((resolve, reject) => {
+	    const match = {};
+	    if (req.payload.application) {
+	        match.ref_article = mongoose.Types.ObjectId(req.params.id);
+	        match.hidden = false;
+        } else {
+	        if (req.payload.admin === true) {
+                match.ref_article = mongoose.Types.ObjectId(req.params.id);
+            } else {
+                match.ref_article = mongoose.Types.ObjectId(req.params.id);
+                match.$or = [
+                    {
+                        'author._id': mongoose.Types.ObjectId(req.payload._id),
+                        hidden: true
+                    },
+                    {
+                        hidden: false
+                    }
+                ]
+            }
+        }
+
         Comment.aggregate([
             {
-                $match: {
-                    ref_article: mongoose.Types.ObjectId(req.params.id)
-                }
+                $match: match
             },
             {
                 $sort: {
