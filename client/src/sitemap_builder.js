@@ -8,6 +8,7 @@ import { createRoutes } from 'react-router';
 import Sitemap from 'react-router-sitemap';
 import { routesParser as parseRoutes } from 'react-router-sitemap';
 import { paramsApplier as applyParams } from 'react-router-sitemap';
+import { pathsFilter as filterPaths } from 'react-router-sitemap';
 const route = createRoutes(routes);
 const paths = parseRoutes(route);
 
@@ -76,8 +77,12 @@ Promise.all([getArticles, getCategories])
         ],
     };
     const dynamicPaths = applyParams(paths, config);
+    const ignoreRules = [/\/search/i, /\/editor/i, /\/\*/i, /\/category_conf/i, ];
+    const isValidRules = false;
+    const filteredPaths = filterPaths(dynamicPaths, ignoreRules, isValidRules);
+
     const sitemap = new Sitemap(routes);
-    sitemap.paths = dynamicPaths;
+    sitemap.paths = filteredPaths;
     sitemap.build('https://ahribori.com').save("./public/sitemap.xml");
 })
 .catch((error) => {
