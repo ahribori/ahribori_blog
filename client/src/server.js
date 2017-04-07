@@ -17,6 +17,7 @@ for (let k in env) { process.env[k] = env[k]; }
  Load server side rendering dependencies
  ============================================*/
 import React from 'react';
+import { Helmet } from 'react-helmet';
 import { renderToString } from 'react-dom/server';
 import { match, RouterContext } from 'react-router';
 import { createStore, applyMiddleware, compose } from 'redux';
@@ -62,37 +63,53 @@ const getReduxPromise = (props) => {
 };
 
 const renderFullPage = (html, reduxState, res) => {
+    const helmet = Helmet.renderStatic();
     fs.readFile(path.resolve(__dirname, './../public/index.html'), 'utf-8', (err, file) => {
         if (err) throw err;
-        res.send(file.replace(`<div id="app"></div>`,
+
+        let page = file
+
+            // set redux
+            .replace(`<div id="app"></div>`,
             `<div id="app">${html}</div>
-			 <script>window.__REDUX_STATE__ = ${reduxState}</script>`
-        ));
+			 <script>window.__REDUX_STATE__ = ${reduxState}</script>`)
+
+            // set title
+            .replace(`<title>Ahribori's Blog</title>`, helmet.title.toString());
+
+            //set meta
+            // TODO og tag도 동적으로 추가
+
+        res.send(page);
+    });
+};
+
+const SSR = (req, res) => {
+    match({ routes: routes, location: req.url }, (err, redirect, props) => {
+        getReduxPromise(props).then(() => {
+            const appHtml = renderToString(
+                <MuiThemeProvider>
+                    <Provider store={store}>
+                        <RouterContext {...props}/>
+                    </Provider>
+                </MuiThemeProvider>
+            );
+            let reduxState = store.getState();
+            try {
+                reduxState = JSON.stringify(reduxState).replace(/</g, '\\u003c');
+            } catch (e) {
+                reduxState = {};
+            }
+            renderFullPage(appHtml, reduxState, res);
+        }).catch(() => {
+            res.sendFile(path.resolve(__dirname, './../public/index.html'));
+        });
     });
 };
 
 app.use('/',(req,res,next) => {
 	if (req.url === '/') {
-        match({ routes: routes, location: req.url }, (err, redirect, props) => {
-			getReduxPromise(props).then(() => {
-				const appHtml = renderToString(
-					<MuiThemeProvider>
-						<Provider store={store}>
-							<RouterContext {...props}/>
-						</Provider>
-					</MuiThemeProvider>
-				);
-                let reduxState = store.getState();
-                try {
-                    reduxState = JSON.stringify(reduxState).replace(/</g, '\\u003c');
-                } catch (e) {
-                    reduxState = {};
-                }
-				renderFullPage(appHtml, reduxState, res);
-			}).catch(() => {
-                res.sendFile(path.resolve(__dirname, './../public/index.html'));
-			});
-        });
+        SSR(req, res);
 	} else {
 		next();
 	}
@@ -102,31 +119,7 @@ app.use('/',(req,res,next) => {
 app.use('/', express.static(path.join(__dirname, './../public')));
 
 app.get('*', function (req, res) {
-    if (process.env.NODE_ENV === 'production') {
-        match({ routes: routes, location: req.url }, (err, redirect, props) => {
-            getReduxPromise(props).then(() => {
-                const appHtml = renderToString(
-					<MuiThemeProvider>
-						<Provider store={store}>
-							<RouterContext {...props} />
-						</Provider>
-					</MuiThemeProvider>
-                );
-                let reduxState = store.getState();
-                try {
-                	reduxState = JSON.stringify(reduxState).replace(/</g, '\\u003c');
-				} catch (e) {
-					reduxState = {};
-				}
-                renderFullPage(appHtml, reduxState, res)
-            }).catch(() => {
-                res.sendFile(path.resolve(__dirname, './../public/index.html'));
-            });
-        });
-    } else if (process.env.NODE_ENV === 'development') {
-		res.sendFile(path.resolve(__dirname, './../public/index.html'));
-	}
-
+    SSR(req, res);
 });
 
 // open the server

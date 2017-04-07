@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 import { Grid, Cell, Card, CardTitle } from 'react-mdl';
@@ -86,41 +87,46 @@ class Article extends React.Component {
 		);
 
 		return (
-			<Grid className="article_grid">
-				<Cell offsetDesktop={2} col={8} phone={12} tablet={12} style={{ minWidth: '300px' }}>
-					<Card shadow={0} style={{
-						width: '100%'
-					}}>
-						<div className="article_container">
-							<CardTitle className="article_title" expand>{this.props.article.title}</CardTitle>
-							<div className="article_info">
-								{ this.props.article.author_nickname} | { this.props.article.reg_date } | 조회 {this.props.article.hit} | 추천 {this.props.article.star} | 댓글 {this.props.article.comments_count}
-								{ this.state.isAuthor ? articleMenu : '' }
-							</div>
-							<hr/>
-							<div className="article_content" dangerouslySetInnerHTML={{ __html: this.props.article.content }}></div>
-							{this.state.fetchComplete ? <Share url={location.href}
-															   description={this.props.article.preview}
-															   picture={this.props.article.thumbnail_image ? this.props.article.thumbnail_image : ''}
-															   title={this.props.article.title}/> : ''}
-						</div>
-					</Card>
-                    {this.state.fetchComplete ? (
-							<Comments data={this.props.comments}
-									  comments={this.props.comments_state}
-									  refArticle={this.props.params.id}
-									  user={this.props.user}
-									  redirected={this.props.location.query.redirected}
-									  registerRequest={this.props.registerCommentRequest}
-                                      modifyRequest={this.props.modifyCommentRequest}
-									  removeRequest={this.props.removeCommentRequest}
-									  getArticleRequest={this.props.getArticleRequest}
-									  location={this.props.location}
-							/>
-                        ) : ''}
+            <div>
+                <Helmet>
+                    <title>{this.props.article.title ? `${this.props.article.title} :: Ahribori's Blog` : `Ahribori's Blog`}</title>
+                </Helmet>
+                <Grid className="article_grid">
+                    <Cell offsetDesktop={2} col={8} phone={12} tablet={12} style={{ minWidth: '300px' }}>
+                        <Card shadow={0} style={{
+                            width: '100%'
+                        }}>
+                            <div className="article_container">
+                                <CardTitle className="article_title" expand>{this.props.article.title}</CardTitle>
+                                <div className="article_info">
+                                    { this.props.article.author_nickname} | { this.props.article.reg_date } | 조회 {this.props.article.hit} | 추천 {this.props.article.star} | 댓글 {this.props.article.comments_count}
+                                    { this.state.isAuthor ? articleMenu : '' }
+                                </div>
+                                <hr/>
+                                <div className="article_content" dangerouslySetInnerHTML={{ __html: this.props.article.content }}></div>
+                                {this.state.fetchComplete ? <Share url={location.href}
+                                                                   description={this.props.article.preview}
+                                                                   picture={this.props.article.thumbnail_image ? this.props.article.thumbnail_image : ''}
+                                                                   title={this.props.article.title}/> : ''}
+                            </div>
+                        </Card>
+                        {this.state.fetchComplete ? (
+                                <Comments data={this.props.comments}
+                                          comments={this.props.comments_state}
+                                          refArticle={this.props.params.id}
+                                          user={this.props.user}
+                                          redirected={this.props.location.query.redirected}
+                                          registerRequest={this.props.registerCommentRequest}
+                                          modifyRequest={this.props.modifyCommentRequest}
+                                          removeRequest={this.props.removeCommentRequest}
+                                          getArticleRequest={this.props.getArticleRequest}
+                                          location={this.props.location}
+                                />
+                            ) : ''}
 
-				</Cell>
-			</Grid>
+                    </Cell>
+                </Grid>
+            </div>
 		);
 	}
 }

@@ -1,4 +1,5 @@
-import React, {Component, PropTypes} from 'react';
+import React from 'react';
+import { Helmet } from 'react-helmet';
 import { Navigation, BottomNavigation, Sidebar } from '../components';
 import { Layout, Content } from 'react-mdl';
 import { connect } from 'react-redux';
@@ -100,7 +101,9 @@ class App extends React.Component {
 
 		return (
 			<div>
-
+                <Helmet>
+                    <title>Ahribori's Blog</title>
+                </Helmet>
 				<Layout fixedHeader fixedDrawer id="layout" style={{ visibility: 'hidden'}}>
 					<Navigation isLoggedIn={this.props.status.isLoggedIn} onLogout={this.handleLogout}/>
 					<Sidebar user={this.props.user}
