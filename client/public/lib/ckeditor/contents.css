@@ -57,6 +57,10 @@ a
 	color: #0782C1;
 }
 
+p {
+	margin: 0;
+}
+
 ol,ul,dl
 {
 	/* IE7: reset rtl list margin. (#7334) */
