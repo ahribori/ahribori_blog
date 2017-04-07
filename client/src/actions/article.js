@@ -89,7 +89,7 @@ export function getArticleRequest(id, token, upHits) {
 		return axios.get(`${process.env.API_SERVER}/api/article/${id}`, {
 			headers: {
 				'authorization': token || process.env.TOKEN,
-				'X-h': upHits
+				'X-h': upHits || 0
 			}
 		}).then((response) => {
 			dispatch(getArticleSuccess(response.data))
