@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';
 import { logout } from '../actions/authentication';
 import { getArticleListRequest } from '../actions/article';
@@ -59,8 +60,13 @@ class Category extends React.Component {
                 <h3 style={{ fontFamily: 'iropkeBatangM' }}>{this.state.message}</h3>
             </div>
         );
+
+        const category =  this.props.category.response ? this.props.category.response.response.find((list) => list._id === this.props.params.id) : null;
         return (
             <div>
+                <Helmet>
+                    <title>{category ? `${category.name} :: Ahribori's Blog` : `Ahribori's Blog`}</title>
+                </Helmet>
                 { this.props.articleList.data.length === 0 ? noCategoryResult : ''}
                 <CardList onPageChange={this.onPageChange} articleList={this.props.articleList} page={this.props.articleList.page}/>
             </div>
@@ -70,7 +76,8 @@ class Category extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        articleList: state.article.articleList
+        articleList: state.article.articleList,
+        category: state.category.get
     }
 };
 

@@ -51,12 +51,12 @@ const app = express();
  ============================================*/
 const getReduxPromise = (props) => {
     let { query, params } = props;
-    let comp = props.components[props.components.length - 1].WrappedComponent;
-    if (comp) {
-		let promise = comp.fetchDataServerSide ?
-			comp.fetchDataServerSide({ store, params, history }) :
-			Promise.resolve();
-		return promise;
+    let rootComponentPromise = props.components[0].WrappedComponent.fetchDataServerSide({ store, params, history });
+    let childComponent = props.components[props.components.length - 1].WrappedComponent;
+    if (childComponent) {
+		const childComponentPromise = childComponent.fetchDataServerSide ?
+            childComponent.fetchDataServerSide({ store, params, history }) : Promise.resolve();
+		return Promise.all([rootComponentPromise, childComponentPromise]);
 	} else {
     	return Promise.reject()
 	}

@@ -24,6 +24,10 @@ class App extends React.Component {
 		this.onLoad = this.onLoad.bind(this);
 	}
 
+    static fetchDataServerSide({ store, params, history }) {
+        return store.dispatch(getCategoryRequest(process.env.TOKEN));
+    }
+
 	onLoad() {
 		setTimeout(() => {
         	document.getElementById('layout').style.visibility = 'visible';
