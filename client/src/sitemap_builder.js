@@ -79,7 +79,6 @@ Promise.all([getArticles, getCategories])
     const sitemap = new Sitemap(routes);
     sitemap.paths = dynamicPaths;
     sitemap.build('https://ahribori.com').save("./public/sitemap.xml");
-    console.log(articles.length, categories.length)
 })
 .catch((error) => {
     console.error(error);
