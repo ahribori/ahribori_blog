@@ -55,6 +55,8 @@ class Article extends React.Component {
         this.props.getArticleRequest(id, token, upHits)
             .then(() => {
 				/* Prism force initialize */
+				const preTags = $('pre');
+				if (!preTags.hasClass('line-numbers')) { preTags.addClass('line-numbers') }
                 Prism.highlightAll();
 
                 const author_id = this.props.article ? this.props.article.author_id : null;
