@@ -336,7 +336,7 @@ router.get('/:id', (req, res) => {
 				})
 			} else {
 				if (article.hidden === true) {
-					if (!req.payload._id || (req.payload._id !== article.author_id)) {
+					if (!req.payload._id || (req.payload._id !== article.author_id.toString())) {
 						reject({
 							status: 403,
 							message: 'unauthorized'
