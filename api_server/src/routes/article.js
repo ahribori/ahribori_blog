@@ -335,6 +335,12 @@ router.get('/:id', (req, res) => {
 					message: 'article not found'
 				})
 			} else {
+				if (!req.payload._id || (req.payload._id !== article.author_id)) {
+					reject({
+						status: 403,
+						message: 'unauthorized'
+					})
+				}
 				if (req.header('x-h') * 1 === 1) {
                 	article.hit++;
 				}
