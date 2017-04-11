@@ -6,6 +6,7 @@ var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlug
 module.exports = {
 	/* entry부터 시작하여 다른 의존 파일들을 재귀적으로 호출 */
 	entry: [
+        'babel-polyfill',
 		'./src/index.js'
 	],
 
