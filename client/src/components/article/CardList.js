@@ -116,7 +116,7 @@ class CardList extends React.Component {
                                                style={{
                                                    height: '300px',
                                                    backgroundImage: `url(${ article.thumbnail_image || '' })`,
-                                                   backgroundColor: getRandomColor() }}><span className="card-title-value"><h2>{article.title}</h2></span></CardTitle>
+                                                   backgroundColor: getRandomColor() }}><span className="card-title-value">{article.title}</span></CardTitle>
                                 </div>
 
                                 {cardContent}

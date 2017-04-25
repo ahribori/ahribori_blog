@@ -84,11 +84,9 @@ $gridItemPadding: 8px;
             -webkit-align-self: flex-end;
             -ms-flex-item-align: end;
             align-self: flex-end;
-            h2 {
-                transition: all .3s ease-in-out;
-                line-height: 1;
-                @include item-card-title(1.5rem);
-            }
+            transition: all .3s ease-in-out;
+            line-height: 1;
+            @include item-card-title(1.5rem);
         }
     }
 }
@@ -104,14 +102,12 @@ $gridItemPadding: 8px;
         transform: scale(1.1, 1.1);
 
         .card-title-value {
-            h2 {
-                transition: all .3s ease-in-out;
-                -ms-transform: scale(0.9, 0.9) translate(5px, -15px); /* IE 9 */
-                -webkit-transform: scale(0.9, 0.9) translate(5px, -15px); /* Safari */
-                transform: scale(0.9, 0.9) translate(5px, -15px);
-                line-height: 1;
-                @include item-card-title(1.5rem);
-            }
+            transition: all .3s ease-in-out;
+            -ms-transform: scale(0.9, 0.9) translate(5px, -15px); /* IE 9 */
+            -webkit-transform: scale(0.9, 0.9) translate(5px, -15px); /* Safari */
+            transform: scale(0.9, 0.9) translate(5px, -15px);
+            line-height: 1;
+            @include item-card-title(1.5rem);
         }
     }
 }
