@@ -75,10 +75,10 @@ const renderFullPage = (html, reduxState, res) => {
 			 <script>window.__REDUX_STATE__ = ${reduxState}</script>`)
 
             // set title
-            .replace(`<title>Ahribori's Blog</title>`, helmet.title.toString());
+            .replace(`{{{title}}}`, helmet.title.toString())
 
             //set meta
-            // TODO og tag도 동적으로 추가
+            .replace(`{{{meta}}}`, helmet.meta.toString());
 
         res.send(page);
     });

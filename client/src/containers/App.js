@@ -106,6 +106,12 @@ class App extends React.Component {
 		return (
 			<div>
                 <Helmet>
+					<meta name="description" content="Enjoy development!" />
+					<meta name="keywords" content="JavaScript,Node.js,Java,React,HTML,CSS" />
+					<meta name="author" content="아리보리" />
+					<meta property="og:title" content="Ahribori's Blog" />
+					<meta property="og:description" content="Enjoy development!" />
+					<meta property="og:image" content="/favicon/cats.png" />
                     <title>Ahribori's Blog</title>
                 </Helmet>
 				<Layout fixedHeader fixedDrawer id="layout" style={{ visibility: 'hidden'}}>

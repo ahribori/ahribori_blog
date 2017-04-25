@@ -91,6 +91,12 @@ class Article extends React.Component {
 		return (
             <div>
                 <Helmet>
+					<meta name="description" content={this.props.article.preview} />
+					<meta name="keywords" content="JavaScript,Node.js,Java,React,HTML,CSS" />
+					<meta name="author" content={this.props.article.author_nickname} />
+					<meta property="og:title" content={ this.props.article.title } />
+					<meta property="og:description" content={this.props.article.preview} />
+					<meta property="og:image" content={this.props.article.thumbnail_image ? this.props.article.thumbnail_image : '/favicon/cats.png'} />
                     <title>{this.props.article.title ? `${this.props.article.title} :: Ahribori's Blog` : `Ahribori's Blog`}</title>
                 </Helmet>
                 <Grid className="article_grid">
