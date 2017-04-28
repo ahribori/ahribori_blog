@@ -1,8 +1,14 @@
-import React, { Component } from 'react';
+import React from 'react';
+import './App.scss';
 import LoginForm from './LoginForm';
-import '../style/App.css';
 
-class App extends Component {
+class App extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {};
+    }
+
     render() {
         return (
             <div className="app">

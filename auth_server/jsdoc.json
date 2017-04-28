@@ -4,7 +4,7 @@
   },
   "source": {
     "include": [
-      "./src",
+      "./client",
       "./server"
     ],
     "includePattern": ".js$",

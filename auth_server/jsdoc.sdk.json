@@ -4,7 +4,7 @@
   },
   "source": {
     "include": [
-      "./src/sdk/sdk.js"
+      "./client/src/sdk/sdk.js"
     ],
     "includePattern": ".js$",
     "exclude": [

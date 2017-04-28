@@ -1,0 +1,12 @@
+# Gulp Configuration Files
+gulp.dev.js
+gulp.prod.js
+
+# Configurations Files
+config.js
+
+# Webpack Configuration Files
+client/config/*.js
+
+# Bundle Files
+public/*.js

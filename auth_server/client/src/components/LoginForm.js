@@ -1,6 +1,5 @@
 import React from 'react';
 import { Button, Checkbox, Form, Container } from 'semantic-ui-react';
-import Logo from '../assets/cats.png';
 import axios from 'axios';
 
 class LoginForm extends React.Component {
@@ -111,7 +110,7 @@ class LoginForm extends React.Component {
                             marginLeft: 'auto !important',
                             marginRight: 'auto !important',
                             color: 'white',
-                            background: `pink url("${Logo}") no-repeat center`,
+                            background: `pink url("/cats.png") no-repeat center`,
                             backgroundSize: '100px auto'
                         }} />
                         <Container className="wrapper">

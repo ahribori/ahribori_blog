@@ -1,0 +1,26 @@
+.app {
+    margin: 0 auto;
+    .logo {
+        height: 100px;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        color: white;
+        background: #2E2E36 url("/logo.svg") no-repeat center;
+        background-size: 200px auto;
+    }
+    .wrapper {
+        margin: 3rem auto 1rem auto !important;
+        width: 320px !important;
+
+        input {
+            border-radius: 0 !important;
+        }
+
+        button {
+            margin-top: 2rem !important;
+            border-radius: 0 !important;
+        }
+    }
+}
+
+

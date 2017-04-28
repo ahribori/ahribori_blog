@@ -332,7 +332,6 @@ router.get('/initializeSDK', (req, res) => {
 router.get('/createLoginButton', (req, res) => {
     const readTemplates = new Promise((resolve, reject) => {
         const htmlPath = path.resolve('public/login_button.html');
-        console.log(htmlPath)
         fs.readFile(htmlPath, 'utf8', (err, file) => {
             if (err) reject({ status: 404, message: 'button templates not found' });
             resolve(file);
