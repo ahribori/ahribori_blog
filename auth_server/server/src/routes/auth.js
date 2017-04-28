@@ -126,7 +126,14 @@ router.post('/login', (req, res) => {
 							subject: 'userInfo'
 						}, (err, token) => {
 							if (err) reject(err);
-							resolve(token);
+							resolve({
+								token,
+								user: {
+									_id: user._id,
+									nickname: user.nickname,
+									admin: user.admin
+								}
+							});
 						}
 					);
 				});
@@ -139,11 +146,12 @@ router.post('/login', (req, res) => {
 		}
 	};
 
-	const respond = (token) => {
+	const respond = ({ token, user }) => {
         res.send({
             success: true,
             auth: {
-                token
+                token,
+				user
             }
         });
 	};
