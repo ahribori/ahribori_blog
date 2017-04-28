@@ -250,11 +250,11 @@ export function bindCreateLoginButtonMessageEventLister({ container }) {
                     success: message.success,
                     auth: message.auth
                 };
-                if (successCallback && typeof successCallback === 'function') successCallback(successObject);
-                if (alwaysCallback && typeof alwaysCallback === 'function') alwaysCallback(successObject);
                 if (window.localStorage) {
                     localStorage.setItem('ahribori_token', message.auth.token);
                 }
+                if (successCallback && typeof successCallback === 'function') successCallback(successObject);
+                if (alwaysCallback && typeof alwaysCallback === 'function') alwaysCallback(successObject);
             } else if (message.success === false) {
                 const failObject = {
                     success: message.success,
@@ -289,11 +289,11 @@ export function bindLoginMessageEventLister() {
                     success: message.success,
                     auth: message.auth
                 };
-                if (successCallback && typeof successCallback === 'function') successCallback(successObject);
-                if (alwaysCallback && typeof alwaysCallback === 'function') alwaysCallback(successObject);
                 if (window.localStorage) {
                     localStorage.setItem('ahribori_token', message.auth.token);
                 }
+                if (successCallback && typeof successCallback === 'function') successCallback(successObject);
+                if (alwaysCallback && typeof alwaysCallback === 'function') alwaysCallback(successObject);
             } else if (message.success === false) {
                 const failObject = {
                     success: message.success,
