@@ -341,7 +341,7 @@ router.get('/createLoginButton', (req, res) => {
 
     const applyStyle = file => new Promise((resolve) => {
         const size = req.query.size;
-        let semanticClass = 'ui teal button ';
+        let semanticClass = 'ui violet basic button ';
 
         switch (size) {
             case 'small':

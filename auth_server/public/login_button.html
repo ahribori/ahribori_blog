@@ -7,14 +7,17 @@
     <style>
         body { margin: 0; }
         button { border: 0; }
+        button {
+            border-radius: 0 !important;
+        }
     </style>
 </head>
 <body onload="onLoad()">
-<button id="webapmLoginButton" class="{{{class}}}" onClick="openLoginPopup();"><i class="{{{icon}}}"></i>WebAPM으로 로그인</button>
+<button id="ahriboriLoginButton" class="{{{class}}}" onClick="openLoginPopup();"><i class="{{{icon}}}"></i>로그인</button>
 <script type="text/javascript">
 
     var onLoad = function () {
-        var loginButton = document.querySelector('#webapmLoginButton');
+        var loginButton = document.querySelector('#ahriboriLoginButton');
         window.parent.postMessage(JSON.stringify({
             type: 'createButtonOnload',
             style: {
