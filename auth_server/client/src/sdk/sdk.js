@@ -191,7 +191,7 @@ class Auth {
      *
      * @param settings {object} 토큰 검증을 하기 위한 설정
      * @param settings.token {string} 검증할 토큰
-     * (이 파라미터가 없을 경우 localStorage에 저장된 토큰을 검증 시도하며, localStorage에도 토큰이 없을 경우 아무 일도 일어나지 않는다.)
+     * (이 파라미터가 없을 경우 localStorage에 저장된 토큰을 검증 시도한다.)
      * @param settings.success {function} 토큰 검증 성공 콜백 함수
      * @param settings.fail {function} 토큰 검증 실패 콜백 함수
      * @param settings.always {function} 토큰 검증 성공/실패 유무에 관계없는 콜백

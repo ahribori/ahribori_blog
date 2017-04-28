@@ -23,6 +23,9 @@ export function initializeSDK(applicationKey) {
 
 export function checkToken(_token) {
     const token = _token || localStorage.getItem('ahribori_token');
+    const successCallback = AHRIBORI_AUTH_SDK.callback.checkTokenSuccess;
+    const failCallback = AHRIBORI_AUTH_SDK.callback.checkTokenFail;
+    const alwaysCallback = AHRIBORI_AUTH_SDK.callback.checkTokenAlways;
     if (token) {
         return axios({
             url: `${process.env.SERVER_URL}/auth/check`,
@@ -31,15 +34,18 @@ export function checkToken(_token) {
                 Authorization: token
             }
         }).then((response) => {
-            const successCallback = AHRIBORI_AUTH_SDK.callback.checkTokenSuccess;
-            const alwaysCallback = AHRIBORI_AUTH_SDK.callback.checkTokenAlways;
             if (successCallback) successCallback(response.data);
             if (alwaysCallback) alwaysCallback(response.data);
         }).catch((error) => {
-            const failCallback = AHRIBORI_AUTH_SDK.callback.checkTokenFail;
-            const alwaysCallback = AHRIBORI_AUTH_SDK.callback.checkTokenAlways;
             if (failCallback) failCallback(error.response.data);
             if (alwaysCallback) alwaysCallback(error.response.data);
         });
+    } else {
+        const failObject = {
+            success: false,
+            message: 'token not exist'
+        };
+        if (failCallback) failCallback(failObject);
+        if (alwaysCallback) alwaysCallback(failObject);
     }
 }
