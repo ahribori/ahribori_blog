@@ -87,6 +87,9 @@ class Auth {
      *     },
      *     always: function(authOrErrorObject) {
      *
+     *     },
+     *     logout: function() {
+     *
      *     }
      * });
      *
@@ -96,17 +99,18 @@ class Auth {
      * @param settings.success {function} 로그인 성공 콜백 함수
      * @param settings.fail {function} 로그인 실패 콜백 함수
      * @param settings.always {function} 성공 실패 유무에 관계없는 콜백
+     * @param settings.logout {function} 로그아웃하고 나서 콜백
      */
-    createLoginButton({ container, size = 'medium', success, fail, always }) {
+    createLoginButton({ container, size = 'medium', success, fail, always, logout }) {
         this.waitInitialize(() => {
-            if (validateCreateLoginButtonParameters({ container, size, success, fail, always })) {
+            if (validateCreateLoginButtonParameters({ container, size, success, fail, always, logout })) {
                 const frame = `<iframe id="ahribori_iframe" src="${process.env.SERVER_URL}/auth/createLoginButton?size=${size}" />`;
                 document.querySelector(container).innerHTML = frame;
                 const $frame = document.querySelector(`${container} > iframe`);
                 $frame.style.border = 0;
                 $frame.width = 0;
                 $frame.height = 0;
-                bindCreateLoginButtonCallback({ success, fail, always });
+                bindCreateLoginButtonCallback({ success, fail, always, logout });
                 bindCreateLoginButtonMessageEventLister({ container });
             }
         });

@@ -13,8 +13,9 @@
     </style>
 </head>
 <body onload="onLoad()">
-<button id="ahriboriLoginButton" class="{{{class}}}" onClick="openLoginPopup();"><i class="{{{icon}}}"></i>로그인</button>
+<button id="ahriboriLoginButton" class="{{{class}}}" onClick="onClick();"><i class="{{{icon}}}"></i>로그인</button>
 <script type="text/javascript">
+    var status = 'LOGIN';
 
     var onLoad = function () {
         var loginButton = document.querySelector('#ahriboriLoginButton');
@@ -25,12 +26,24 @@
                 height: loginButton.offsetHeight
             }
         }), '*');
+
+        window.addEventListener('message', function(event) {
+            var message = JSON.parse(event.data);
+            if (message.type === 'checkTokenValid') {
+                // 클라이언트에 저장되어있는 토큰이 유효한 토큰이면
+                if (message.success) {
+                    setButtonLogout();
+                }
+            }
+        })
     };
 
     var passResponse = function (response) {
         response.type = 'oncreatebuttonlogin';
         window.parent.postMessage(JSON.stringify(response), "*");
+        setButtonLogout();
     };
+
     var messageEventListenerBinded = false;
     var openLoginPopup = function () {
         window.parent.postMessage(JSON.stringify({
@@ -48,18 +61,46 @@
                     token = message.token;
                     popup = window.open('/?clb=1&continue=' + continueURL,'targetWindow',
                         'toolbar=no, location=no, status=no, menubar=no, scrollbars=no, resizable=no, width=360, height=370');
-                }
-                if (message.type === 'popupOnload') {
+                } else if (message.type === 'popupOnload') {
                     popup.postMessage({
                         type: 'token',
                         token: token
                     }, '*');
+                } else if (message.type === 'autologin') {
+                    passResponse();
                 }
             });
             messageEventListenerBinded = true;
         }
-
     };
+
+    var setButtonLogin = function () {
+        var button = document.getElementById('ahriboriLoginButton');
+        button.innerHTML = '<i class="privacy icon"></i>로그인';
+        status = 'LOGIN';
+    };
+
+    var setButtonLogout = function () {
+        var button = document.getElementById('ahriboriLoginButton');
+        button.innerText = '로그아웃';
+        status = 'LOGOUT';
+    };
+
+    var logout = function () {
+        window.parent.postMessage(JSON.stringify({
+            type: 'logout',
+        }), '*');
+        setButtonLogin();
+    };
+
+    var onClick = function () {
+        if (status === 'LOGIN') {
+            openLoginPopup();
+        } else if (status === 'LOGOUT') {
+            setButtonLogout();
+            logout();
+        }
+    }
 </script>
 </body>
 </html>

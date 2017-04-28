@@ -33,7 +33,7 @@ export function printMessage(severity, message) {
  * @param always
  * @returns {boolean}
  */
-export function validateCreateLoginButtonParameters({ container, success, fail, always }) {
+export function validateCreateLoginButtonParameters({ container, success, fail, always, logout }) {
     const selectedContainer = document.querySelector(container);
     if (!container) {
         printMessage('error', 'container 파라미터가 지정되지 않았습니다.');
@@ -53,6 +53,10 @@ export function validateCreateLoginButtonParameters({ container, success, fail, 
     }
     if (always && typeof always !== 'function') {
         printMessage('error', 'always 파라미터는 function 이어야 합니다.');
+        return false;
+    }
+    if (logout && typeof logout !== 'function') {
+        printMessage('error', 'logout 파라미터는 function 이어야 합니다.');
         return false;
     }
     return true;
@@ -113,7 +117,7 @@ export function validateCheckTokenParameters({ success, fail, always }) {
  * @param fail
  * @param always
  */
-export function bindCreateLoginButtonCallback({ success, fail, always }) {
+export function bindCreateLoginButtonCallback({ success, fail, always, logout }) {
     if (!window.AHRIBORI_AUTH_SDK.callback) {
         Object.defineProperties(window.AHRIBORI_AUTH_SDK, {
             callback: {
@@ -139,6 +143,12 @@ export function bindCreateLoginButtonCallback({ success, fail, always }) {
         },
         createLoginButtonAlways: {
             value: always,
+            writable: false,
+            enumerable: false,
+            configurable: false
+        },
+        createLoginButtonLogout: {
+            value: logout,
             writable: false,
             enumerable: false,
             configurable: false
@@ -241,6 +251,22 @@ export function bindCreateLoginButtonMessageEventLister({ container }) {
                 document.querySelector(`${container} iframe`).height = message.style.height;
                 document.querySelector(`${container} iframe`).width = message.style.width;
             }
+
+            // 버튼(iframe) 로딩이 끝난 다음
+            const token = localStorage.getItem('ahribori_token');
+            if (token) {
+                AHRIBORI_AUTH_SDK.checkToken({
+                    token,
+                    success: (result) => {
+                        const iFrame = document.getElementById('ahribori_iframe').contentWindow;
+                        iFrame.postMessage(JSON.stringify({
+                            type: 'checkTokenValid',
+                            success: result.success
+                        }), '*')
+                    }
+                })
+            }
+
         } else if (message.type === 'oncreatebuttonlogin') {
             const successCallback = window.AHRIBORI_AUTH_SDK.callback.createLoginButtonSuccess;
             const failCallback = window.AHRIBORI_AUTH_SDK.callback.createLoginButtonFail;
@@ -269,8 +295,12 @@ export function bindCreateLoginButtonMessageEventLister({ container }) {
                 type: 'token',
                 token
             }), '*');
+        } else if (message.type === 'logout') {
+            AHRIBORI_AUTH_SDK.logout();
+            const logoutCallback = window.AHRIBORI_AUTH_SDK.callback.createLoginButtonLogout;
+            if (logoutCallback && typeof logoutCallback === 'function') logoutCallback();
         }
-    });
+     });
 }
 
 /**

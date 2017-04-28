@@ -40,6 +40,11 @@ class LoginForm extends React.Component {
                                     token // 로그인 성공한뒤 재발급 된 토큰을 내려주면 됨
                                 }
                             }), '*');
+                            if (isClb) {
+                                window.opener.postMessage(JSON.stringify({
+                                    type: 'autologin'
+                                }), '*');
+                            }
                             window.close();
                         }
                     }
