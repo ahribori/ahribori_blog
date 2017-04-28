@@ -35,7 +35,6 @@ class Auth {
             });
         });
         this.applicationKey = applicationKey;
-        this.containers = [];
         this.createLoginButton = this.createLoginButton.bind(this);
         this.login = this.login.bind(this);
         this.checkToken = this.checkToken.bind(this);
@@ -101,8 +100,7 @@ class Auth {
     createLoginButton({ container, size = 'medium', success, fail, always }) {
         this.waitInitialize(() => {
             if (validateCreateLoginButtonParameters({ container, size, success, fail, always })) {
-                this.containers.push(container);
-                const frame = `<iframe src="${process.env.SERVER_URL}/auth/createLoginButton?size=${size}" />`;
+                const frame = `<iframe id="ahribori_iframe" src="${process.env.SERVER_URL}/auth/createLoginButton?size=${size}" />`;
                 document.querySelector(container).innerHTML = frame;
                 const $frame = document.querySelector(`${container} > iframe`);
                 $frame.style.border = 0;
@@ -142,7 +140,6 @@ class Auth {
     login({ target, success, fail, always }) {
         this.waitInitialize(() => {
             if (validateLoginParameters({ target, success, fail, always })) {
-                this.containers.push(target);
                 document.querySelector(target).onclick = function () {
                     const popup = window.open(`${process.env.SERVER_URL}/?continue=`, 'targetWindow',
                         'toolbar=no, location=no, status=no, menubar=no, scrollbars=no, resizable=no, width=360, height=370');
@@ -274,15 +271,11 @@ class Auth {
                 removeEventListener('message', messageEventListeners[i].listener);
             }
         }
-        if (this.containers.length > 0) {
-            for (let i = 0; i < this.containers.length; i++) {
-                const dom = document.querySelector(this.containers[i]);
-                if (dom.remove) {
-                    dom.remove();
-                } else if (dom && dom.parentNode) {
-                    dom.parentNode.removeChild(dom);
-                }
-            }
+        const iframe = document.querySelector('#ahribori_iframe');
+        if (iframe && iframe.remove) {
+            iframe.remove();
+        } else if (iframe && iframe.parentNode) {
+            iframe.parentNode.removeChild(iframe);
         }
         delete window.AHRIBORI_AUTH_SDK;
     }
