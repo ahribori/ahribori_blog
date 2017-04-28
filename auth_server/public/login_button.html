@@ -41,7 +41,9 @@
     var passResponse = function (response) {
         response.type = 'oncreatebuttonlogin';
         window.parent.postMessage(JSON.stringify(response), "*");
-        setButtonLogout();
+        if (response.success) {
+            setButtonLogout();
+        }
     };
 
     var messageEventListenerBinded = false;
