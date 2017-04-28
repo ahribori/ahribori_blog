@@ -69,7 +69,7 @@
                         token: token
                     }, '*');
                 } else if (message.type === 'autologin') {
-                    passResponse();
+                    passResponse(message);
                 }
             });
             messageEventListenerBinded = true;
