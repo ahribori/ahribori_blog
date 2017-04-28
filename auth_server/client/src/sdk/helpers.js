@@ -91,6 +91,22 @@ export function validateLoginParameters({ target, success, fail, always }) {
     return true;
 }
 
+export function validateCheckTokenParameters({ success, fail, always }) {
+    if (success && typeof success !== 'function') {
+        printMessage('error', 'success 파라미터는 function 이어야 합니다.');
+        return false;
+    }
+    if (fail && typeof fail !== 'function') {
+        printMessage('error', 'fail 파라미터는 function 이어야 합니다.');
+        return false;
+    }
+    if (always && typeof always !== 'function') {
+        printMessage('error', 'always 파라미터는 function 이어야 합니다.');
+        return false;
+    }
+    return true;
+}
+
 /**
  * window.AHRIBORI_AUTH_SDK.callback object에 callback function들을 바인딩
  * @param success
@@ -167,6 +183,49 @@ export function bindLoginCallback({ success, fail, always }) {
             configurable: false
         }
     });
+}
+
+export function bindCheckTokenCallback({ success, fail, always }) {
+    if (!window.AHRIBORI_AUTH_SDK.callback) {
+        Object.defineProperties(window.AHRIBORI_AUTH_SDK, {
+            callback: {
+                value: {},
+                writable: false,
+                enumerable: false,
+                configurable: false
+            }
+        });
+    }
+    if (!window.AHRIBORI_AUTH_SDK.callback.checkTokenSuccess) {
+        Object.defineProperties(window.AHRIBORI_AUTH_SDK.callback, {
+            checkTokenSuccess: {
+                value: success,
+                writable: false,
+                enumerable: false,
+                configurable: false
+            }
+        });
+    }
+    if (!window.AHRIBORI_AUTH_SDK.callback.checkTokenFail) {
+        Object.defineProperties(window.AHRIBORI_AUTH_SDK.callback, {
+            checkTokenFail: {
+                value: fail,
+                writable: false,
+                enumerable: false,
+                configurable: false
+            }
+        });
+    }
+    if (!window.AHRIBORI_AUTH_SDK.callback.checkTokenAlways) {
+        Object.defineProperties(window.AHRIBORI_AUTH_SDK.callback, {
+            checkTokenAlways: {
+                value: always,
+                writable: false,
+                enumerable: false,
+                configurable: false
+            }
+        });
+    }
 }
 
 /**

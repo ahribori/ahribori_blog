@@ -1,13 +1,16 @@
 /* eslint-disable class-methods-use-this */
 import {
-    initializeSDK
+    initializeSDK,
+    checkToken
 } from './requests';
 
 import {
     validateCreateLoginButtonParameters,
     validateLoginParameters,
+    validateCheckTokenParameters,
     bindCreateLoginButtonCallback,
     bindLoginCallback,
+    bindCheckTokenCallback,
     bindCreateLoginButtonMessageEventLister,
     bindLoginMessageEventLister
 } from './helpers';
@@ -35,6 +38,7 @@ class Auth {
         this.containers = [];
         this.createLoginButton = this.createLoginButton.bind(this);
         this.login = this.login.bind(this);
+        this.checkToken = this.checkToken.bind(this);
         this.logout = this.logout.bind(this);
         this.getToken = this.getToken.bind(this);
         this.getAppKey = this.getAppKey.bind(this);
@@ -157,6 +161,48 @@ class Auth {
                 bindLoginMessageEventLister();
             }
         });
+    }
+
+    /**
+     * 로그인 성공시 받은 토큰 검사 요청을 한다.
+     *
+     * @example
+     * var ahriboriAuth = new AHRIBORI_AUTH_SDK('YOUR_APPLICATION_KEY');
+     *
+     * ahriboriAuth.createLoginButton({
+     *     container: '#YOUR CONTAINER ID',
+     *     success: function(authObject) {
+     *     
+     *          // 로그인 성공시 토큰을 검증한다
+     *          ahriboriAuth.checkToken({
+     *              token: authObject.auth.token,
+     *              success: function (successResult) {
+     *                  // 토큰 검증이 성공했을 경우
+     *              },
+     *              fail: function (failResult) {
+     *                  // 토큰 검증이 실패했을 경우
+     *              },
+     *              always: function (successOrFailResult) {
+     *                  // 항상 실행
+     *              }
+     *          })
+     *     },
+     * });
+     *
+     * @param settings {object} 토큰 검증을 하기 위한 설정
+     * @param settings.token {string} 검증할 토큰
+     * (이 파라미터가 없을 경우 localStorage에 저장된 토큰을 검증 시도하며, localStorage에도 토큰이 없을 경우 아무 일도 일어나지 않는다.)
+     * @param settings.success {function} 토큰 검증 성공 콜백 함수
+     * @param settings.fail {function} 토큰 검증 실패 콜백 함수
+     * @param settings.always {function} 토큰 검증 성공/실패 유무에 관계없는 콜백
+     */
+    checkToken({ token, success, fail, always }) {
+        this.waitInitialize(() => {
+            if (validateCheckTokenParameters({ success, fail, always })) {
+                bindCheckTokenCallback({ success, fail, always });
+                checkToken(token);
+            }
+        })
     }
 
     /**
