@@ -36,7 +36,7 @@ export default function authentication(state= initialState, action) {
 				status: {
 					isLoggedIn: { $set: true },
 					loginType: { $set: 'ahribori'},
-					accessToken: { $set: action.data.token }
+					accessToken: { $set: action.data.auth.token }
 				}
 			});
 		case types.AUTH_LOGIN_FAILURE:
