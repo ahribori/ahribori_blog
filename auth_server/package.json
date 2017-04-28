@@ -8,8 +8,10 @@
     "jsdoc:sdk": "node_modules/.bin/cross-env NODE_ENV=development node_modules/.bin/jsdoc -c jsdoc.sdk.json --readme ./client/src/sdk/sdk.md",
     "dev": "node_modules/.bin/cross-env NODE_ENV=development gulp --gulpfile gulp.dev.js",
     "build": "node_modules/.bin/cross-env NODE_ENV=production gulp --gulpfile gulp.prod.js",
-    "start": "node_modules/.bin/cross-env NODE_ENV=production pm2 start webapm.auth.yml",
-    "stop": "node_modules/.bin/pm2 stop AHRIBORI.OAUTH.SERVER"
+    "start": "node_modules/.bin/cross-env NODE_ENV=production node build/app.js",
+    "boot": "node_modules/.bin/cross-env NODE_ENV=production node build/app.js",
+    "pm2:start": "node_modules/.bin/cross-env NODE_ENV=production pm2 start ahribori.auth.yml",
+    "pm2:stop": "node_modules/.bin/pm2 stop AHRIBORI.OAUTH.SERVER"
   },
   "repository": {
     "type": "git",
