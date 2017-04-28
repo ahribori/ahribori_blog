@@ -13,6 +13,10 @@ module.exports = {
             'babel-polyfill',
             config.sdkIndexJs
         ],
+		clb: [
+			'babel-polyfill',
+			config.clbIndexJS
+		],
         ahribori: config.appIndexJs,
     },
     output: {

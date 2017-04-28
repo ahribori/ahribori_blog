@@ -41,13 +41,12 @@ class LoginForm extends React.Component {
                                 }
                             }), '*');
                             if (isClb) {
-                                window.opener.postMessage(JSON.stringify({
-                                    type: 'autologin',
+                                window.opener.passResponse({
                                     success: true,
                                     auth: {
                                         token // 로그인 성공한뒤 재발급 된 토큰을 내려주면 됨
                                     }
-                                }), '*');
+                                }, '*');
                             }
                             window.close();
                         }
