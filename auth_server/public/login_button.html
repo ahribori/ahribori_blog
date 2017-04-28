@@ -33,7 +33,9 @@
                 // 클라이언트에 저장되어있는 토큰이 유효한 토큰이면
                 if (message.success) {
                     setButtonLogout();
-                }
+                } else {
+                    setButtonLogin();
+				}
             }
         })
     };

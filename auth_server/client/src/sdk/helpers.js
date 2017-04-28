@@ -1,3 +1,7 @@
+import {
+	checkTokenPromise
+} from './requests';
+
 /**
  * Helpers module
  * @module helpers
@@ -255,16 +259,25 @@ export function bindCreateLoginButtonMessageEventLister({ container }) {
             // 버튼(iframe) 로딩이 끝난 다음
             const token = localStorage.getItem('ahribori_token');
             if (token) {
-                AHRIBORI_AUTH_SDK.checkToken({
-                    token,
-                    success: (result) => {
-                        const iFrame = document.getElementById('ahribori_iframe').contentWindow;
-                        iFrame.postMessage(JSON.stringify({
-                            type: 'checkTokenValid',
-                            success: result.success
-                        }), '*')
-                    }
-                })
+				const iFrame = document.getElementById('ahribori_iframe').contentWindow;
+				
+				// 버튼 깜빡이지 말라고 일단 로그아웃 버튼으로 바꿔놓은 뒤 
+				iFrame.postMessage(JSON.stringify({
+					type: 'checkTokenValid',
+					success: true
+				}), '*');
+				
+				// 실제로 토큰 검증 후에 success에 따라서 변화시킴
+				checkTokenPromise(token)
+					.then((result) => {
+						iFrame.postMessage(JSON.stringify({
+							type: 'checkTokenValid',
+							success: result.success
+						}), '*')
+					})
+					.catch((error) => {
+
+					});
             }
 
         } else if (message.type === 'oncreatebuttonlogin') {
