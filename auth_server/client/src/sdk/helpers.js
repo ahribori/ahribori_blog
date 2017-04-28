@@ -276,7 +276,10 @@ export function bindCreateLoginButtonMessageEventLister({ container }) {
 						}), '*')
 					})
 					.catch((error) => {
-
+						iFrame.postMessage(JSON.stringify({
+							type: 'checkTokenValid',
+							success: error.success
+						}), '*');
 					});
             }
 

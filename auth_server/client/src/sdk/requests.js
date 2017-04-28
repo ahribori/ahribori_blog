@@ -37,6 +37,7 @@ export function checkToken(_token) {
             if (successCallback) successCallback(response.data);
             if (alwaysCallback) alwaysCallback(response.data);
         }).catch((error) => {
+			localStorage.removeItem('ahribori_token');
             if (failCallback) failCallback(error.response.data);
             if (alwaysCallback) alwaysCallback(error.response.data);
         });
@@ -63,6 +64,7 @@ export function checkTokenPromise(_token) {
 			}).then((response) => {
 				resolve(response.data);
 			}).catch((error) => {
+				localStorage.removeItem('ahribori_token');
 				reject(error.response.data);
 			});
 		} else {
