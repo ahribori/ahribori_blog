@@ -75,10 +75,10 @@ const renderFullPage = (html, reduxState, res) => {
 			 <script>window.__REDUX_STATE__ = ${reduxState}</script>`)
 
             // set title
-            .replace(`{{{title}}}`, helmet.title.toString())
+            .replace(`<title></title>`, helmet.title.toString())
 
             //set meta
-            .replace(`{{{meta}}}`, helmet.meta.toString());
+            .replace(`<meta>`, helmet.meta.toString());
 
         res.send(page);
     });
