@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>WebAPM Login Button</title>
+    <link rel="stylesheet" href="/modules/semantic-ui-css/semantic.min.css">
+    <style>
+        body { margin: 0; }
+        button { border: 0; }
+    </style>
+</head>
+<body onload="onLoad()">
+<button id="webapmLoginButton" class="{{{class}}}" onClick="openLoginPopup();"><i class="{{{icon}}}"></i>WebAPM으로 로그인</button>
+<script type="text/javascript">
+
+    var onLoad = function () {
+        var loginButton = document.querySelector('#webapmLoginButton');
+        window.parent.postMessage(JSON.stringify({
+            type: 'createButtonOnload',
+            style: {
+                width: loginButton.offsetWidth,
+                height: loginButton.offsetHeight
+            }
+        }), '*');
+    };
+
+    var passResponse = function (response) {
+        response.type = 'oncreatebuttonlogin';
+        window.parent.postMessage(JSON.stringify(response), "*");
+    };
+    var messageEventListenerBinded = false;
+    var openLoginPopup = function () {
+        window.parent.postMessage(JSON.stringify({
+            type: 'getToken',
+        }), '*');
+
+        var popup;
+        var token;
+        var continueURL = encodeURIComponent('{{{continue}}}');
+        // 3rd에 token 있을 때 넘어오는 token을 listen
+        if (!messageEventListenerBinded) {
+            window.addEventListener('message', function(event) {
+                var message = JSON.parse(event.data);
+                if (message.type === 'token') {
+                    token = message.token;
+                    popup = window.open('/?clb=1&continue=' + continueURL,'targetWindow',
+                        'toolbar=no, location=no, status=no, menubar=no, scrollbars=no, resizable=no, width=360, height=370');
+                }
+                if (message.type === 'popupOnload') {
+                    popup.postMessage({
+                        type: 'token',
+                        token: token
+                    }, '*');
+                }
+            });
+            messageEventListenerBinded = true;
+        }
+
+    };
+</script>
+</body>
+</html>
