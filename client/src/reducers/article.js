@@ -72,7 +72,13 @@ export default function application(state= initialState, action) {
 				}
 			});
 		case types.GET_ARTICLE:
-			return state;
+            return update(state, {
+                article: {
+                    data: { $set: {} },
+                    comments: { $set: [] },
+                    error: { $set: null }
+                }
+            });
 		case types.GET_ARTICLE_SUCCESS:
 			return update(state, {
 				article: {

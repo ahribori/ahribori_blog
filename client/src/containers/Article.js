@@ -54,6 +54,12 @@ class Article extends React.Component {
 		const token = this.props.user ? this.props.user.token : null;
         this.props.getArticleRequest(id, token, upHits)
             .then(() => {
+        		/* remove loader */
+                const loadingElement =  document.getElementById('loading');
+                if (loadingElement) {
+                    loadingElement.remove ? loadingElement.remove() : loadingElement.removeNode(true);
+                }
+                
 				/* Prism force initialize */
 				const preTags = $('pre');
 				if (!preTags.hasClass('line-numbers')) { preTags.addClass('line-numbers') }
@@ -134,6 +140,12 @@ class Article extends React.Component {
 
                     </Cell>
                 </Grid>
+				<div id="loading" className='tetrominos'>
+					<div className='tetromino box1'></div>
+					<div className='tetromino box2'></div>
+					<div className='tetromino box3'></div>
+					<div className='tetromino box4'></div>
+				</div>
             </div>
 		);
 	}
