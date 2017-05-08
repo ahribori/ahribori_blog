@@ -58,6 +58,7 @@ class Article extends React.Component {
                 const loadingElement =  document.getElementById('loading');
                 if (loadingElement) {
                     loadingElement.remove ? loadingElement.remove() : loadingElement.removeNode(true);
+                    $('#article_grid').css('visibility', 'visible');
                 }
                 
 				/* Prism force initialize */
@@ -105,7 +106,7 @@ class Article extends React.Component {
 					<meta property="og:image" content={this.props.article.thumbnail_image ? this.props.article.thumbnail_image : '/favicon/cats.png'} />
                     <title>{this.props.article.title ? `${this.props.article.title} :: Ahribori's Blog` : `Ahribori's Blog`}</title>
                 </Helmet>
-                <Grid className="article_grid">
+                <Grid id="article_grid" className="article_grid">
                     <Cell offsetDesktop={2} col={8} phone={12} tablet={12} style={{ minWidth: '300px' }}>
                         <Card shadow={0} style={{
                             width: '100%'
