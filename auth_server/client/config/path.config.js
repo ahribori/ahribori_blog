@@ -11,6 +11,7 @@ module.exports = {
     public: resolvePath('public'),
     context: resolvePath('client/src/'),
     sdkIndexJs: resolvePath('client/src/sdk/sdk.js'),
+	clbIndexJS: resolvePath('client/src/sdk/clbScript.js'),
     appIndexJs: resolvePath('client/src/index.js'),
     appBuild: resolvePath('public')
 };

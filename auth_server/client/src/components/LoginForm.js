@@ -29,28 +29,39 @@ class LoginForm extends React.Component {
                 if (message.type === 'token') {
                     const token = message.token;
                     if (token) {
-                        // TODO 토큰이 유효한지 검증
-                        if (true) {
-                            const isClb = /clb=1/.test(location.search);
-                            const targetWindow = isClb ? window.opener.parent : window.opener;
-                            targetWindow.postMessage(JSON.stringify({
-                                success: true,
-                                type: isClb ? 'oncreatebuttonlogin' : 'onlogin',
-                                auth: {
-                                    token // 로그인 성공한뒤 재발급 된 토큰을 내려주면 됨
-                                }
-                            }), '*');
-                            if (isClb) {
-                                window.opener.postMessage(JSON.stringify({
-                                    type: 'autologin',
-                                    success: true,
-                                    auth: {
-                                        token // 로그인 성공한뒤 재발급 된 토큰을 내려주면 됨
-                                    }
-                                }), '*');
-                            }
-                            window.close();
-                        }
+						axios({
+							url: `/auth/check`,
+							method: 'get',
+							headers: {
+								Authorization: token
+							}
+						}).then((response) => {
+							const success = response.data.success;
+							const authObject = {
+								token,
+								user: {
+									_id: response.data.info._id,
+									nickname: response.data.info.nickname,
+									admin: response.data.info.admin,
+								}
+							};
+							if (success) {
+								const isClb = /clb=1/.test(location.search);
+								const targetWindow = isClb ? window.opener.parent : window.opener;
+								targetWindow.postMessage(JSON.stringify({
+									success: true,
+									type: isClb ? 'oncreatebuttonlogin' : 'onlogin',
+									auth: authObject
+								}), '*');
+								if (isClb) {
+									window.opener.passResponse({
+										success: true,
+										auth: authObject
+									}, '*');
+								}
+								window.close();
+							}
+						});
                     }
                 }
             });

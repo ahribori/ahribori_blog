@@ -37,6 +37,7 @@ export function checkToken(_token) {
             if (successCallback) successCallback(response.data);
             if (alwaysCallback) alwaysCallback(response.data);
         }).catch((error) => {
+			localStorage.removeItem('ahribori_token');
             if (failCallback) failCallback(error.response.data);
             if (alwaysCallback) alwaysCallback(error.response.data);
         });
@@ -48,4 +49,29 @@ export function checkToken(_token) {
         if (failCallback) failCallback(failObject);
         if (alwaysCallback) alwaysCallback(failObject);
     }
+}
+
+export function checkTokenPromise(_token) {
+	const token = _token || localStorage.getItem('ahribori_token');
+	return new Promise((resolve, reject) => {
+		if (token) {
+			axios({
+				url: `${process.env.SERVER_URL}/auth/check`,
+				method: 'GET',
+				headers: {
+					Authorization: token
+				}
+			}).then((response) => {
+				resolve(response.data);
+			}).catch((error) => {
+				localStorage.removeItem('ahribori_token');
+				reject(error.response.data);
+			});
+		} else {
+			reject({
+				success: false,
+				message: 'token not exist'
+			})
+		}
+	});
 }

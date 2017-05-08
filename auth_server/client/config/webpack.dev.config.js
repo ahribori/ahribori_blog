@@ -12,12 +12,16 @@ module.exports = {
             'babel-polyfill',
             config.sdkIndexJs
         ],
-        ahribori: [
+		clb: [
+			'babel-polyfill',
+			config.clbIndexJS
+		],
+		ahribori: [
             'react-hot-loader/patch',
             `webpack-dev-server/client?http://0.0.0.0:${DEV_SERVER_PORT}`,
             'webpack/hot/only-dev-server',
             config.appIndexJs
-        ],
+        ]
     },
     output: {
         filename: '[name].js',
