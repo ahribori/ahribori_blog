@@ -48,7 +48,7 @@ class Navigation extends React.Component {
 		const headerTitle = () => {
 			return (
 				<div onClick={this.handleClick} className="title">
-					{this.state.searchFocused ? '' : 'AHRIBORI.COM'}
+					{this.state.searchFocused ? '' : <span>AHRIBORI.COM<span id="ahribori_version">v0.9</span></span>}
 				</div>
 			);
 		};
