@@ -2,12 +2,11 @@
 Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.md or http://ckeditor.com/license
 */
-@import url('/font/font-d2coding-1.2.1/d2coding.css');
 @import url('/font/IropkeBatangM_web/iropkeBatang.css');
 body
 {
 	/* Font */
-	font-family: D2 coding, sans-serif, Arial, Verdana, "Trebuchet MS";
+	font-family: 'Nanum Gothic', sans-serif, Arial, Verdana, "Trebuchet MS";
 	font-size: 13px;
 
 	/* Text color */
