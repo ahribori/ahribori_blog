@@ -55,6 +55,10 @@ class CardList extends React.Component {
             if (masonry.items.length > 0) {
                 masonry.layout();
             }
+
+            document.fonts.ready.then(() => {
+                masonry.layout();
+            });
         }
     }
 
