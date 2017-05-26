@@ -43,13 +43,23 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import './style.scss';
 
 /* =========================================
+ Google Analytics
+ ============================================*/
+import ReactGA from 'react-ga';
+ReactGA.initialize('UA-99983371-1');
+
+/* =========================================
  Render
  ============================================*/
 const rootElement = document.getElementById('app');
 ReactDOM.render(
 	<MuiThemeProvider>
 		<Provider store={store}>
-			<Router onUpdate={() => { document.querySelector('.mdl-layout__content').scrollTop = 0; }} history={browserHistory}>
+			<Router onUpdate={() => {
+                ReactGA.set({ page: window.location.pathname + window.location.search });
+                ReactGA.pageview(window.location.pathname + window.location.search);
+				document.querySelector('.mdl-layout__content').scrollTop = 0;
+			}} history={browserHistory}>
 				{routes}
 			</Router>
 		</Provider>
