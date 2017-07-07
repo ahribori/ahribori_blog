@@ -11,6 +11,8 @@ import Image from '../models/image';
 import jsdom from 'jsdom';
 import fs from 'fs';
 import Page from '../helpers/Page';
+import htmlToText from 'html-to-text';
+
 const syncCounts = (bypass) => {
     return new Promise((resolve, reject) => {
         Category.find({}, (err, categories) => {
@@ -45,7 +47,8 @@ const syncCounts = (bypass) => {
  ============================================*/
 router.post('/', (req, res) => {
 	
-	const { category, author_id, author_nickname, title, content, preview, hidden, article_temp_id } = req.body;
+	const { category, author_id, author_nickname, title, content, hidden, article_temp_id } = req.body;
+    const preview = htmlToText.fromString(content).substr(0, 200) + '...';
 
 	const validate = (category, author_id, author_nickname, title, content, preview, hidden) => {
 
@@ -459,6 +462,7 @@ router.put('/:id', (req, res) => {
 				}
 
 				article.mod_date = Date.now();
+				article.preview = htmlToText.fromString(article.content).substr(0, 200) + '...';
 
 				Article.update({ _id: req.params.id }, article, (err, result) => {
 					if (err) reject(err);

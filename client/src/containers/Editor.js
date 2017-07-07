@@ -83,14 +83,12 @@ class Editor extends React.Component {
 
 	handleSubmit() {
 		const content = CKEDITOR.instances['ck_editor'].getData();
-		const preview = CKEDITOR.instances['ck_editor'].document.getBody().getText().substr(0, 150) + '...';
 		let article = {
 			category: this.state.category,
 			author_id: this.props.user._id,
 			author_nickname: this.props.user.nickname,
 			title: this.state.title,
 			content,
-			preview,
 			hidden: this.state.hidden,
 		};
 
