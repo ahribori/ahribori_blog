@@ -48,7 +48,7 @@ const syncCounts = (bypass) => {
 router.post('/', (req, res) => {
 	
 	const { category, author_id, author_nickname, title, content, hidden, article_temp_id } = req.body;
-    const preview = htmlToText.fromString(content).substr(0, 200) + '...';
+    const preview = htmlToText.fromString(content, { ignoreImage: true }).substr(0, 200) + '...';
 
 	const validate = (category, author_id, author_nickname, title, content, preview, hidden) => {
 
@@ -462,7 +462,7 @@ router.put('/:id', (req, res) => {
 				}
 
 				article.mod_date = Date.now();
-				article.preview = htmlToText.fromString(article.content).substr(0, 200) + '...';
+				article.preview = htmlToText.fromString(article.content, { ignoreImage: true }).substr(0, 200) + '...';
 
 				Article.update({ _id: req.params.id }, article, (err, result) => {
 					if (err) reject(err);
