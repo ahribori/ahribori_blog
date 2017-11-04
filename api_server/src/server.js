@@ -38,7 +38,7 @@ app.listen(port, () => {
 
 // set public path
 app.use('/', express.static(path.join(__dirname, './../public')));
-if (env.IMAGE_REPOSITORY !== '') {
+if (env.IMAGE_REPOSITORY && env.IMAGE_REPOSITORY !== '') {
 	app.use('/image', express.static(env.IMAGE_REPOSITORY));
 }
 
@@ -52,7 +52,9 @@ app.use(function (err, req, res, next) {
  			Mongoose Configuration
  ============================================*/
 const MONGO_URI = env.MONGO_URI;
-mongoose.connect(MONGO_URI);
+mongoose.connect(MONGO_URI, {
+	useMongoClient: true
+});
 const db = mongoose.connection;
 mongoose.Promise = global.Promise;
 db.on('error', console.error);
