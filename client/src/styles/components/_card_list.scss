@@ -30,6 +30,7 @@ $gridItemPadding: 8px;
 }
 
 .article_preview {
+    word-break: keep-all;
     font-family: 'Nanum Gothic';
     color: $blueGrey700;
     padding: 8px;
@@ -49,6 +50,7 @@ $gridItemPadding: 8px;
 }
 
 .card-title {
+    word-break: keep-all;
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;

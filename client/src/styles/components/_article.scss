@@ -30,6 +30,7 @@
 
 .article_container {
     padding: 30px;
+    word-break: keep-all;
 }
 
 // 모바일
@@ -67,6 +68,11 @@
         }
         pre {
             font-size: 0.7em !important;
+        }
+
+        th, td {
+            font-size: 0.7em;
+            padding: 5px;
         }
     }
 }
@@ -140,4 +146,19 @@
 
 .image-center {
     text-align: center;
+}
+
+table {
+    display: table;
+    border-spacing: 0;
+    border-style: none;
+    th, td {
+        font-size: 14px;
+        display: table-cell;
+        border-spacing: 0;
+        border-style: none;
+        border-bottom: 1px solid #E0E0E0;
+        padding: 7px;
+        text-align: left;
+    }
 }
