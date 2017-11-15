@@ -20,7 +20,8 @@ CKEDITOR.editorConfig = function( config ) {
 		{ name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
 		{ name: 'colors' },
 		{ name: 'styles' },
-		{ name: 'mode'}
+		{ name: 'mode'},
+		{ name: 'others' }
 	];
 
 	// Remove some buttons provided by the standard plugins, which are
@@ -49,7 +50,7 @@ CKEDITOR.editorConfig = function( config ) {
 	config.tabSpaces = 4;
 
 	// extraPlugins는 쉼표(,)로 구분해서 나열한다
-	config.extraPlugins = 'autolink,image2';
+	config.extraPlugins = 'autolink,image2,markdown';
 	config.image2_alignClasses = [ 'image-left', 'image-center', 'image-right' ];
 	config.image2_captionedClass = 'image-captioned';
 
