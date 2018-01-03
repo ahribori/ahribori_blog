@@ -142,6 +142,14 @@
         margin: 0;
         font-size: 15px;
     }
+    blockquote {
+        border-left: 5px solid $pink500;
+        padding: 5px 0 5px 15px;
+        &:after,&:before {
+            content: "" !important;
+            margin: 0 !important;
+        }
+    }
 }
 
 .image-center {

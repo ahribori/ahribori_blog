@@ -13,7 +13,7 @@ CKEDITOR.editorConfig = function( config ) {
 		{ name: 'insert' },
 		{ name: 'forms' },
 		{ name: 'links' },
-		{ name: 'paragraph',   groups: [ 'list', 'align'] },
+		{ name: 'paragraph',   groups: [ 'list', 'blocks', 'align'] },
 		{ name: 'document'},
 		{ name: 'tools' },
 		'/',
@@ -50,7 +50,7 @@ CKEDITOR.editorConfig = function( config ) {
 	config.tabSpaces = 4;
 
 	// extraPlugins는 쉼표(,)로 구분해서 나열한다
-	config.extraPlugins = 'autolink,image2,markdown';
+	config.extraPlugins = 'autolink,image2,markdown,blockquote';
 	config.image2_alignClasses = [ 'image-left', 'image-center', 'image-right' ];
 	config.image2_captionedClass = 'image-captioned';
 
