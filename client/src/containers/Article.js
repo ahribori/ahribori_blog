@@ -7,6 +7,7 @@ import { getArticleRequest, removeArticleRequest } from '../actions/article';
 import { registerCommentRequest, modifyCommentRequest, removeCommentRequest } from '../actions/comments';
 import { getCategoryRequest } from '../actions/category';
 import { Comments, Share } from '../components';
+import AdSense from 'react-adsense';
 
 class Article extends React.Component {
 
@@ -60,7 +61,7 @@ class Article extends React.Component {
                     loadingElement.remove ? loadingElement.remove() : loadingElement.removeNode(true);
                     $('#article_grid').css('visibility', 'visible');
                 }
-                
+
 				/* Prism force initialize */
 				const preTags = $('pre');
 				if (!preTags.hasClass('line-numbers')) { preTags.addClass('line-numbers') }
@@ -118,6 +119,13 @@ class Article extends React.Component {
                                     { this.state.isAuthor ? articleMenu : '' }
                                 </div>
                                 <hr/>
+                                <AdSense.Google
+                                    client='ca-pub-9640568080207154'
+                                    slot='7788836161'
+                                    style={{ display: 'block' }}
+                                    format='auto'
+                                    responsive='true'
+                                />
                                 <div className="article_content" dangerouslySetInnerHTML={{ __html: this.props.article.content }}></div>
                                 {this.state.fetchComplete ? <Share url={location.href}
                                                                    description={this.props.article.preview}
